@@ -165,7 +165,7 @@ class LEDRemixerBLE : public BLEServerCallbacks, public BLECharacteristicCallbac
         // Little "Z"
         // int frameHeight = 8
         // int frameCount = 6
-//        int zonar[48] = {
+//        int z[48] = {
 //          1, 0, 0, 0, 0, 0, 1, 1,
 //          1, 0, 0, 0, 0, 1, 0, 1,
 //          1, 0, 0, 0, 1, 0, 0, 1,
@@ -177,7 +177,7 @@ class LEDRemixerBLE : public BLEServerCallbacks, public BLECharacteristicCallbac
         // Big "Z"
         int frameHeight = 20;
         int frameCount = 10;
-        int zonar[200] = {
+        int z[200] = {
           1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
           1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
           1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
@@ -207,11 +207,11 @@ class LEDRemixerBLE : public BLEServerCallbacks, public BLECharacteristicCallbac
           debugf("Got ASDF!\n");
           config.setFrameHeight(frameHeight);
           config.setFrameCount(frameCount);
-          for(int i=0; i<sizeof(zonar); i++){
+          for(int i=0; i<sizeof(z); i++){
             debugf("i=%d\n",i);
             config.pattern[i*3]=0x0;
             config.pattern[i*3+1]=0x0;
-            if(zonar[i]==1){
+            if(z[i]==1){
               config.pattern[i*3+2]=0xff;
             } else {
               config.pattern[i*3+2]=0x0;              
