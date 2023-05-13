@@ -1,7 +1,7 @@
 // Some things need to be included here, seems files are loaded alphabetically
 #include <arduino.h>
 #include <Update.h>
-#include "led_remixer_config.cpp"
+#include "open_pixel_poi_config.cpp"
 
 // BLE
 #include <BLEDevice.h>
@@ -58,25 +58,25 @@ enum CommCode {
   CC_SET_PATTERN        // 4
 };
 
-class LEDRemixerBLE : public BLEServerCallbacks, public BLECharacteristicCallbacks{
+class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallbacks{
   
   private:
-    LEDRemixerConfig& config;
+    OpenPixelPoiConfig& config;
     
     // Nordic nRF
-    BLEUUID remixerServiceUUID = BLEUUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
-    BLEUUID remixerRxCharacteristicUUID = BLEUUID("6E400002-B5A3-F393-E0A9-E50E24DCCA9E");
-    BLEUUID remixerTxCharacteristicUUID = BLEUUID("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
-    BLEUUID remixerNotifyCharacteristicUUID = BLEUUID("6E400004-B5A3-F393-E0A9-E50E24DCCA9E");
+    BLEUUID pixelPoiServiceUUID = BLEUUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
+    BLEUUID pixelPoiRxCharacteristicUUID = BLEUUID("6E400002-B5A3-F393-E0A9-E50E24DCCA9E");
+    BLEUUID pixelPoiTxCharacteristicUUID = BLEUUID("6E400003-B5A3-F393-E0A9-E50E24DCCA9E");
+    BLEUUID pixelPoiNotifyCharacteristicUUID = BLEUUID("6E400004-B5A3-F393-E0A9-E50E24DCCA9E");
 
     BLEServer* server;
     bool deviceConnected = false;
     bool oldDeviceConnected = false;
     
-    BLEService* remixerService;
-    BLECharacteristic* remixerRxCharacteristic;
-    BLECharacteristic* remixerTxCharacteristic;
-    BLECharacteristic* remixerNotifyCharacteristic;
+    BLEService* pixelPoiService;
+    BLECharacteristic* pixelPoiRxCharacteristic;
+    BLECharacteristic* pixelPoiTxCharacteristic;
+    BLECharacteristic* pixelPoiNotifyCharacteristic;
     
     // Little "Z"
     // int frameHeight = 8
@@ -118,42 +118,42 @@ class LEDRemixerBLE : public BLEServerCallbacks, public BLECharacteristicCallbac
 
     void bleSendError(){
       uint8_t response[] = {0x45, 0x46, 0x00, 0x07, CC_ERROR, 0x46, 0x45};
-      writeToRemixer(response);
+      writeToPixelPoi(response);
     }
     
     void bleSendSuccess(){
       uint8_t response[] = {0x45, 0x46, 0x00, 0x07, CC_SUCCESS, 0x46, 0x45};
-      writeToRemixer(response);
+      writeToPixelPoi(response);
     }
 
     void bleSendLolcat(){
       debugf("Send error lolcat\n");
       uint8_t response[] = {0x01, 0x02, 0x00, 0x05, 0x01};
-      writeToRemixer(response);
+      writeToPixelPoi(response);
     }
     
   public:
-    LEDRemixerBLE(LEDRemixerConfig& _config): config(_config) {}
+    OpenPixelPoiBLE(OpenPixelPoiConfig& _config): config(_config) {}
 
     long bleLastReceived;
     void setup(){
       debugf("Setup begin\n");
       // Create the BLE Device
-      BLEDevice::init("LED Remixer ESP32C3");
+      BLEDevice::init("Pixel Poi ESP32C3");
 
       // Create the BLE Server
       server = BLEDevice::createServer();
       server->setCallbacks(this);
       
-      // Create the Remixer BLE Service
-      remixerService = server->createService(remixerServiceUUID);
-      remixerTxCharacteristic = remixerService->createCharacteristic(remixerTxCharacteristicUUID, BLECharacteristic::PROPERTY_READ);
-      remixerTxCharacteristic->addDescriptor(new BLE2902());
-      remixerNotifyCharacteristic = remixerService->createCharacteristic(remixerNotifyCharacteristicUUID, BLECharacteristic::PROPERTY_NOTIFY);
-      remixerNotifyCharacteristic->addDescriptor(new BLE2902());
-      remixerRxCharacteristic = remixerService->createCharacteristic(remixerRxCharacteristicUUID, BLECharacteristic::PROPERTY_WRITE);
-      remixerRxCharacteristic->setCallbacks(this);
-      remixerService->start();
+      // Create the pixelPoi BLE Service
+      pixelPoiService = server->createService(pixelPoiServiceUUID);
+      pixelPoiTxCharacteristic = pixelPoiService->createCharacteristic(pixelPoiTxCharacteristicUUID, BLECharacteristic::PROPERTY_READ);
+      pixelPoiTxCharacteristic->addDescriptor(new BLE2902());
+      pixelPoiNotifyCharacteristic = pixelPoiService->createCharacteristic(pixelPoiNotifyCharacteristicUUID, BLECharacteristic::PROPERTY_NOTIFY);
+      pixelPoiNotifyCharacteristic->addDescriptor(new BLE2902());
+      pixelPoiRxCharacteristic = pixelPoiService->createCharacteristic(pixelPoiRxCharacteristicUUID, BLECharacteristic::PROPERTY_WRITE);
+      pixelPoiRxCharacteristic->setCallbacks(this);
+      pixelPoiService->start();
 
       // Start advertising
       server->getAdvertising()->start();
@@ -177,16 +177,16 @@ class LEDRemixerBLE : public BLEServerCallbacks, public BLECharacteristicCallbac
       }
     }
 
-    void writeToRemixer(uint8_t* data){
+    void writeToPixelPoi(uint8_t* data){
       if (deviceConnected) {
-        remixerTxCharacteristic->setValue(data, data[2] << 8 | data[3]);
-        remixerNotifyCharacteristic->notify();
+        pixelPoiTxCharacteristic->setValue(data, data[2] << 8 | data[3]);
+        pixelPoiNotifyCharacteristic->notify();
       }
     }
     
     void onWrite(BLECharacteristic *characteristic) {
       debugf("OnWrite()!\n");
-      if(characteristic->getUUID().equals(remixerRxCharacteristicUUID)){
+      if(characteristic->getUUID().equals(pixelPoiRxCharacteristicUUID)){
         bleLastReceived = millis();
         uint8_t* bleStatus = characteristic->getData();
         size_t bleLength = characteristic->getLength();

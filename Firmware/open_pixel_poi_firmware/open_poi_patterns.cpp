@@ -1,5 +1,5 @@
-#ifndef _OPEN_POI_LED
-#define _OPEN_POI_LED
+#ifndef _OPEN_PIXEL_POI_PATTERNS
+#define _OPEN_PIXEL_POI_PATTERNS
 
 #define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
@@ -9,6 +9,8 @@
 #define debugf(...)
 #define debugf_noprefix(...)
 #endif
+
+class OpenPixelPoiPatterns {
 
 // R = 0xff 0x00 0x00     // Red
 // G = 0x00 0xff 0x00     // Green
@@ -24,5 +26,14 @@
 // C = 0x00 0xFF 0xFF     // Cyan
 // t = 0x00 0x80 0x80     // Teal
 
+private:
+
+public:
+
+  void setup() {}
+
+  void loop() {}
+
+};
 
 #endif

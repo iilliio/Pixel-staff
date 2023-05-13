@@ -1,5 +1,5 @@
-#ifndef _LED_REMIXER_CONFIG
-#define _LED_REMIXER_CONFIG
+#ifndef _OPEN_PIXEL_POI_CONFIG
+#define _OPEN_PIXEL_POI_CONFIG
 
 #include <Preferences.h>
 
@@ -18,7 +18,7 @@
   // 512 Bytes EEPROM
   // 4MB Flash memory
   
-class LEDRemixerConfig {
+class OpenPixelPoiConfig {
   private:
     Preferences preferences;
     
