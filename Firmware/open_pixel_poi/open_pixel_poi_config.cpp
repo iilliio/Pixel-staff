@@ -32,7 +32,7 @@ class LEDRemixerConfig {
     uint8_t frameHeight; // Will come in on the pattern payload
     uint8_t frameCount;
     uint8_t *pattern = (uint8_t *) malloc(2000*sizeof(uint8_t));
-    uint8_t patternLength;
+    uint16_t patternLength;
 
     // Variables
     long configLastUpdated;

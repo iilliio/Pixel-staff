@@ -78,6 +78,44 @@ class LEDRemixerBLE : public BLEServerCallbacks, public BLECharacteristicCallbac
     BLECharacteristic* remixerTxCharacteristic;
     BLECharacteristic* remixerNotifyCharacteristic;
     
+    // Little "Z"
+    // int frameHeight = 8
+    // int frameCount = 6
+    //        int z[48] = {
+    //          1, 0, 0, 0, 0, 0, 1, 1,
+    //          1, 0, 0, 0, 0, 1, 0, 1,
+    //          1, 0, 0, 0, 1, 0, 0, 1,
+    //          1, 0, 0, 1, 0, 0, 0, 1,
+    //          1, 0, 1, 0, 0, 0, 0, 1,
+    //          1, 1, 0, 0, 0, 0, 0, 1,
+    //        };
+            
+    // Big "Z"
+    int frameHeight = 20;
+    int frameCount = 20;
+    int big_z[400] = {
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    };
+
     void bleSendError(){
       uint8_t response[] = {0x45, 0x46, 0x00, 0x07, CC_ERROR, 0x46, 0x45};
       writeToRemixer(response);
@@ -162,62 +200,33 @@ class LEDRemixerBLE : public BLEServerCallbacks, public BLECharacteristicCallbac
         }
         debugf("\n");
 
-        // Little "Z"
-        // int frameHeight = 8
-        // int frameCount = 6
-//        int z[48] = {
-//          1, 0, 0, 0, 0, 0, 1, 1,
-//          1, 0, 0, 0, 0, 1, 0, 1,
-//          1, 0, 0, 0, 1, 0, 0, 1,
-//          1, 0, 0, 1, 0, 0, 0, 1,
-//          1, 0, 1, 0, 0, 0, 0, 1,
-//          1, 1, 0, 0, 0, 0, 0, 1,
-//        };
-        
-        // Big "Z"
-        int frameHeight = 20;
-        int frameCount = 10;
-        int z[200] = {
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-          1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        };
-//            << the other half to make 20 x 20 "Z" >>
-//          1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-//          1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-//          1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-//          1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-//          1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-//          1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-//          1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-//          1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-//          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//        };
         
         // Process BLE
         if(bleStatus[0] == 0x61 && bleStatus[1] == 0x73 && bleStatus[2] == 0x64 & bleStatus[3] == 0x66){
           debugf("Got ASDF!\n");
-          config.setFrameHeight(frameHeight);
-          config.setFrameCount(frameCount);
-          for(int i=0; i<sizeof(z); i++){
+          debugf("this->frameHeight = %d\n", this->frameHeight);
+          debugf("this->frameCount = %d\n", this->frameCount);
+          config.setFrameHeight(this->frameHeight);
+          config.setFrameCount(this->frameCount);
+          for(int i=0; i<this->frameHeight*this->frameCount*3; i++){
+            config.pattern[i] = 0;
+          }
+          for(int i=0; i<this->frameHeight*this->frameCount; i++){
             debugf("i=%d\n",i);
             config.pattern[i*3]=0x0;
             config.pattern[i*3+1]=0x0;
-            if(z[i]==1){
+            if(big_z[i]==1){
               config.pattern[i*3+2]=0xff;
             } else {
               config.pattern[i*3+2]=0x0;              
             }
           }
-          config.patternLength = config.frameHeight*config.frameCount*3;
+          debugf("config.patternLength (before) = %d\n",config.patternLength);
+          config.patternLength = this->frameHeight*this->frameCount*3;
+          debugf("config.patternLength (after) = %d\n",config.patternLength);
+          debugf("this->frameHeight = %d\n", this->frameHeight);
+          debugf("this->frameCount = %d\n", this->frameCount);
+          debugf("fH*fC*3 = %d", this->frameHeight*this->frameCount*3);
           config.savePattern();
         }else if(bleStatus[0] == 0xD0 && bleStatus[bleLength - 1] == 0xD1){
           CommCode requestCode = static_cast<CommCode>(bleStatus[1]);
