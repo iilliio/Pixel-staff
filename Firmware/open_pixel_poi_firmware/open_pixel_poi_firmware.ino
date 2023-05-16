@@ -1,6 +1,6 @@
 // Sub-Modules
-#include "led_remixer_led.cpp"
-#include "led_remixer_ble.cpp"
+#include "open_pixel_poi_led.cpp"
+#include "open_pixel_poi_ble.cpp"
 
 // Release Version (2023.05.07)
 // Program Storage Space
@@ -30,11 +30,11 @@
 #endif
 
 
-LEDRemixerConfig config;
-LEDRemixerBLE ble(config);
-LEDRemixerLED led(config);
+OpenPixelPoiConfig config;
+OpenPixelPoiBLE ble(config);
+OpenPixelPoiLED led(config);
 
-TaskHandle_t Task1;
+//TaskHandle_t Task1;
 
 int refreshRate = 30;
 
@@ -52,7 +52,7 @@ void setup() {
 }
 
 void loop() {
-  config.loop();
+  //config.loop();
   ble.loop();
   led.loop();
   delay(1000/refreshRate);

@@ -1,7 +1,7 @@
-#ifndef _LED_REMIXER_LED
-#define _LED_REMIXER_LED
+#ifndef _OPEN_PIXEL_POI_LED
+#define _OPEN_PIXEL_POI_LED
 
-#include "led_remixer_config.cpp"
+#include "open_pixel_poi_config.cpp"
 
 // LED
 #include <Adafruit_NeoPixel.h>
@@ -15,9 +15,9 @@
 #define debugf_noprefix(...)
 #endif
 
-class LEDRemixerLED {
+class OpenPixelPoiLED {
   private:
-    LEDRemixerConfig& config;
+    OpenPixelPoiConfig& config;
 
     bool flipflop = true;
     int brightness = 0;
@@ -26,7 +26,7 @@ class LEDRemixerLED {
     Adafruit_NeoPixel led_strip{22, D0, NEO_GRB + NEO_KHZ800};
     
   public:
-    LEDRemixerLED(LEDRemixerConfig& _config): config(_config) {}    
+    OpenPixelPoiLED(OpenPixelPoiConfig& _config): config(_config) {}    
     int frameIndex;
     void setup(){
       debugf("Setup begin\n");
