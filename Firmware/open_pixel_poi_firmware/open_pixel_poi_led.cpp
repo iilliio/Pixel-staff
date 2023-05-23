@@ -6,7 +6,7 @@
 // LED
 #include <Adafruit_NeoPixel.h>
 
-#define DEBUG  // Comment this line out to remove printf statements in released version
+//#define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
 #define debugf(...) Serial.print("  <<led>> ");Serial.printf(__VA_ARGS__);
 #define debugf_noprefix(...) Serial.printf(__VA_ARGS__);
@@ -18,9 +18,10 @@
 class OpenPixelPoiLED {
   private:
     OpenPixelPoiConfig& config;
-
-    bool flipflop = true;
     int brightness = 0;
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
 
     // Declare our NeoPixel strip object:
     Adafruit_NeoPixel led_strip{22, D0, NEO_GRB + NEO_KHZ800};
@@ -36,14 +37,10 @@ class OpenPixelPoiLED {
       led_strip.begin();
       frameIndex = 0;
 
-      debugf("Setup complete\n");
+      debugf("LED setup complete\n");
     }
 
     void loop(){
-      
-      uint8_t red;
-      uint8_t green;
-      uint8_t blue;
 
       led_strip.clear();
       for (int j=0; j<20; j++){
@@ -56,7 +53,7 @@ class OpenPixelPoiLED {
       led_strip.setBrightness(config.ledBrightness);
 
       led_strip.show();
-      delay(1000/config.animationSpeed);
+      delay(1000/(config.animationSpeed*2));
       frameIndex += 1;
       if(frameIndex >= config.frameCount){
         frameIndex = 0;
