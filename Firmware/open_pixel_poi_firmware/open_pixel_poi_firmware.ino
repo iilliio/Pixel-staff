@@ -1,6 +1,7 @@
 // Sub-Modules
 #include "open_pixel_poi_led.cpp"
 #include "open_pixel_poi_ble.cpp"
+#include "open_pixel_poi_button.cpp"
 
 // Release Version (2023.05.07)
 // Program Storage Space
@@ -33,14 +34,16 @@
 OpenPixelPoiConfig config;
 OpenPixelPoiBLE ble(config);
 OpenPixelPoiLED led(config);
+OpenPixelPoiButton button(config);
 
 //TaskHandle_t Task1;
 
 int refreshRate = 30;
 
 void setup() {
-  Serial.begin(57600);
-  while(!Serial);  // required for Serial.print* to work correctly
+  Serial.begin(19200);
+  Serial.setDebugOutput(true);
+  //while(!Serial);  // required for Serial.print* to work correctly
 
   debugf("Open Pixel POI\n");
   debugf("Setup Begin\n");
@@ -48,12 +51,17 @@ void setup() {
   config.setup();
   led.setup();
   ble.setup();
+  button.setup();
   debugf("- Setup Complete\n");
 }
 
 void loop() {
   //config.loop();
-  ble.loop();
-  led.loop();
-  delay(1000/refreshRate);
+  if(!ble.flagMultipartPattern){
+    ble.loop();
+    led.loop();
+    button.loop();
+  }else{
+    delay(250);
+  }
 }

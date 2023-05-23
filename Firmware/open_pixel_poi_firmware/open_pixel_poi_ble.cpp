@@ -9,7 +9,7 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
-#define DEBUG  // Comment this line out to remove printf statements in released version
+//#define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
 #define debugf(...) Serial.print("  <<ble>> ");Serial.printf(__VA_ARGS__);
 #define debugf_noprefix(...) Serial.printf(__VA_ARGS__);
@@ -62,6 +62,8 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
   
   private:
     OpenPixelPoiConfig& config;
+
+    int multipartPatternOffset = 0;
     
     // Nordic nRF
     BLEUUID pixelPoiServiceUUID = BLEUUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E");
@@ -77,68 +79,6 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
     BLECharacteristic* pixelPoiRxCharacteristic;
     BLECharacteristic* pixelPoiTxCharacteristic;
     BLECharacteristic* pixelPoiNotifyCharacteristic;
-    
-    // Little "Z"
-    // int frameHeight = 8
-    // int frameCount = 6
-    //        int z[48] = {
-    //          1, 0, 0, 0, 0, 0, 1, 1,
-    //          1, 0, 0, 0, 0, 1, 0, 1,
-    //          1, 0, 0, 0, 1, 0, 0, 1,
-    //          1, 0, 0, 1, 0, 0, 0, 1,
-    //          1, 0, 1, 0, 0, 0, 0, 1,
-    //          1, 1, 0, 0, 0, 0, 0, 1,
-    //        };
-            
-    // Big "Z"
-    int zFrameHeight = 20;
-    int zFrameCount = 20;
-    int big_z[400] = {
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    };
-
-    int cosFrameHeight = 20;
-    int cosFrameCount = 18;
-    char cos_grid[360] = {                                           // 20, 18 grid       |
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R',   // 0 = All Red    +10
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'P',   //                +09
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'P', 'P', 'P',   //                +07
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'P', 'P', 'P', 'P', 'P', 'P',   //                +04
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                 00
-      'R', 'R', 'R', 'R', 'R', 'R', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                -04
-      'R', 'R', 'R', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                -07
-      'R', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                -09
-      'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                -10
-      'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                -10
-      'R', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                -09
-      'R', 'R', 'R', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                -07
-      'R', 'R', 'R', 'R', 'R', 'R', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                -04
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',   //                 00
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'P', 'P', 'P', 'P', 'P', 'P',   //                +04
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'P', 'P', 'P',   //                +07
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'P',   //                +09
-      'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R',   // 0 = All Red    +10
-    };
-
 
     void bleSendError(){
       uint8_t response[] = {0x45, 0x46, 0x00, 0x07, CC_ERROR, 0x46, 0x45};
@@ -160,6 +100,7 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
     OpenPixelPoiBLE(OpenPixelPoiConfig& _config): config(_config) {}
 
     long bleLastReceived;
+    bool flagMultipartPattern = false;
     void setup(){
       debugf("Setup begin\n");
       // Create the BLE Device
@@ -223,64 +164,9 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
           debugf_noprefix("0x%x ",bleStatus[i]);
         }
         debugf("\n");
-
         
         // Process BLE
-        if(bleStatus[0] == 0x61 && bleStatus[1] == 0x73 && bleStatus[2] == 0x64 & bleStatus[3] == 0x66){
-          debugf("Got ASDF!\n");
-          debugf("this->frameHeight = %d\n", this->zFrameHeight);
-          debugf("this->frameCount = %d\n", this->zFrameCount);
-          config.setFrameHeight(this->zFrameHeight);
-          config.setFrameCount(this->zFrameCount);
-          for(int i=0; i<this->zFrameHeight*this->zFrameCount*3; i++){
-            config.pattern[i] = 0;
-          }
-          for(int i=0; i<this->zFrameHeight*this->zFrameCount; i++){
-            debugf("i=%d\n",i);
-            config.pattern[i*3]=0x0;
-            config.pattern[i*3+1]=0x0;
-            if(big_z[i]==1){
-              config.pattern[i*3+2]=0xff;
-            } else {
-              config.pattern[i*3+2]=0x0;              
-            }
-          }
-          debugf("config.patternLength (before) = %d\n",config.patternLength);
-          config.patternLength = this->zFrameHeight*this->zFrameCount*3;
-          debugf("config.patternLength (after) = %d\n",config.patternLength);
-          debugf("this->zFrameHeight = %d\n", this->zFrameHeight);
-          debugf("this->zFrameCount = %d\n", this->zFrameCount);
-          debugf("fH*fC*3 = %d", this->zFrameHeight*this->zFrameCount*3);
-          config.savePattern();
-        }else if (bleStatus[0] == 0x66 && bleStatus[1] == 0x64 && bleStatus[2] == 0x73 & bleStatus[3] == 0x61){
-          debugf("Got FDSA!\n");
-          debugf("this->cosFrameHeight = %d\n", this->cosFrameHeight);
-          debugf("this->cosFrameCount = %d\n", this->cosFrameCount);
-          config.setFrameHeight(this->cosFrameHeight);
-          config.setFrameCount(this->cosFrameCount);
-          for(int i=0; i<this->cosFrameHeight*this->cosFrameCount*3; i++){
-            config.pattern[i] = 0;
-          }
-          for(int i=0; i<this->cosFrameHeight*this->cosFrameCount; i++){
-            debugf("i=%d\n",i);
-            if(cos_grid[i]=='R'){
-              config.pattern[i*3]=0xFF;
-              config.pattern[i*3+1]=0x0;
-              config.pattern[i*3+2]=0x0;
-            } else {
-              config.pattern[i*3]=0x80;
-              config.pattern[i*3+1]=0x0;
-              config.pattern[i*3+2]=0x80;              
-            }
-          }
-          debugf("config.patternLength (before) = %d\n",config.patternLength);
-          config.patternLength = this->cosFrameHeight*this->cosFrameCount*3;
-          debugf("config.patternLength (after) = %d\n",config.patternLength);
-          debugf("this->cosFrameHeight = %d\n", this->cosFrameHeight);
-          debugf("this->cosFrameCount = %d\n", this->cosFrameCount);
-          debugf("fH*fC*3 = %d", this->cosFrameHeight*this->cosFrameCount*3);
-          config.savePattern();
-        }else if(bleStatus[0] == 0xD0 && bleStatus[bleLength - 1] == 0xD1){
+        if(bleStatus[0] == 0xD0 && bleStatus[bleLength - 1] == 0xD1 && !flagMultipartPattern){
           CommCode requestCode = static_cast<CommCode>(bleStatus[1]);
           if(requestCode == CC_SET_BRIGHTNESS){
             config.setLedBrightness(bleStatus[2]);
@@ -293,21 +179,62 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
               config.pattern[i]=0;
             }
             config.setFrameHeight(bleStatus[2]);
-            config.setFrameCount(bleStatus[3]);
-            // Need exception handling for buffer overruns!!!
-            config.patternLength = config.frameHeight*config.frameCount*3;
+            config.setFrameCount(bleStatus[3] << 8 | bleStatus[4]);
+            config.patternLength = config.frameHeight*config.frameCount*3; // Need exception handling for buffer overruns!!!
             for (int i=0; i<config.patternLength; i++){
-              config.pattern[i]=bleStatus[i+4];
+              config.pattern[i]=bleStatus[i+5];
             }
             config.savePattern();
             
             bleSendSuccess();
-          }
-          else{
+          }else{
+            debugf("Rcieved message with unknown code!\n");
             bleSendError();
           }
         }else{
-          bleSendLolcat();
+          if(!flagMultipartPattern && bleStatus[0] == 0xD0 && static_cast<CommCode>(bleStatus[1]) == CC_SET_PATTERN){
+            debugf("Start multipart pattern! %d bits\n", bleStatus[2] * (bleStatus[3] << 8 | bleStatus[4]));
+            flagMultipartPattern = true;
+            multipartPatternOffset = 0;
+            for (int i=0; i<sizeof(config.pattern); i++){
+              config.pattern[i]=0;
+            }
+            config.setFrameHeight(bleStatus[2]);
+            config.setFrameCount(bleStatus[3] << 8 | bleStatus[4]);
+            config.patternLength = config.frameHeight*config.frameCount*3;// Need exception handling for buffer overruns!!!
+            if(config.patternLength > 24000){
+//              config.setPatternSlot(config.patternSlot);
+              // set error pattern
+              config.setFrameHeight(20);
+              config.setFrameCount(2);
+              config.patternLength = 120;
+              config.fillDefaultPattern();
+              config.savePattern();
+              flagMultipartPattern = false;
+              return;
+            }
+            
+            for (int i=5; i < bleLength; i++){
+              config.pattern[multipartPatternOffset] = bleStatus[i];
+              multipartPatternOffset++;
+            }
+          }else if(flagMultipartPattern && bleLength < 509){
+            debugf("End multipart message!\n");
+            flagMultipartPattern = false;
+
+            for (int i= 0; i < bleLength - 1; i++){
+              config.pattern[multipartPatternOffset] = bleStatus[i];
+              multipartPatternOffset++;
+            }
+            
+            config.savePattern();
+          }else if(flagMultipartPattern){
+            debugf("Middle of multipart message! Offset = %d\n", multipartPatternOffset);
+            for (int i= 0; i < bleLength; i++){
+              config.pattern[multipartPatternOffset] = bleStatus[i];
+              multipartPatternOffset++;
+            }
+          }
         }
       }
     }
