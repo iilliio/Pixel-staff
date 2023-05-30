@@ -14,18 +14,27 @@
 #define debugf_noprefix(...)
 #endif
 
-
-
-// Seeed Studio XIAO ESP32C3
-  // 512 Bytes EEPROM
-  // 4MB Flash memory
+enum DisplayState {
+  DS_PATTERN,
+  DS_WAITING,
+  DS_WAITING2,
+  DS_WAITING3,
+  DS_VOLTAGE,
+  DS_BRIGHTNESS,
+  DS_SPEED,
+  DS_SHUTDOWN
+};
   
 class OpenPixelPoiConfig {
   private:
     Preferences preferences;
     
   public:
-
+    // Runtime State
+    float brightnessLimiter = 1.0;
+    float batteryPercent = 1.0;
+    DisplayState displayState = DS_PATTERN;
+    long displayStateLastUpdated = 0;
     // Settings (come in from the app)
     uint8_t ledBrightness; 
     uint8_t animationSpeed;
