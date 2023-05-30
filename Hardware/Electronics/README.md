@@ -1,4 +1,4 @@
-#Hardware BOM
+# Hardware BOM
 This is just the main parts, and does not include all the tools needed. Each single poi will require all these parts
 
 1. Seeed XIAO ESP32C3
