@@ -34,6 +34,7 @@ class OpenPixelPoiButton {
 private:
   OpenPixelPoiConfig& config;
 
+  int filteredButtonInput = 1000;
   int buttonState = 0;
   long downTime = 0;
   bool regulatorEnabled = true;
@@ -60,7 +61,8 @@ public:
   }
 
   void loop() {
-    if(analogRead(A1) < 100){
+    filteredButtonInput = (filteredButtonInput * 0.80) + (analogRead(A1) * .20);
+    if(filteredButtonInput < 100){
       if(buttonState == BS_INITIAL){ // Single Click
         downTime = millis();
         buttonState = BS_CLICK_DOWN;
@@ -127,10 +129,16 @@ public:
         config.displayState = DS_PATTERN;
         config.displayStateLastUpdated = millis();
       }else if(buttonState == BS_CLICK_CLICK_HOLD){
-        if((millis() - config.displayStateLastUpdated) / 10 > 200){
-          config.setAnimationSpeed(0xFF);
+        if((millis() - config.displayStateLastUpdated) / 500 <= 5){
+          config.setAnimationSpeed((millis() - config.displayStateLastUpdated) / 500);
+        }else if((millis() - config.displayStateLastUpdated) / 500 <= 10){
+          config.setAnimationSpeed(((millis() - config.displayStateLastUpdated) / 500) * 2);
+        }else if((millis() - config.displayStateLastUpdated) / 500 <= 15){
+          config.setAnimationSpeed(((millis() - config.displayStateLastUpdated) / 500) * 5);
+        }else if((millis() - config.displayStateLastUpdated) / 500 <= 20){
+          config.setAnimationSpeed(((millis() - config.displayStateLastUpdated) / 500) * 10);
         }else{
-          config.setAnimationSpeed((millis() - config.displayStateLastUpdated) / 10);
+          config.setAnimationSpeed(0xFF);
         }
         buttonState = BS_INITIAL;
         config.displayState = DS_PATTERN;

@@ -44,15 +44,12 @@ class OpenPixelPoiLED {
 
       led_strip.clear();
       if(config.displayState == DS_PATTERN){
+        frameIndex = ((millis() - config.displayStateLastUpdated) / (1000/(config.animationSpeed*2))) % config.frameCount;
         for (int j=0; j<20; j++){
           red = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 0];
           green = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 1];
           blue = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 2];
           led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
-        }
-        frameIndex += 1;
-        if(frameIndex >= config.frameCount){
-          frameIndex = 0;
         }
       }else if(config.displayState == DS_WAITING || config.displayState == DS_WAITING2 || config.displayState == DS_WAITING3){
         // 500ms or till interupted
@@ -80,7 +77,7 @@ class OpenPixelPoiLED {
           }
         }
       }else if(config.displayState == DS_VOLTAGE){
-        if(config.batteryPercent > 0.75){
+        if(config.batteryPercent > 0.60){
           red = 0x00;
           green = 0xff;
           blue = 0x00;
@@ -94,7 +91,7 @@ class OpenPixelPoiLED {
           blue = 0x00;
         }
         for (int j=0; j<config.batteryPercent * 20; j++){
-          led_strip.setPixelColor(20-j, led_strip.Color(red, green, blue));
+          led_strip.setPixelColor(19-j, led_strip.Color(red, green, blue));
         }
       }else if(config.displayState == DS_SHUTDOWN){
         // 2000ms
@@ -131,8 +128,6 @@ class OpenPixelPoiLED {
       
       led_strip.setBrightness(config.ledBrightness * config.brightnessLimiter);
       led_strip.show();
-      delay(1000/(config.animationSpeed*2));
-      
     }
 };
 

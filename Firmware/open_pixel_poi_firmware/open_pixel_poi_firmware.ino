@@ -41,6 +41,7 @@ void loop() {
     ble.loop();
     led.loop();
     button.loop();
+    delay(1); // Keep the cpu from melting
   }else{
     delay(250);
   }

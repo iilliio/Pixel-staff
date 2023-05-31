@@ -15,7 +15,10 @@ This is just the main parts, and does not include all the tools needed. Each sin
     - Lots of vendors, find your own source
 1. 18650 Li-Ion Battery (Flat top)
     - Any battery should do, our draw is only about 1A - 2A, so higher capacity options are viable. Tho you should get great battery life even with a lower capacity cell if you stick to the lower brightness settings, which still hurt my eyes.
-1. Button
+1. Momentary Button/Switch
+    - The model has a 16mm hole, and 20mm depth. Any momentary switch that fits that space should work.
+    - The switch I used looks like [this](switch.jpg) & [this](switch2.jpg) and seems to be commonly available online from many vendors.
+    - There are some fancier aluminum ones that look like they would fit as well.
 1. Copper Tape or Nickel Stip
     - This is for the battery terminals.
     - Nickle strip intuitively seems like it aught to be better, but copper tape has been holding up fine for me and is easier to work with.
