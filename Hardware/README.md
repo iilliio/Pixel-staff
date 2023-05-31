@@ -1,4 +1,4 @@
-#Hardware Guide
+# Hardware Guide
 
 This hardware guid is split into 3 sections with more detailed instructions in each.
 
