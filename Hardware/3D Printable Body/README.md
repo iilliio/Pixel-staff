@@ -1,4 +1,4 @@
-#Open Pixel Poi Body
+# Open Pixel Poi Body
 
 In this folder resides the [3mf](OpenPixelPoiAllParts.3mf) which contains all the parts of a single poi body. You may need to split the object to seperate out the parts.
 
