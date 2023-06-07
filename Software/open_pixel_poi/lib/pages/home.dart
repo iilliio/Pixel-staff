@@ -29,12 +29,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("(^'.')> Open Pixel Poi <('.'^)"),
+        title: const Text("Open Pixel Poi"),
         actions: [
           PatternImportButton(() {
             setState(() {});
           }),
-          ConnectionStateIndicator(),
+          ...Provider.of<Model>(context)
+              .connectedPoi!
+              .map((e) => ConnectionStateIndicator(Provider.of<Model>(context).connectedPoi!.indexOf(e)))
         ],
       ),
       body: getButtons(context),
@@ -135,12 +137,45 @@ class _MyHomePageState extends State<MyHomePage> {
                   widgets.add(
                     InkWell(
                       onTap: () {
-                        Provider.of<Model>(context, listen: false).hardware!.sendPattern2(tuple.item2);
+                        for (var poi in Provider.of<Model>(context, listen: false).connectedPoi!) {
+                          poi.sendPattern2(tuple.item2);
+                        }
                       },
-                      onLongPress: () {
-                        Provider.of<Model>(context, listen: false).deleteImage(tuple.item2.id!);
-                        setState(() {});
-                      },
+                      onLongPress: () => showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text("Edit/Delete Pattern"),
+                          content: const Text('Pretty self explanatory really -_-'),
+                          actionsPadding: const EdgeInsets.all(0.0),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, 'Flip');
+                                Provider.of<Model>(context, listen: false).invertImage(tuple.item2.id!).then((value) => setState(() {}));
+                              },
+                              child: const Text('Flip'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, 'Mirror');
+                                Provider.of<Model>(context, listen: false).reverseImage(tuple.item2.id!).then((value) => setState(() {}));
+                              },
+                              child: const Text('Mirror'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context, 'Delete');
+                                Provider.of<Model>(context, listen: false).deleteImage(tuple.item2.id!).then((value) => setState(() {}));
+                              },
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        ),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8, bottom: 8),
                         child: Column(
@@ -205,9 +240,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
-  }
-
-  Widget imagesList(BuildContext buildContext, List<DBImage> images) {
-    return Text("");
   }
 }

@@ -11,10 +11,9 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 import 'package:image/image.dart' as img;
-import 'package:sqflite/sqflite.dart';
 
 class Model {
-  PoiHardware? hardware;
+  List<PoiHardware>? connectedPoi;
   PoiHardwareState hardwareState = PoiHardwareState();
   late Future<Database> databaseFuture;
 
@@ -95,6 +94,49 @@ class Model {
         bytes: maps[i]['bytes'],
       );
     });
+  }
+
+  Future<DBImage> getDBImage(int id) async {
+    final db = await databaseFuture;
+
+    final List<Map<String, dynamic>> maps = await db.query('images', where: "id = ?", whereArgs: [id]);
+
+    return DBImage(
+      id: maps[0]['id'],
+      height: maps[0]['height'],
+      count: maps[0]['count'],
+      bytes: maps[0]['bytes'],
+    );
+  }
+
+  Future<void> invertImage(int id) async {
+    var image = await getDBImage(id);
+    List<int> inverted = List.empty(growable: true);
+    for(int column = 0; column < image.count; column++){
+      int offset = column * image.height * 3;
+      for(int pixel = image.height - 1; pixel >= 0; pixel--){
+        inverted.add(image.bytes[offset + (pixel * 3) + 0]);
+        inverted.add(image.bytes[offset + (pixel * 3) + 1]);
+        inverted.add(image.bytes[offset + (pixel * 3) + 2]);
+      }
+    }
+    deleteImage(id);
+    insertImage(DBImage(id: image.id, height: image.height, count: image.count, bytes: Uint8List.fromList(inverted)));
+  }
+
+  Future<void> reverseImage(int id) async {
+    var image = await getDBImage(id);
+    List<int> reversed = List.empty(growable: true);
+    for(int column = image.count - 1; column >= 0; column--){
+      int offset = column * image.height * 3;
+      for(int pixel = 0; pixel < image.height; pixel++){
+        reversed.add(image.bytes[offset + (pixel * 3) + 0]);
+        reversed.add(image.bytes[offset + (pixel * 3) + 1]);
+        reversed.add(image.bytes[offset + (pixel * 3) + 2]);
+      }
+    }
+    await deleteImage(id);
+    await insertImage(DBImage(id: image.id, height: image.height, count: image.count, bytes: Uint8List.fromList(reversed)));
   }
 
   // Gets actual size image

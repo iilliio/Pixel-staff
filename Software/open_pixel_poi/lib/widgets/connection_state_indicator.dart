@@ -6,17 +6,24 @@ import '../hardware/ble_uart.dart';
 import '../model.dart';
 
 class ConnectionStateIndicator extends StatefulWidget {
+  int connectedPoiIndex;
+
+  ConnectionStateIndicator(this.connectedPoiIndex, {super.key});
+
   @override
-  State<StatefulWidget> createState() => _CSIState();
+  State<StatefulWidget> createState() => _CSIState(connectedPoiIndex);
 }
 
 class _CSIState extends State<ConnectionStateIndicator> {
+  int connectedPoiIndex;
   bool isChanging = false;
+
+  _CSIState(this.connectedPoiIndex);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<BluetoothDeviceState>(
-      stream: Provider.of<Model>(context).hardware!.state,
+      stream: Provider.of<Model>(context).connectedPoi![connectedPoiIndex].state,
       builder: (context, snapshot) {
         if (isChanging) {
           return Padding(
@@ -55,9 +62,9 @@ class _CSIState extends State<ConnectionStateIndicator> {
     setState(() {
       isChanging = true;
     });
-    BLEUart bleUart = BLEUart(Provider.of<Model>(context, listen: false).hardware!.uart.device);
+    BLEUart bleUart = BLEUart(Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex].uart.device);
     bleUart.isIntialized?.then((value) {
-      Provider.of<Model>(context, listen: false).hardware = PoiHardware(bleUart);
+      Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex] = PoiHardware(bleUart);
       setState(() {
         isChanging = false;
       });
@@ -72,7 +79,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
     setState(() {
       isChanging = true;
     });
-    Provider.of<Model>(context, listen: false).hardware!.uart.disconnect();
+    Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex].uart.disconnect();
     Future.delayed(Duration(seconds: 2)).then((value) {
       setState(() {
         isChanging = false;

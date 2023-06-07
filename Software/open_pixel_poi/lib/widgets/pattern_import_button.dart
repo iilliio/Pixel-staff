@@ -36,7 +36,20 @@ class PatternImportButton extends StatelessWidget {
       return;
     }
 
-    img.Image image = img.decodeBmp(await imageFile.readAsBytes())!;
+    img.Image? image = null;
+    if(imageFile.name.endsWith('bmp') || imageFile.name.endsWith('BMP')){
+      image = img.decodeBmp(await imageFile.readAsBytes())!;
+    }
+    if(imageFile.name.endsWith('png') || imageFile.name.endsWith('PNG')){
+      image = img.decodePng(await imageFile.readAsBytes())!;
+    }
+    if(imageFile.name.endsWith('jpg') || imageFile.name.endsWith('JPG') || imageFile.name.endsWith('jpeg') || imageFile.name.endsWith('JPEG')){
+      image = img.decodeJpg(await imageFile.readAsBytes())!;
+    }
+    if(image == null){
+      return;
+    }
+
     if(image.width > 400 || image.height > 20){
       throw Exception("Imported image is too large");
     }

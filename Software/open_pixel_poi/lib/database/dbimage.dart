@@ -24,6 +24,6 @@ class DBImage {
 
   @override
   String toString() {
-    return 'Dog{id: $id, height: $height, count: $count, bytes: <REDACTED>}';
+    return 'Image{id: $id, height: $height, count: $count, bytes: <REDACTED>}';
   }
 }

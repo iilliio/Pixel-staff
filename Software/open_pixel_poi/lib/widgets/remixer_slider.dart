@@ -102,7 +102,9 @@ class _RemixerSliderState extends State<RemixerSlider> {
       setState(() {
         setter(value);
       });
-      await model.hardware!.sendInt8(value, code);
+      for(var poi in model.connectedPoi!){
+        await poi.sendInt8(value, code);
+      }
       // TODO: Ignoring confirmations for now
       // await Future.delayed(Duration(milliseconds: 100));
       // Confirmation response = await model.hardware!.readResponse().timeout(Duration(seconds: 3));
