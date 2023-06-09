@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:open_pixel_poi/hardware/poi_hardware.dart';
 import 'package:provider/provider.dart';
 import '../hardware/ble_uart.dart';
@@ -80,7 +80,8 @@ class _CSIState extends State<ConnectionStateIndicator> {
       isChanging = true;
     });
     Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex].uart.disconnect();
-    Future.delayed(Duration(seconds: 2)).then((value) {
+    Future.delayed(Duration(seconds: 2)).then((value) async {
+      await Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex].subscription.cancel();
       setState(() {
         isChanging = false;
       });

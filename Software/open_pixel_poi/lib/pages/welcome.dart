@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:open_pixel_poi/hardware/poi_hardware.dart';
 import 'package:open_pixel_poi/pages/home.dart';
 import 'package:provider/provider.dart';
@@ -31,14 +31,14 @@ class _WelcomeState extends State<WelcomePage> {
         title: const Text("Open Pixel Poi"),
       ),
       body: StreamBuilder<Object>(
-          stream: Provider.of<FlutterBlue>(context).isScanning,
+          stream: Provider.of<FlutterBluePlus>(context).isScanning,
           builder: (context, snapshot) {
             bool isScanning = false;
             if (snapshot.data != null && snapshot.data == true) {
               isScanning = true;
             }
             return StreamBuilder<List<ScanResult>>(
-                stream: Provider.of<FlutterBlue>(context).scanResults,
+                stream: Provider.of<FlutterBluePlus>(context).scanResults,
                 builder: (context, snapshot) {
                   List<ScanResult>? scanResults = snapshot.data;
                   if (scanResults != null) {
@@ -296,7 +296,7 @@ class _WelcomeState extends State<WelcomePage> {
           await hardware.uart.disconnect();
           await Future.delayed(Duration(milliseconds: 2000));
         }
-
+        await hardware.subscription.cancel();
         setState(() {
           isDisconnecting = false;
         });
@@ -304,7 +304,7 @@ class _WelcomeState extends State<WelcomePage> {
     }
     // Scan
     hasScanned = true;
-    Provider.of<FlutterBlue>(_key.currentContext!, listen: false).startScan(timeout: Duration(seconds: 5));
+    Provider.of<FlutterBluePlus>(_key.currentContext!, listen: false).startScan(timeout: Duration(seconds: 5));
   }
 
   void connect(List<BluetoothDevice> devices) async {
@@ -321,7 +321,7 @@ class _WelcomeState extends State<WelcomePage> {
           await hardware.uart.disconnect();
           await Future.delayed(Duration(milliseconds: 2000));
         }
-
+        await hardware.subscription.cancel();
         setState(() {
           isDisconnecting = false;
         });
@@ -334,7 +334,7 @@ class _WelcomeState extends State<WelcomePage> {
     Provider.of<Model>(_key.currentContext!, listen: false).connectedPoi = List.empty(growable: true);
     for (var device in devices) {
       BLEUart bleUart = BLEUart(device);
-      await bleUart.isIntialized?.then((value) {
+      await bleUart.isIntialized.then((value) {
         print("BLEUart Initialized");
         Provider.of<Model>(_key.currentContext!, listen: false).connectedPoi!.add(PoiHardware(bleUart));
       }, onError: (error) {

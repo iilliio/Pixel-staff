@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:open_pixel_poi/database/dbimage.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,9 +16,10 @@ class PoiHardware {
   late List<int> _buffer;
   BehaviorSubject<BluetoothDeviceState> state = BehaviorSubject<BluetoothDeviceState>();
   BehaviorSubject<double> largeSendProgress = BehaviorSubject<double>.seeded(0);
+  late StreamSubscription<BluetoothDeviceState> subscription;
 
   PoiHardware(this.uart) {
-    uart.device.state.listen((event) {
+    subscription = uart.device.state.listen((event) {
       state.add(event);
       if(event == BluetoothDeviceState.connected){
         // Increase MTU, takes 2 seconds to take effect
