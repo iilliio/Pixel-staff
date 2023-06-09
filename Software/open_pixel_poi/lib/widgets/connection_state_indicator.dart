@@ -75,16 +75,16 @@ class _CSIState extends State<ConnectionStateIndicator> {
     });
   }
 
-  void disconnect() {
+  void disconnect() async {
     setState(() {
       isChanging = true;
     });
-    Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex].uart.disconnect();
-    Future.delayed(Duration(seconds: 2)).then((value) async {
-      await Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex].subscription.cancel();
-      setState(() {
-        isChanging = false;
-      });
+    var hardware = Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex];
+    await hardware.uart.disconnect();
+    await hardware.subscription.cancel();
+    hardware.state.add(BluetoothDeviceState.disconnected); // Manually send disconnect event as our manual disconnect doesn't always trigger one
+    setState(() {
+      isChanging = false;
     });
   }
 }
