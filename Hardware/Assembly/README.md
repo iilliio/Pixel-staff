@@ -1,0 +1,3 @@
+# Wiring
+
+![wiring](./wiring.jpg)
