@@ -104,6 +104,56 @@ class _MyHomePageState extends State<MyHomePage> {
                 scaler: 1,
                 suffixGenerator: (value) => "${value.toInt() * 2}hz",
               ),
+              const Divider(
+                height: 1,
+                thickness: 1,
+                indent: 0,
+                endIndent: 0,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: ListTile(
+                  title: const Text("Pattern Slots", style: TextStyle(color: Colors.blue)),
+                  subtitle: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ElevatedButton(
+                            child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_PATTERN_SLOT)),
+                          ),
+                          const VerticalDivider(width: 8.0),
+                          ElevatedButton(
+                            child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_PATTERN_SLOT)),
+                          ),
+                          const VerticalDivider(width: 8.0),
+                          ElevatedButton(
+                            child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_PATTERN_SLOT)),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(3, CommCode.CC_SET_PATTERN_SLOT)),
+                          ),
+                          const VerticalDivider(width: 8.0),
+                          ElevatedButton(
+                            child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_PATTERN_SLOT)),
+                          ),
+                        ],
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

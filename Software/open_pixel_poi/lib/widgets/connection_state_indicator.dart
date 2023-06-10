@@ -38,7 +38,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
           );
         } else if (snapshot.hasData && snapshot.data == BluetoothDeviceState.connected) {
           return IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.bluetooth,
               color: Colors.lightGreenAccent,
             ),
@@ -46,7 +46,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
           );
         } else if (snapshot.hasData && snapshot.data == BluetoothDeviceState.disconnected) {
           return IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.bluetooth,
                 color: Colors.red,
               ),
