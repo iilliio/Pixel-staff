@@ -129,16 +129,28 @@ public:
         config.displayState = DS_PATTERN;
         config.displayStateLastUpdated = millis();
       }else if(buttonState == BS_CLICK_CLICK_HOLD){
-        if((millis() - config.displayStateLastUpdated) / 500 <= 5){
-          config.setAnimationSpeed((millis() - config.displayStateLastUpdated) / 500);
-        }else if((millis() - config.displayStateLastUpdated) / 500 <= 10){
-          config.setAnimationSpeed(((millis() - config.displayStateLastUpdated) / 500) * 2);
-        }else if((millis() - config.displayStateLastUpdated) / 500 <= 15){
-          config.setAnimationSpeed(((millis() - config.displayStateLastUpdated) / 500) * 5);
-        }else if((millis() - config.displayStateLastUpdated) / 500 <= 20){
-          config.setAnimationSpeed(((millis() - config.displayStateLastUpdated) / 500) * 10);
+        if(millis() - downTime < 1000){
+          config.setAnimationSpeed(0);
+        }else if(millis() - downTime < 1500){
+          config.setAnimationSpeed(1);
+        }else if(millis() - downTime < 2000){
+          config.setAnimationSpeed(2);
+        }else if(millis() - downTime < 2500){
+          config.setAnimationSpeed(5);
+        }else if(millis() - downTime < 3000){
+          config.setAnimationSpeed(10);
+        }else if(millis() - downTime < 3500){
+          config.setAnimationSpeed(20);
+        }else if(millis() - downTime < 4000){
+          config.setAnimationSpeed(50);
+        }else if(millis() - downTime < 4500){
+          config.setAnimationSpeed(100);
+        }else if(millis() - downTime < 5000){
+          config.setAnimationSpeed(150);
+        }else if(millis() - downTime < 5500){
+          config.setAnimationSpeed(200);
         }else{
-          config.setAnimationSpeed(0xFF);
+          config.setAnimationSpeed(250);
         }
         buttonState = BS_INITIAL;
         config.displayState = DS_PATTERN;

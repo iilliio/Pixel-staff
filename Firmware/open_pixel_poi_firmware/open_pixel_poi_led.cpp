@@ -121,8 +121,9 @@ class OpenPixelPoiLED {
         }
       }else if(config.displayState == DS_SPEED){
         red = 0xFF;
-        for (int j=0; j< (millis() - config.displayStateLastUpdated)/500; j++){
+        for (int j=0; j < (millis() - config.displayStateLastUpdated)/250; j+=2){
           led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
+          led_strip.setPixelColor(j+1, led_strip.Color(red, green, blue));
         }
       }
       

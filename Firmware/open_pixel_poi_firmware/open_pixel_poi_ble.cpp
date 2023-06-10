@@ -55,7 +55,8 @@ enum CommCode {
   CC_ERROR,             // 1
   CC_SET_BRIGHTNESS,    // 2
   CC_SET_SPEED,         // 3
-  CC_SET_PATTERN        // 4
+  CC_SET_PATTERN,       // 4
+  CC_SET_PATTERN_SLOT   // 5
 };
 
 class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallbacks{
@@ -87,12 +88,6 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
     
     void bleSendSuccess(){
       uint8_t response[] = {0x45, 0x46, 0x00, 0x07, CC_SUCCESS, 0x46, 0x45};
-      writeToPixelPoi(response);
-    }
-
-    void bleSendLolcat(){
-      debugf("Send error lolcat\n");
-      uint8_t response[] = {0x01, 0x02, 0x00, 0x05, 0x01};
       writeToPixelPoi(response);
     }
     
@@ -186,6 +181,9 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
             }
             config.savePattern();
             
+            bleSendSuccess();
+          }else if(requestCode == CC_SET_PATTERN_SLOT){
+            config.setPatternSlot(bleStatus[2]%5);
             bleSendSuccess();
           }else{
             debugf("Rcieved message with unknown code!\n");
