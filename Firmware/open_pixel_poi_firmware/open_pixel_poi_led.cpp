@@ -18,7 +18,6 @@
 class OpenPixelPoiLED {
   private:
     OpenPixelPoiConfig& config;
-    int brightness = 0;
     uint8_t red;
     uint8_t green;
     uint8_t blue;
@@ -41,9 +40,8 @@ class OpenPixelPoiLED {
     }
 
     void loop(){
-
       led_strip.clear();
-      if(config.displayState == DS_PATTERN){
+      if(config.displayState == DS_PATTERN || config.displayState == DS_PATTERN_ALL){
         frameIndex = ((millis() - config.displayStateLastUpdated) / (1000/(config.animationSpeed*2))) % config.frameCount;
         for (int j=0; j<20; j++){
           red = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 0];
@@ -51,7 +49,7 @@ class OpenPixelPoiLED {
           blue = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 2];
           led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
         }
-      }else if(config.displayState == DS_WAITING || config.displayState == DS_WAITING2 || config.displayState == DS_WAITING3){
+      }else if(config.displayState == DS_WAITING || config.displayState == DS_WAITING2 || config.displayState == DS_WAITING3 || config.displayState == DS_WAITING4 || config.displayState == DS_WAITING5){
         // 500ms or till interupted
         if(config.displayState == DS_WAITING){
           // Blue for blinky!
@@ -68,6 +66,16 @@ class OpenPixelPoiLED {
           red = 0xFF;
           green = 0x00;
           blue = 0x00;
+        }else if(config.displayState == DS_WAITING4){
+          // Pink for demo mode!
+          red = 255;
+          green = 0;
+          blue = 255;
+        }else if(config.displayState == DS_WAITING5){
+          // Green -> RED fade for battery!
+          red = 0xFF * ((millis() - config.displayStateLastUpdated)/500.0);
+          green = 0xFF - red;
+          blue = 0x00;
         }
         for(int j=0; j<20; j++){
           if(j == (millis() - config.displayStateLastUpdated)/50 || 20 - j == (millis() - config.displayStateLastUpdated)/50){
@@ -77,11 +85,24 @@ class OpenPixelPoiLED {
           }
         }
       }else if(config.displayState == DS_VOLTAGE){
-        if(config.batteryPercent > 0.60){
+        if(config.batteryVoltage >= 4.10){
+          green = 255;
+        }else if(config.batteryVoltage <= 3.10){
+          green = 0;
+        }else{
+          green = ((config.batteryVoltage - 3.10) * 255);
+        } 
+        red = 0xff - green;
+        blue = 0x00;
+        for (int j=0; j<20; j++){
+          led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
+        }
+      }else if(config.displayState == DS_VOLTAGE2){
+        if(config.batteryVoltage > 3.80){
           red = 0x00;
           green = 0xff;
           blue = 0x00;
-        }else if(config.batteryPercent > 0.30){
+        }else if(config.batteryVoltage > 3.40){
           red = 0xAA;
           green = 0xAA;
           blue = 0x00;
@@ -90,8 +111,18 @@ class OpenPixelPoiLED {
           green = 0x00;
           blue = 0x00;
         }
-        for (int j=0; j<config.batteryPercent * 20; j++){
-          led_strip.setPixelColor(19-j, led_strip.Color(red, green, blue));
+        
+        for (int j=0; j<(int)config.batteryVoltage; j++){
+          led_strip.setPixelColor(j, led_strip.Color(0, 0, 255));
+        }
+        for (int j=0; j<(int)((config.batteryVoltage - (int)config.batteryVoltage) * 10); j++){
+          if(j > 5){
+            led_strip.setPixelColor(j+11, led_strip.Color(red, green, blue)); 
+          }else if(j > 2){
+            led_strip.setPixelColor(j+10, led_strip.Color(red, green, blue)); 
+          }else{
+            led_strip.setPixelColor(j+9, led_strip.Color(red, green, blue)); 
+          }
         }
       }else if(config.displayState == DS_SHUTDOWN){
         // 2000ms
@@ -126,8 +157,21 @@ class OpenPixelPoiLED {
           led_strip.setPixelColor(j+1, led_strip.Color(red, green, blue));
         }
       }
-      
-      led_strip.setBrightness(config.ledBrightness * config.brightnessLimiter);
+
+      if(config.batteryVoltage <= 3.10 && config.batteryVoltage > 2.8 && config.ledBrightness > 10){
+        led_strip.setBrightness(10);
+      }if(config.batteryVoltage <= 2.8){
+        led_strip.setBrightness(1);
+      }else{
+        led_strip.setBrightness(config.ledBrightness);
+      }
+
+      // Super low voltage, only display red
+      if(config.batteryVoltage <= 2.8 && (config.displayState == DS_PATTERN || config.displayState == DS_PATTERN_ALL)){
+        led_strip.clear();
+        led_strip.setPixelColor(0, led_strip.Color(255, 0x00, 0x00));
+        led_strip.setPixelColor(19, led_strip.Color(255, 0x00, 0x00));
+      }
       led_strip.show();
     }
 };

@@ -5,7 +5,7 @@
 #include <SPIFFS.h>
 #include <Preferences.h>
 
-#define DEBUG  // Comment this line out to remove printf statements in released version
+//#define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
 #define debugf(...) Serial.print("  <<config>> ");Serial.printf(__VA_ARGS__);
 #define debugf_noprefix(...) Serial.printf(__VA_ARGS__);
@@ -16,10 +16,14 @@
 
 enum DisplayState {
   DS_PATTERN,
+  DS_PATTERN_ALL,
   DS_WAITING,
   DS_WAITING2,
   DS_WAITING3,
+  DS_WAITING4,
+  DS_WAITING5,
   DS_VOLTAGE,
+  DS_VOLTAGE2,
   DS_BRIGHTNESS,
   DS_SPEED,
   DS_SHUTDOWN
@@ -31,8 +35,7 @@ class OpenPixelPoiConfig {
     
   public:
     // Runtime State
-    float brightnessLimiter = 1.0;
-    float batteryPercent = 1.0;
+    float batteryVoltage = 3.7;
     DisplayState displayState = DS_PATTERN;
     long displayStateLastUpdated = 0;
     // Settings (come in from the app)
@@ -62,10 +65,12 @@ class OpenPixelPoiConfig {
       this->configLastUpdated = millis();
     }
 
-    void setPatternSlot(uint8_t patternSlot) {
+    void setPatternSlot(uint8_t patternSlot, bool save) {
       debugf("Save Pattern Slot = %d\n", patternSlot);
       this->patternSlot = patternSlot;
-      preferences.putChar("patternSlot", this->patternSlot);
+      if(save){
+        preferences.putChar("patternSlot", this->patternSlot);
+      }
 
       loadFrameHeight();
       loadFrameCount();
@@ -269,7 +274,12 @@ class OpenPixelPoiConfig {
       debugf("Setup complete\n");
     }
 
-    void loop() {}
+    void loop(){
+      if(this->displayState == DS_PATTERN_ALL && millis() - this->displayStateLastUpdated >  10000){
+        this->setPatternSlot((this->patternSlot + 1) %5, false);
+        this->displayStateLastUpdated = millis();
+      }
+    }
 };
 
 #endif

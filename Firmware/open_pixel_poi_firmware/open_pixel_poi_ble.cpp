@@ -56,7 +56,8 @@ enum CommCode {
   CC_SET_BRIGHTNESS,    // 2
   CC_SET_SPEED,         // 3
   CC_SET_PATTERN,       // 4
-  CC_SET_PATTERN_SLOT   // 5
+  CC_SET_PATTERN_SLOT,  // 5
+  CC_SET_PATTERN_ALL,   // 6
 };
 
 class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallbacks{
@@ -183,10 +184,16 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
             
             bleSendSuccess();
           }else if(requestCode == CC_SET_PATTERN_SLOT){
-            config.setPatternSlot(bleStatus[2]%5);
+            config.setPatternSlot(bleStatus[2]%5, true);
+            config.displayState = DS_PATTERN;
+            config.displayStateLastUpdated = millis();
+            bleSendSuccess();
+          }else if(requestCode == CC_SET_PATTERN_ALL){
+            config.displayState = DS_PATTERN_ALL;
+            config.displayStateLastUpdated = millis();
             bleSendSuccess();
           }else{
-            debugf("Rcieved message with unknown code!\n");
+            debugf("Recieved message with unknown code!\n");
             bleSendError();
           }
         }else{
