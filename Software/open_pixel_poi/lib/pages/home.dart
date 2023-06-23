@@ -1,13 +1,5 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:open_pixel_poi/hardware/models/led_pattern.dart';
-import 'package:open_pixel_poi/hardware/models/rgb_value.dart';
 import 'package:provider/provider.dart';
-import 'package:image/image.dart' as img;
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:tuple/tuple.dart';
 
 import '../database/dbimage.dart';
@@ -25,6 +17,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final ValueNotifier<bool> loading = ValueNotifier<bool>(false);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +33,51 @@ class _MyHomePageState extends State<MyHomePage> {
               .map((e) => ConnectionStateIndicator(Provider.of<Model>(context).connectedPoi!.indexOf(e)))
         ],
       ),
-      body: getButtons(context),
+      body: Stack(
+        children: [
+          getButtons(context),
+          getLoading(context),
+        ],
+      ),
     );
+  }
+
+  Widget getLoading(BuildContext buildContext) {
+    return ValueListenableBuilder<bool>(
+        valueListenable: loading,
+        builder: (BuildContext context, bool value, Widget? child) {
+          if (!value) {
+            return const SizedBox.shrink();
+          }
+          return Container(
+            color: Colors.black38,
+            child: Center(
+              child: Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Text(
+                        "Transmitting Pattern...",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Widget getButtons(BuildContext buildContext) {
@@ -71,91 +108,262 @@ class _MyHomePageState extends State<MyHomePage> {
               )),
           subtitle: Column(
             children: [
-              RemixerSlider(
-                "Brightness: ${Provider.of<Model>(context, listen: false).hardwareState.settings!.brightness}%",
-                CommCode.CC_SET_BRIGHTNESS,
-                () => Provider.of<Model>(context, listen: false).hardwareState.settings!.brightness,
-                (int newValue) {
-                  setState(() {
-                    Provider.of<Model>(context, listen: false).hardwareState.settings!.brightness = newValue;
-                  });
-                },
-                // minValue: 1,
-                // maxValue: 100,
-                scaler: 1,
-              ),
+              getBrightnessButtons(buildContext),
               const Divider(
                 height: 1,
                 thickness: 1,
                 indent: 0,
                 endIndent: 0,
               ),
-              RemixerSlider(
-                "Speed: ${Provider.of<Model>(context, listen: false).hardwareState.settings!.speed * 2}hz",
-                CommCode.CC_SET_SPEED,
-                () => Provider.of<Model>(context, listen: false).hardwareState.settings!.speed,
-                (int newValue) {
-                  setState(() {
-                    Provider.of<Model>(context, listen: false).hardwareState.settings!.speed = newValue;
-                  });
-                },
-                minValue: 1,
-                maxValue: 255,
-                scaler: 1,
-                suffixGenerator: (value) => "${value.toInt() * 2}hz",
-              ),
+              getFrequencyButtons(buildContext),
               const Divider(
                 height: 1,
                 thickness: 1,
                 indent: 0,
                 endIndent: 0,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: ListTile(
-                  title: const Text("Pattern Slots", style: TextStyle(color: Colors.blue)),
-                  subtitle: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_PATTERN_SLOT)),
-                          ),
-                          const VerticalDivider(width: 8.0),
-                          ElevatedButton(
-                            child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_PATTERN_SLOT)),
-                          ),
-                          const VerticalDivider(width: 8.0),
-                          ElevatedButton(
-                            child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_PATTERN_SLOT)),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(3, CommCode.CC_SET_PATTERN_SLOT)),
-                          ),
-                          const VerticalDivider(width: 8.0),
-                          ElevatedButton(
-                            child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                            onPressed: () => Provider.of<Model>(context, listen: false).connectedPoi!.forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_PATTERN_SLOT)),
-                          ),
-                        ],
-                      ),
-
-                    ],
-                  ),
-                ),
-              ),
+              getPatternSots(buildContext),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget getBrightnessButtons(BuildContext buildContext){
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: ListTile(
+        title: const Text("Brightness Level", style: TextStyle(color: Colors.blue)),
+        subtitle: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_BRIGHTNESS)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_BRIGHTNESS)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(10, CommCode.CC_SET_BRIGHTNESS)),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(25, CommCode.CC_SET_BRIGHTNESS)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(50, CommCode.CC_SET_BRIGHTNESS)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("6", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(100, CommCode.CC_SET_BRIGHTNESS)),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getFrequencyButtons(BuildContext buildContext){
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: ListTile(
+        title: const Text("Frames Per Second", style: TextStyle(color: Colors.blue)),
+        subtitle: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  child: const Text("0", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_SPEED)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_SPEED)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_SPEED)),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  child: const Text("10", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(5, CommCode.CC_SET_SPEED)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("20", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(10, CommCode.CC_SET_SPEED)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("40", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(20, CommCode.CC_SET_SPEED)),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  child: const Text("100", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(50, CommCode.CC_SET_SPEED)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("150", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(75, CommCode.CC_SET_SPEED)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("200", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(100, CommCode.CC_SET_SPEED)),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  child: const Text("300", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(150, CommCode.CC_SET_SPEED)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("400", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(200, CommCode.CC_SET_SPEED)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("500", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(250, CommCode.CC_SET_SPEED)),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getPatternSots(BuildContext buildContext){
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: ListTile(
+        title: const Text("Pattern Slots", style: TextStyle(color: Colors.blue)),
+        subtitle: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_PATTERN_SLOT)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_PATTERN_SLOT)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_PATTERN_SLOT)),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(3, CommCode.CC_SET_PATTERN_SLOT)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_PATTERN_SLOT)),
+                ),
+                const VerticalDivider(width: 8.0),
+                ElevatedButton(
+                  child: const Text("∞", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                  onPressed: () => Provider.of<Model>(context, listen: false)
+                      .connectedPoi!
+                      .forEach((poi) => poi.sendCommCode(CommCode.CC_SET_PATTERN_ALL)),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -176,7 +384,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           subtitle: FutureBuilder<List<Tuple2<Widget, DBImage>>>(
-            future: Provider.of<Model>(context).getImages(context),
+            future: Provider.of<Model>(context).patternDB.getImages(context),
             builder: (BuildContext context, AsyncSnapshot<List<Tuple2<Widget, DBImage>>> snapshot) {
               List<Widget> children;
               if (snapshot.hasData) {
@@ -186,10 +394,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 for (var tuple in tuples) {
                   widgets.add(
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
+                        setState(() {
+                          loading.value = true;
+                        });
                         for (var poi in Provider.of<Model>(context, listen: false).connectedPoi!) {
-                          poi.sendPattern2(tuple.item2);
+                          await poi.sendPattern2(tuple.item2);
                         }
+                        setState(() {
+                          loading.value = false;
+                        });
                       },
                       onLongPress: () => showDialog<void>(
                         context: context,
@@ -205,21 +419,30 @@ class _MyHomePageState extends State<MyHomePage> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context, 'Flip');
-                                Provider.of<Model>(context, listen: false).invertImage(tuple.item2.id!).then((value) => setState(() {}));
+                                Provider.of<Model>(context, listen: false)
+                                    .patternDB
+                                    .invertImage(tuple.item2.id!)
+                                    .then((value) => setState(() {}));
                               },
                               child: const Text('Flip'),
                             ),
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context, 'Mirror');
-                                Provider.of<Model>(context, listen: false).reverseImage(tuple.item2.id!).then((value) => setState(() {}));
+                                Provider.of<Model>(context, listen: false)
+                                    .patternDB
+                                    .reverseImage(tuple.item2.id!)
+                                    .then((value) => setState(() {}));
                               },
                               child: const Text('Mirror'),
                             ),
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context, 'Delete');
-                                Provider.of<Model>(context, listen: false).deleteImage(tuple.item2.id!).then((value) => setState(() {}));
+                                Provider.of<Model>(context, listen: false)
+                                    .patternDB
+                                    .deleteImage(tuple.item2.id!)
+                                    .then((value) => setState(() {}));
                               },
                               child: const Text('Delete'),
                             ),

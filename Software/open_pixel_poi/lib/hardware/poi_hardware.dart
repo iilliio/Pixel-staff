@@ -146,6 +146,11 @@ class PoiHardware {
   }
 
   // Commands
+  Future<bool> sendCommCode(CommCode code) {
+    List<int> message = [];
+    ParseUtil.putInt8(message, code.index);
+    return _sendIt(message);
+  }
   Future<bool> sendBool(bool value, CommCode code) {
     List<int> message = [];
     ParseUtil.putInt8(message, code.index);

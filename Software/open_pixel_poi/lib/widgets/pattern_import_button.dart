@@ -28,7 +28,6 @@ class PatternImportButton extends StatelessWidget {
 
   void importPattern(BuildContext context) async {
     var model = Provider.of<Model>(context, listen: false);
-    var db = await model.databaseFuture;
 
     final ImagePicker picker = ImagePicker();
     final XFile? imageFile = await picker.pickImage(source: ImageSource.gallery);
@@ -70,7 +69,7 @@ class PatternImportButton extends StatelessWidget {
       bytes: Uint8List.fromList(imageBytes),
     );
 
-    await model.insertImage(pattern);
+    await model.patternDB.insertImage(pattern);
     onImageImported();
   }
 
