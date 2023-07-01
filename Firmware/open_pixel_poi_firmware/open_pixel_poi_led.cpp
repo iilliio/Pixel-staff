@@ -21,9 +21,10 @@ class OpenPixelPoiLED {
     uint8_t red;
     uint8_t green;
     uint8_t blue;
+    long lastFrameIndex = 0;
 
     // Declare our NeoPixel strip object:
-    Adafruit_NeoPixel led_strip{22, D8, NEO_GRB + NEO_KHZ800};
+    Adafruit_NeoPixel led_strip{20, D8, NEO_GRB + NEO_KHZ800};
     
   public:
     OpenPixelPoiLED(OpenPixelPoiConfig& _config): config(_config) {}    
@@ -43,6 +44,11 @@ class OpenPixelPoiLED {
       led_strip.clear();
       if(config.displayState == DS_PATTERN || config.displayState == DS_PATTERN_ALL){
         frameIndex = ((millis() - config.displayStateLastUpdated) / (1000/(config.animationSpeed*2))) % config.frameCount;
+        if(lastFrameIndex == frameIndex){
+          return;
+        }else{
+          lastFrameIndex = frameIndex;
+        }
         for (int j=0; j<20; j++){
           red = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 0];
           green = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 1];

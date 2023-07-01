@@ -18,8 +18,6 @@ OpenPixelPoiBLE ble(config);
 OpenPixelPoiLED led(config);
 OpenPixelPoiButton button(config);
 
-int refreshRate = 30;
-
 void setup() {
   #ifdef DEBUG
     Serial.begin(19200);
@@ -43,7 +41,6 @@ void loop() {
     config.loop();
     led.loop();
     button.loop();
-//    delay(1); // Keep the cpu from melting
   }else{
     delay(250);
     // jammed
