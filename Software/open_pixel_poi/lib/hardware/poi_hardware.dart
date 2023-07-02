@@ -17,6 +17,7 @@ class PoiHardware {
   BehaviorSubject<BluetoothDeviceState> state = BehaviorSubject<BluetoothDeviceState>();
   BehaviorSubject<double> largeSendProgress = BehaviorSubject<double>.seeded(0);
   late StreamSubscription<BluetoothDeviceState> subscription;
+  bool isConncted = false;
 
   PoiHardware(this.uart) {
     subscription = uart.device.state.listen((event) {
@@ -26,6 +27,7 @@ class PoiHardware {
         uart.device.requestMtu(512);
         // await Future.delayed(Duration(milliseconds: 2000)); // For now hope we don't send any data for a bit after connecting
       }
+      isConncted = event == BluetoothDeviceState.connected;
     });
   }
 
@@ -50,7 +52,7 @@ class PoiHardware {
       try {
         List<int> packet = request.take(maxPacketsize).toList();
         await uart.write(packet, withoutResponse: true);
-        await Future.delayed(Duration(milliseconds: 15)); // Mostly safe but still fast, 0 sleep crashes esp, 10ms works but higher failure rate.
+        await Future.delayed(const Duration(milliseconds: 15)); // Mostly safe but still fast, 0 sleep crashes esp, 10ms works but higher failure rate.
 
         sentPackets++;
         sentSize += packet.length;
@@ -65,7 +67,7 @@ class PoiHardware {
         if(consecutiveFailures > 2){
           return true;
         }
-        await Future.delayed(Duration(milliseconds: 250));
+        await Future.delayed(const Duration(milliseconds: 250));
       }
     }
     return false;

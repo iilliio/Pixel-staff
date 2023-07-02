@@ -7,7 +7,6 @@ import '../hardware/models/comm_code.dart';
 import '../model.dart';
 import '../widgets/connection_state_indicator.dart';
 import '../widgets/pattern_import_button.dart';
-import '../widgets/remixer_slider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -398,8 +397,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         setState(() {
                           loading.value = true;
                         });
-                        for (var poi in Provider.of<Model>(context, listen: false).connectedPoi!) {
-                          await poi.sendPattern2(tuple.item2);
+                        for (var poi in Provider.of<Model>(context, listen: false).connectedPoi!.where((poi) => poi.isConncted)) {
+                          await poi.sendPattern2(tuple.item2).timeout(const Duration(seconds: 5), onTimeout: () {return false;});
                         }
                         setState(() {
                           loading.value = false;

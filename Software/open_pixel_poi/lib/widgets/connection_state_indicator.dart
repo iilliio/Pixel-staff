@@ -83,6 +83,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
     await hardware.uart.disconnect();
     await hardware.subscription.cancel();
     hardware.state.add(BluetoothDeviceState.disconnected); // Manually send disconnect event as our manual disconnect doesn't always trigger one
+    hardware.isConncted = false; // Update flag in hardware as it doesn't get triggered
     setState(() {
       isChanging = false;
     });
