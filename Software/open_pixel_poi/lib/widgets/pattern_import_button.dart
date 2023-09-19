@@ -20,8 +20,8 @@ class PatternImportButton extends StatelessWidget {
         importPattern(context);
       },
       icon: const Icon(
-        Icons.add,
-        color: Colors.white,
+        Icons.add_photo_alternate_outlined,
+        color: Colors.blue,
       ),
     );
   }
