@@ -55,7 +55,7 @@ public:
     pinMode(A0, INPUT);
 
     //Button Input
-    pinMode(A1,INPUT_PULLUP);
+    pinMode(3,INPUT_PULLUP);
 
     // Regulator Output
     pinMode(D7, OUTPUT);
@@ -65,7 +65,7 @@ public:
   }
 
   void loop() {
-    filteredButtonInput = (filteredButtonInput * 0.92) + (analogRead(A1) * .08);
+    filteredButtonInput = (filteredButtonInput * 0.92) + (analogRead(3) * .08);
     if(filteredButtonInput < 100){
       if(buttonState == BS_INITIAL){ // Single Click
         downTime = millis();

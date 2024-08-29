@@ -1,0 +1,25 @@
+### Footprint positions - created on Tue Aug 20 03:58:49 2024 ###
+### Printed by KiCad version 7.0.10
+## Unit = mm, Angle = deg.
+## Side : top
+# Ref     Val                          Package                                     PosX       PosY       Rot  Side
+C1        100n                         C_0805_2012Metric                       158.8700  -103.0100   90.0000  top
+C6        22u                          C_0402_1005Metric                       158.5300  -106.8500  -90.0000  top
+C7        22u                          C_0402_1005Metric                       148.7800  -104.8400    0.0000  top
+D1        LED                          LED_0603_1608Metric                     145.6700  -110.7500    0.0000  top
+F1        Polyfuse_Small_(1A)          Fuse_1206_3216Metric                    157.1000   -81.1500    0.0000  top
+J1        Conn_01x03_Socket            JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical   168.9600  -101.6100    0.0000  top
+J6        USB_C_Receptacle_USB2.0_16P  USB_C_Receptacle_HRO_TYPE-C-31-M-12     152.9000   -74.5800  180.0000  top
+Q1        BSS138                       SOT-23                                  168.3800   -94.3100    0.0000  top
+R1        5k1                          R_0603_1608Metric                       156.1400   -83.8100    0.0000  top
+R2        5k1                          R_0603_1608Metric                       150.1400   -81.1800  180.0000  top
+R3        100k                         R_0603_1608Metric                       162.0200  -103.0900  -90.0000  top
+R4        10k                          R_0603_1608Metric                       169.9400   -97.9700  180.0000  top
+R5        1k                           R_0603_1608Metric                       145.6700  -107.8300    0.0000  top
+SW1       SW_Push                      SW_SPST_B3U-1000P                       160.5700   -98.6200  180.0000  top
+SW2       SW_Push                      SW_SPST_B3U-1000P                       160.7600   -91.7400  180.0000  top
+SW3       SW_Push                      Panasonic_EVQPUL_EVQPUC                 156.3500  -121.9250  180.0000  top
+U1        USBLC6-2P6                   SOT-666                                 152.9700   -83.1900  -90.0000  top
+U3        ESP32-C3-MINI-1-N4           ESP32-C3-MINI-1_EXP                     147.6349   -93.3500   90.0000  top
+U5        TLV1117-33                   SOT-223-3_TabPin2                       152.6200  -109.9400  180.0000  top
+## End
