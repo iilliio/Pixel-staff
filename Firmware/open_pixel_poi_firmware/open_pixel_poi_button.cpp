@@ -224,8 +224,15 @@ public:
       buttonState = BS_INITIAL;
     }
 
+    // Read battery voltage
     config.batteryVoltage = (config.batteryVoltage * 0.999) + ((analogReadMilliVolts(A0)/500.0) * .001);
-//    debugf("  - batt Voltage = %f and %f\n", config.batteryVoltage);
+
+    // Super low voltage, emergency shutdown (uses data from previous read, this is ok). 
+    if (config.batteryState == BAT_SHUTDOWN && config.displayState != DS_SHUTDOWN){
+      config.displayState = DS_SHUTDOWN;
+      config.displayStateLastUpdated = millis();
+      shutDownAt = millis();
+    }
 
     // do a shutdown if flaged
     if(shutDownAt != 0 && millis() - shutDownAt > 2000){

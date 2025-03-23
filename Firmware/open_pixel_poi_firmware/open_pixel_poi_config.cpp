@@ -28,6 +28,18 @@ enum DisplayState {
   DS_SPEED,
   DS_SHUTDOWN
 };
+
+#define BATTERY_LATCH 0.05
+#define BATTERY_VOLTAGE_LOW 3.45
+#define BATTERY_VOLTAGE_CRITICAL 3.33
+#define BATTERY_VOLTAGE_SHUTDOWN 3.25
+
+enum BatteryState {
+  BAT_OK,
+  BAT_LOW,
+  BAT_CRITICAL,
+  BAT_SHUTDOWN,
+};
   
 class OpenPixelPoiConfig {
   private:
@@ -35,7 +47,8 @@ class OpenPixelPoiConfig {
     
   public:
     // Runtime State
-    float batteryVoltage = 3.7;
+    float batteryVoltage = BATTERY_VOLTAGE_LOW;
+    BatteryState batteryState = BAT_OK;
     DisplayState displayState = DS_PATTERN;
     long displayStateLastUpdated = 0;
     // Settings (come in from the app)
@@ -275,10 +288,23 @@ class OpenPixelPoiConfig {
     }
 
     void loop(){
+      // Pattern Cycling
       if(this->displayState == DS_PATTERN_ALL && millis() - this->displayStateLastUpdated >  10000){
         this->setPatternSlot((this->patternSlot + 1) %5, false);
         this->displayStateLastUpdated = millis();
       }
+
+      // Battery latching state
+      if(batteryVoltage <= BATTERY_VOLTAGE_SHUTDOWN || batteryState == BAT_SHUTDOWN){
+        batteryState = BAT_SHUTDOWN;
+      }else if(batteryVoltage <= BATTERY_VOLTAGE_CRITICAL || (batteryState == BAT_CRITICAL && batteryVoltage <= BATTERY_VOLTAGE_CRITICAL + BATTERY_LATCH)){
+        batteryState = BAT_CRITICAL;
+      }else if(batteryVoltage <= BATTERY_VOLTAGE_LOW || (batteryState == BAT_LOW && batteryVoltage <= BATTERY_VOLTAGE_LOW + BATTERY_LATCH)){
+        batteryState = BAT_LOW;
+      }else {
+        batteryState = BAT_OK;
+      }
+      
     }
 };
 
