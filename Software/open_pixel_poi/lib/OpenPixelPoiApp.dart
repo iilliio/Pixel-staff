@@ -12,6 +12,7 @@ class OpenPixelPoiApp extends StatelessWidget {
       title: 'Open Pixel Poi',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        useMaterial3: false,
       ),
       home: const WelcomePage(),
     );

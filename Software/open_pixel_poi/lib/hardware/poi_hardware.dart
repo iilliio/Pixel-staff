@@ -14,25 +14,25 @@ import 'parse_util.dart';
 class PoiHardware {
   BLEUart uart;
   late List<int> _buffer;
-  BehaviorSubject<BluetoothDeviceState> state = BehaviorSubject<BluetoothDeviceState>();
+  BehaviorSubject<BluetoothConnectionState> state = BehaviorSubject<BluetoothConnectionState>();
   BehaviorSubject<double> largeSendProgress = BehaviorSubject<double>.seeded(0);
-  late StreamSubscription<BluetoothDeviceState> subscription;
+  late StreamSubscription<BluetoothConnectionState> subscription;
   bool isConncted = false;
 
   PoiHardware(this.uart) {
-    subscription = uart.device.state.listen((event) {
+    subscription = uart.device.connectionState.listen((event) {
       state.add(event);
-      if(event == BluetoothDeviceState.connected){
+      if(event == BluetoothConnectionState.connected){
         // Increase MTU, takes 2 seconds to take effect
         uart.device.requestMtu(512);
         // await Future.delayed(Duration(milliseconds: 2000)); // For now hope we don't send any data for a bit after connecting
       }
-      isConncted = event == BluetoothDeviceState.connected;
+      isConncted = event == BluetoothConnectionState.connected;
     });
   }
 
-  Future<bool> _sendIt(List<int> message) {
-    if(message.length < 509){
+  Future<bool> _sendIt(List<int> message, [bool confirmation = true]) {
+    if(message.length < 509 && confirmation){
       return _writePacketWithConfirmation(_buildRequest(message));
     }else {
       return _writePackets(_buildRequest(message));
@@ -64,6 +64,7 @@ class PoiHardware {
       } catch (e, s){
         consecutiveFailures++;
         print("Failure, consecutive failures = $consecutiveFailures");
+        print("Error: $e");
         if(consecutiveFailures > 2){
           return true;
         }
@@ -148,29 +149,29 @@ class PoiHardware {
   }
 
   // Commands
-  Future<bool> sendCommCode(CommCode code) {
+  Future<bool> sendCommCode(CommCode code, [bool confirmation = true]) {
     List<int> message = [];
     ParseUtil.putInt8(message, code.index);
-    return _sendIt(message);
+    return _sendIt(message, confirmation);
   }
-  Future<bool> sendBool(bool value, CommCode code) {
+  Future<bool> sendBool(bool value, CommCode code, [bool confirmation = true]) {
     List<int> message = [];
     ParseUtil.putInt8(message, code.index);
     ParseUtil.putBoolean(message, value);
-    return _sendIt(message);
+    return _sendIt(message, confirmation);
   }
-  Future<bool> sendInt8(int value, CommCode code) {
+  Future<bool> sendInt8(int value, CommCode code, [bool confirmation = true]) {
     List<int> message = [];
     ParseUtil.putInt8(message, code.index);
     ParseUtil.putInt8(message, value);
-    return _sendIt(message);
+    return _sendIt(message, confirmation);
   }
-  Future<bool> sendInt8s(int value, CommCode code) {
+  Future<bool> sendInt8s(int value, CommCode code, [bool confirmation = true]) {
     List<int> message = [];
     ParseUtil.putInt8(message, code.index);
     ParseUtil.putInt8s(message, value);
     message.insert(0, code.index);
-    return _sendIt(message);
+    return _sendIt(message, confirmation);
   }
   Future<bool> sendPattern(LEDPattern pattern) {
     List<int> message = [];

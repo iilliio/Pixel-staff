@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "open_pixel_poi" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "open_pixel_poi" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "open_pixel_poi.exe" "\0"
             VALUE "ProductName", "open_pixel_poi" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

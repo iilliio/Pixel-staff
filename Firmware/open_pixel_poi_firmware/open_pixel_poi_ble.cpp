@@ -112,7 +112,7 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
       pixelPoiTxCharacteristic->addDescriptor(new BLE2902());
       pixelPoiNotifyCharacteristic = pixelPoiService->createCharacteristic(pixelPoiNotifyCharacteristicUUID, BLECharacteristic::PROPERTY_NOTIFY);
       pixelPoiNotifyCharacteristic->addDescriptor(new BLE2902());
-      pixelPoiRxCharacteristic = pixelPoiService->createCharacteristic(pixelPoiRxCharacteristicUUID, BLECharacteristic::PROPERTY_WRITE);
+      pixelPoiRxCharacteristic = pixelPoiService->createCharacteristic(pixelPoiRxCharacteristicUUID, BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_WRITE_NR);
       pixelPoiRxCharacteristic->setCallbacks(this);
       pixelPoiService->start();
 

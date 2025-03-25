@@ -22,7 +22,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<BluetoothDeviceState>(
+    return StreamBuilder<BluetoothConnectionState>(
       stream: Provider.of<Model>(context).connectedPoi![connectedPoiIndex].state,
       builder: (context, snapshot) {
         if (isChanging) {
@@ -36,7 +36,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
               ),
             ),
           );
-        } else if (snapshot.hasData && snapshot.data == BluetoothDeviceState.connected) {
+        } else if (snapshot.hasData && snapshot.data == BluetoothConnectionState.connected) {
           return IconButton(
             icon: const Icon(
               Icons.bluetooth,
@@ -44,7 +44,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
             ),
             onPressed: disconnect,
           );
-        } else if (snapshot.hasData && snapshot.data == BluetoothDeviceState.disconnected) {
+        } else if (snapshot.hasData && snapshot.data == BluetoothConnectionState.disconnected) {
           return IconButton(
               icon: const Icon(
                 Icons.bluetooth,
@@ -63,7 +63,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
       isChanging = true;
     });
     BLEUart bleUart = BLEUart(Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex].uart.device);
-    bleUart.isIntialized?.then((value) {
+    bleUart.isIntialized.then((value) {
       Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex] = PoiHardware(bleUart);
       setState(() {
         isChanging = false;
@@ -82,7 +82,7 @@ class _CSIState extends State<ConnectionStateIndicator> {
     var hardware = Provider.of<Model>(context, listen: false).connectedPoi![connectedPoiIndex];
     await hardware.uart.disconnect();
     await hardware.subscription.cancel();
-    hardware.state.add(BluetoothDeviceState.disconnected); // Manually send disconnect event as our manual disconnect doesn't always trigger one
+    hardware.state.add(BluetoothConnectionState.disconnected); // Manually send disconnect event as our manual disconnect doesn't always trigger one
     hardware.isConncted = false; // Update flag in hardware as it doesn't get triggered
     setState(() {
       isChanging = false;
