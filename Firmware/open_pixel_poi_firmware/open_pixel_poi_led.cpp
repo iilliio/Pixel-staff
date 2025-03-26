@@ -4,7 +4,7 @@
 #include "open_pixel_poi_config.cpp"
 
 // LED
-#include <Adafruit_NeoPixel.h>
+#include <NeoPixelBusLg.h>
 
 //#define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
@@ -24,7 +24,8 @@ class OpenPixelPoiLED {
     long lastFrameIndex = 0;
 
     // Declare our NeoPixel strip object:
-    Adafruit_NeoPixel led_strip{20, D8, NEO_GRB + NEO_KHZ800};
+//    Adafruit_NeoPixel led_strip{20, D8, NEO_GRB + NEO_KHZ800};
+    NeoPixelBusLg<NeoGrbFeature, NeoWs2812xMethod, NeoGammaNullMethod> led_strip{20, D8};
     
   public:
     OpenPixelPoiLED(OpenPixelPoiConfig& _config): config(_config) {}    
@@ -34,14 +35,14 @@ class OpenPixelPoiLED {
 
 
       // LED Setup:
-      led_strip.begin();
+      led_strip.Begin();
       frameIndex = 0;
 
       debugf("LED setup complete\n");
     }
 
     void loop(){
-      led_strip.clear();
+      led_strip.ClearTo(RgbColor(0,0,0));
       if(config.displayState == DS_PATTERN || config.displayState == DS_PATTERN_ALL){
         frameIndex = ((millis() - config.displayStateLastUpdated) / (1000/(config.animationSpeed*2))) % config.frameCount;
         if(lastFrameIndex == frameIndex){
@@ -53,7 +54,7 @@ class OpenPixelPoiLED {
           red = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 0];
           green = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 1];
           blue = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 2];
-          led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
+          led_strip.SetPixelColor(j, RgbColor(red, green, blue));
         }
       }else if(config.displayState == DS_WAITING || config.displayState == DS_WAITING2 || config.displayState == DS_WAITING3 || config.displayState == DS_WAITING4 || config.displayState == DS_WAITING5){
         // 500ms or till interupted
@@ -85,9 +86,9 @@ class OpenPixelPoiLED {
         }
         for(int j=0; j<20; j++){
           if(j == (millis() - config.displayStateLastUpdated)/50 || 20 - j == (millis() - config.displayStateLastUpdated)/50){
-            led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
+            led_strip.SetPixelColor(j, RgbColor(red, green, blue));
           }else{
-            led_strip.setPixelColor(j, led_strip.Color(0x00, 0x00, 0x00));
+            led_strip.SetPixelColor(j, RgbColor(0x00, 0x00, 0x00));
           }
         }
       }else if(config.displayState == DS_VOLTAGE){
@@ -101,7 +102,7 @@ class OpenPixelPoiLED {
         red = 0xff - green;
         blue = 0x00;
         for (int j=0; j<20; j++){
-          led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
+          led_strip.SetPixelColor(j, RgbColor(red, green, blue));
         }
       }else if(config.displayState == DS_VOLTAGE2){
         if(config.batteryVoltage > 3.90){
@@ -119,15 +120,15 @@ class OpenPixelPoiLED {
         }
         
         for (int j=0; j<(int)config.batteryVoltage; j++){
-          led_strip.setPixelColor(j, led_strip.Color(0, 0, 255));
+          led_strip.SetPixelColor(j, RgbColor(0, 0, 255));
         }
         for (int j=0; j<(int)((config.batteryVoltage - (int)config.batteryVoltage) * 10); j++){
           if(j > 5){
-            led_strip.setPixelColor(j+11, led_strip.Color(red, green, blue)); 
+            led_strip.SetPixelColor(j+11, RgbColor(red, green, blue)); 
           }else if(j > 2){
-            led_strip.setPixelColor(j+10, led_strip.Color(red, green, blue)); 
+            led_strip.SetPixelColor(j+10, RgbColor(red, green, blue)); 
           }else{
-            led_strip.setPixelColor(j+9, led_strip.Color(red, green, blue)); 
+            led_strip.SetPixelColor(j+9, RgbColor(red, green, blue)); 
           }
         }
       }else if(config.displayState == DS_SHUTDOWN){
@@ -135,7 +136,7 @@ class OpenPixelPoiLED {
         // Crappy but simple shutdown animation for now
         red = /*strobe*/((millis() - config.displayStateLastUpdated) % 200 > 100) * /*color*/0xFF * /*fade out*/((2000-(millis() - config.displayStateLastUpdated))/2000.0);
         for(int j=0; j<20; j++){
-          led_strip.setPixelColor(j, led_strip.Color(red, 0x00, 0x00));
+          led_strip.SetPixelColor(j, RgbColor(red, 0x00, 0x00));
         }
       }else if(config.displayState == DS_BRIGHTNESS){
         // Override brightness without saving it. Button will save it upon release.
@@ -155,33 +156,33 @@ class OpenPixelPoiLED {
         blue = 0xFF;
         for (int j=0; j< 20; j++){
           if (j % 4 == 1 || j % 4 == 2){
-            led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
+            led_strip.SetPixelColor(j, RgbColor(red, green, blue));
           }
         }
       }else if(config.displayState == DS_SPEED){
         red = 0xFF;
         for (int j=0; j < (millis() - config.displayStateLastUpdated)/250; j+=2){
-          led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
-          led_strip.setPixelColor(j+1, led_strip.Color(red, green, blue));
+          led_strip.SetPixelColor(j, RgbColor(red, green, blue));
+          led_strip.SetPixelColor(j+1, RgbColor(red, green, blue));
         }
       }
 
       // Set Brightness. Low voltage = force low brightness
       if(config.batteryState == BAT_LOW && config.ledBrightness > 10){
-        led_strip.setBrightness(10);
+        led_strip.SetLuminance(10);
       }else if(config.batteryState == BAT_CRITICAL || config.batteryState == BAT_SHUTDOWN){
-        led_strip.setBrightness(1);
+        led_strip.SetLuminance(1);
       }else{
-        led_strip.setBrightness(config.ledBrightness);
+        led_strip.SetLuminance(config.ledBrightness);
       }
 
       // Super low voltage, only display red
       if(config.batteryState == BAT_CRITICAL && (config.displayState == DS_PATTERN || config.displayState == DS_PATTERN_ALL)){
-        led_strip.clear();
-        led_strip.setPixelColor(0, led_strip.Color(255, 0x00, 0x00));
-        led_strip.setPixelColor(19, led_strip.Color(255, 0x00, 0x00));
+        led_strip.ClearTo(RgbColor(0,0,0));
+        led_strip.SetPixelColor(0, RgbColor(255, 0x00, 0x00));
+        led_strip.SetPixelColor(19, RgbColor(255, 0x00, 0x00));
       }
-      led_strip.show();
+      led_strip.Show();
     }
 };
 
