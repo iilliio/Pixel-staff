@@ -89,7 +89,7 @@ class _CreateSolidColorState extends State<CreateSolidColorPage> {
                       saving = true;
                       await makeAndStorePattern(context);
                       if(context.mounted) { // Do we actually want this check?
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       }
                       saving = false;
                     },

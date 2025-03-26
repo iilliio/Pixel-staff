@@ -9,6 +9,7 @@ import '../../hardware/models/rgb_value.dart';
 import '../../model.dart';
 import '../../widgets/color_picker.dart';
 import '../../widgets/connection_state_indicator.dart';
+import '../../widgets/labeled_slider.dart';
 
 
 class CreateFadePage extends StatefulWidget {
@@ -35,7 +36,7 @@ class _CreateFadeState extends State<CreateFadePage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Grid Pattern Creator"),
+        title: const Text("Fade Pattern Creator"),
         actions: [
           ...Provider.of<Model>(context)
               .connectedPoi!
@@ -49,31 +50,14 @@ class _CreateFadeState extends State<CreateFadePage> {
   Widget getForm() {
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: ListTile(
-            title: Text(
-              "Fade width: $fadeSize",
-              style: TextStyle(
-                color: Colors.blue,
-              ),
-            ),
-            subtitle: Slider(
-              value: fadeSize.toDouble(),
-              max: 400,
-              min: 10,
-              divisions: 195,
-              label: "$fadeSize",
-              onChanged: (double value) {
-                setState(() {
-                  fadeSize = value.toInt();
-                });
-              },
-              onChangeEnd: (double value) {
-                fadeSize = value.toInt();
-              },
-            ),
-          ),
+        LabeledSlider(
+          "Fade width",
+          10,
+          400,
+          2,
+              (int value) => setState(() {
+                fadeSize = value;
+              }),
         ),
         ColorPicker(
           "Start Color",
@@ -123,7 +107,7 @@ class _CreateFadeState extends State<CreateFadePage> {
                       saving = true;
                       await makeAndStorePattern(context);
                       if(context.mounted) { // Do we actually want this check?
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       }
                       saving = false;
                     },

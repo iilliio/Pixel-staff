@@ -311,7 +311,7 @@ class _WelcomeState extends State<WelcomePage> {
     }
     // Scan
     hasScanned = true;
-    FlutterBluePlus.startScan(timeout: Duration(seconds: 5));
+    FlutterBluePlus.startScan(withKeywords: ["Pixel Poi"], timeout: Duration(seconds: 5));
   }
 
   void connect(List<BluetoothDevice> devices) async {

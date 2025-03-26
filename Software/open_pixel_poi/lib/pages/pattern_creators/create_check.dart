@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:open_pixel_poi/widgets/labeled_slider.dart';
 import 'package:provider/provider.dart';
 
 import '../../database/dbimage.dart';
@@ -35,7 +36,7 @@ class _CreateCheckState extends State<CreateCheckPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Grid Pattern Creator"),
+        title: const Text("Check Pattern Creator"),
         actions: [
           ...Provider.of<Model>(context)
               .connectedPoi!
@@ -49,31 +50,14 @@ class _CreateCheckState extends State<CreateCheckPage> {
   Widget getForm() {
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: ListTile(
-            title: Text(
-              "Grid size: $gridSize",
-              style: TextStyle(
-                color: Colors.blue,
-              ),
-            ),
-            subtitle: Slider(
-              value: gridSize.toDouble(),
-              max: 10,
-              min: 1,
-              divisions: 9,
-              label: "$gridSize",
-              onChanged: (double value) {
-                setState(() {
-                  gridSize = value.toInt();
-                });
-              },
-              onChangeEnd: (double value) {
-                gridSize = value.toInt();
-              },
-            ),
-          ),
+        LabeledSlider(
+            "Check size",
+            1,
+            10,
+            1,
+                (int value) => setState(() {
+                  gridSize = value;
+                }),
         ),
         ColorPicker(
           "Primary Color",
@@ -123,7 +107,7 @@ class _CreateCheckState extends State<CreateCheckPage> {
                       saving = true;
                       await makeAndStorePattern(context);
                       if(context.mounted) { // Do we actually want this check?
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       }
                       saving = false;
                     },

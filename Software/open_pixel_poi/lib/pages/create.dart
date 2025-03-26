@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_pixel_poi/pages/pattern_creators/create_check.dart';
 import 'package:open_pixel_poi/pages/pattern_creators/create_fade.dart';
+import 'package:open_pixel_poi/pages/pattern_creators/create_strobe.dart';
 import 'package:provider/provider.dart';
 
 import '../model.dart';
@@ -29,55 +30,32 @@ class _CreateState extends State<CreatePage> {
       ),
       body: ListView(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: ElevatedButton(
-                child: const Text("Solid Color", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return CreateSolidColorPage();
-                  }),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: ElevatedButton(
-                child: const Text("Check", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return CreateCheckPage();
-                  }),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: ElevatedButton(
-                child: const Text("Fade", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return CreateFadePage();
-                  }),
-                ),
-              ),
-            ),
-          ),
+          getCreatorButton("Solid Color", () => CreateSolidColorPage()),
+          getCreatorButton("Check", () => CreateCheckPage()),
+          getCreatorButton("Fade", () => CreateFadePage()),
+          getCreatorButton("Strobe", () => CreateStrobePage()),
         ],
+      ),
+    );
+  }
+
+  Widget getCreatorButton(String label, dynamic Function() constructor){
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: double.infinity,
+        height: 60,
+        child: ElevatedButton(
+          child: Text(label, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          onPressed: () async {
+            var result = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return constructor();
+            }));
+            if (result != null && result && context.mounted) {
+              Navigator.pop(context);
+            }
+          },
+        ),
       ),
     );
   }

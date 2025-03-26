@@ -19,6 +19,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final ValueNotifier<bool> loading = ValueNotifier<bool>(false);
   int tabIndex = 0;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -409,7 +410,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return CreatePage();
                     }),
                   );
-                  setState(() {});
+                  showNewestPattern();
                 },
                   icon: const Icon(
                     Icons.create_outlined,
@@ -417,7 +418,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 PatternImportButton(() {
-                  setState(() {});
+                  showNewestPattern();
                 }),
               ],
             )
@@ -549,6 +550,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 65.0),
                 child: ListView(
+                  controller: _scrollController,
                   children: children,
                 ),
               ),
@@ -559,5 +561,23 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  void showNewestPattern(){
+    setState(() {
+      tabIndex = 0;
+    });
+    // This is probably the most gross thing ive ever done, and im sorry 😭 (also the animation doesn't work)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent, // Scroll to the bottom
+            duration: Duration(milliseconds: 500), // Duration of the animation
+            curve: Curves.easeOut, // Smooth easing curve
+          );
+        });
+      });
+    });
   }
 }

@@ -10,7 +10,7 @@ import '../model.dart';
 String defaultSuffixgenerator(double value) {
   return "${value.toInt()}%";
 }
-class RemixerSlider extends StatefulWidget {
+class SyncSlider extends StatefulWidget {
   String title;
   CommCode code;
   int Function() getter;
@@ -20,7 +20,7 @@ class RemixerSlider extends StatefulWidget {
   double scaler;
   String Function(double) suffixGenerator;
 
-  RemixerSlider(this.title, this.code, this.getter, this.setter, {this.maxValue = 100.0, this.minValue = 0.0, this.scaler = 2.55, this.suffixGenerator = defaultSuffixgenerator}){
+  SyncSlider(this.title, this.code, this.getter, this.setter, {this.maxValue = 100.0, this.minValue = 0.0, this.scaler = 2.55, this.suffixGenerator = defaultSuffixgenerator}){
     if(getter()/scaler > maxValue){
       setter(0);
     }
@@ -30,10 +30,10 @@ class RemixerSlider extends StatefulWidget {
   }
 
   @override
-  _RemixerSliderState createState() => _RemixerSliderState(title, code, getter, setter, maxValue, minValue, scaler, suffixGenerator);
+  _SyncSliderState createState() => _SyncSliderState(title, code, getter, setter, maxValue, minValue, scaler, suffixGenerator);
 }
 
-class _RemixerSliderState extends State<RemixerSlider> {
+class _SyncSliderState extends State<SyncSlider> {
   String title;
   CommCode code;
   int Function() getter;
@@ -45,12 +45,12 @@ class _RemixerSliderState extends State<RemixerSlider> {
 
   late double temp;
 
-  _RemixerSliderState(this.title, this.code, this.getter, this.setter, this.maxValue, this.minValue, this.scaler, this.suffixGenerator){
+  _SyncSliderState(this.title, this.code, this.getter, this.setter, this.maxValue, this.minValue, this.scaler, this.suffixGenerator){
     temp = (getter()~/scaler).toDouble();
   }
 
   @override
-  void didUpdateWidget(RemixerSlider oldWidget) {
+  void didUpdateWidget(SyncSlider oldWidget) {
     super.didUpdateWidget(oldWidget);
     this.title = widget.title;
     // Default constructor values don't seem to be applied -_-
