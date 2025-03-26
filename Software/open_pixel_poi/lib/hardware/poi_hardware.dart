@@ -52,7 +52,6 @@ class PoiHardware {
       try {
         List<int> packet = request.take(maxPacketsize).toList();
         await uart.write(packet, withoutResponse: true);
-        await Future.delayed(const Duration(milliseconds: 15)); // Mostly safe but still fast, 0 sleep crashes esp, 10ms works but higher failure rate.
 
         sentPackets++;
         sentSize += packet.length;
@@ -100,7 +99,7 @@ class PoiHardware {
     // End bit
     request.add(0xD1);
 
-    debugPrint("Request = ${request.map((e) => e.toRadixString(16)).toList()}", wrapWidth: 1024);
+    // debugPrint("Request = ${request.map((e) => e.toRadixString(16)).toList()}", wrapWidth: 1024);
 
     return request;
   }

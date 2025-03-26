@@ -80,8 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget getButtons(BuildContext buildContext) {
     return Column(
       children: [
-        getPrimarySettings2(buildContext),
-        // SingleChildScrollView(child: getImagesList(buildContext)),
+        getPrimarySettings(buildContext),
         Expanded(
           child: getImagesList(buildContext),
         ),
@@ -89,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget getPrimarySettings2(BuildContext buildContext){
+  Widget getPrimarySettings(BuildContext buildContext){
     return DefaultTabController(
       initialIndex: 0,
       length: 4,
@@ -132,42 +131,6 @@ class _MyHomePageState extends State<MyHomePage> {
           if(tabIndex == 2) getBrightnessButtons(buildContext),
           if(tabIndex == 3) getFrequencyButtons(buildContext),
         ],
-      ),
-    );
-  }
-
-  Widget getPrimarySettings(BuildContext buildContext) {
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListTile(
-          title: const Text('Primary Settings',
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              )),
-          subtitle: Column(
-            children: [
-              getBrightnessButtons(buildContext),
-              const Divider(
-                height: 1,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-              getFrequencyButtons(buildContext),
-              const Divider(
-                height: 1,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-              getPatternSots(buildContext),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -456,6 +419,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         loading.value = true;
                       });
                       for (var poi in Provider.of<Model>(context, listen: false).connectedPoi!.where((poi) => poi.isConncted)) {
+                        // Calling connect seems to bring device to the front of a magic queue and operate faster, and properly
+                        await poi.uart.device
+                            .connect(timeout: Duration(seconds: 5), autoConnect: true, mtu: null)
+                            .timeout(Duration(milliseconds: 5250));
+                        await poi.uart.device.clearGattCache(); // Boosts speed too
                         await poi.sendPattern2(tuple.item2).timeout(const Duration(seconds: 5), onTimeout: () {return false;});
                       }
                       setState(() {
