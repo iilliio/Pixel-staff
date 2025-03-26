@@ -7,6 +7,7 @@ import '../hardware/models/comm_code.dart';
 import '../model.dart';
 import '../widgets/connection_state_indicator.dart';
 import '../widgets/pattern_import_button.dart';
+import './create.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -398,9 +399,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            PatternImportButton(() {
-              setState(() {});
-            }),
+            Row(
+              children: [
+                IconButton(
+                onPressed: () async{
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return CreatePage();
+                    }),
+                  );
+                  setState(() {});
+                },
+                  icon: const Icon(
+                    Icons.create_outlined,
+                    color: Colors.blue,
+                  ),
+                ),
+                PatternImportButton(() {
+                  setState(() {});
+                }),
+              ],
+            )
           ],
         ),
         subtitle: FutureBuilder<List<Tuple2<Widget, DBImage>>>(
