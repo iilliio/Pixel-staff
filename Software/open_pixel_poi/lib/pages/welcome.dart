@@ -248,12 +248,15 @@ class _WelcomeState extends State<WelcomePage> {
                     : () {
                         scan();
                       },
-                onLongPress: () => Navigator.push(
-                  _key.currentContext!,
-                  MaterialPageRoute(builder: (context) {
-                    return MyHomePage();
-                  }),
-                ),
+                onLongPress: () {
+                  Provider.of<Model>(context, listen: false).connectedPoi = [];
+                  Navigator.push(
+                    _key.currentContext!,
+                    MaterialPageRoute(builder: (context) {
+                      return MyHomePage();
+                    }),
+                  );
+                },
                 child: isRefreshing
                     ? CircularProgressIndicator()
                     : const Text(
