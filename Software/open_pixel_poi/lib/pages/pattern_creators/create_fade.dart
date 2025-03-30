@@ -22,17 +22,16 @@ class CreateFadePage extends StatefulWidget {
 class _CreateFadeState extends State<CreateFadePage> {
   bool flagFirst = true;
   late int fadeSize = 10;
-  late RGBValue colorOne;
-  late RGBValue colorTwo;
+  List<RGBValue> colors = List<RGBValue>.empty(growable: true);
   bool saving = false;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     if(flagFirst){
       flagFirst = false;
-      var random = Random();
-      colorOne = RGBValue([random.nextInt(2) * 255, random.nextInt(2) * 255, random.nextInt(2) * 255]);
-      colorTwo = RGBValue([random.nextInt(2) * 255, random.nextInt(2) * 255, random.nextInt(2) * 255]);
+      addSegment();
+      addSegment();
     }
     return Scaffold(
       appBar: AppBar(
@@ -48,30 +47,33 @@ class _CreateFadeState extends State<CreateFadePage> {
   }
 
   Widget getForm() {
-    return ListView(
+    return Column(
       children: [
         LabeledSlider(
           "Fade width",
-          10,
-          400,
-          2,
+          colors.length * 5,
+          (400 / colors.length).toInt() * colors.length,
+          colors.length,
               (int value) => setState(() {
-                fadeSize = value;
-              }),
+            fadeSize = value;
+          }),
+          colors.length * 5,
+          Key("${colors.length}"),
         ),
-        ColorPicker(
-          "Start Color",
-          colorOne.red.toDouble(),
-          colorOne.green.toDouble(),
-          colorOne.blue.toDouble(),
-              (RGBValue color) => colorOne = color,
-        ),
-        ColorPicker(
-          "End Color",
-          colorTwo.red.toDouble(),
-          colorTwo.green.toDouble(),
-          colorTwo.blue.toDouble(),
-              (RGBValue color) => colorTwo = color,
+        Expanded(
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: colors.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ColorPicker(
+                "Color ${index+1}",
+                colors[index].red.toDouble(),
+                colors[index].green.toDouble(),
+                colors[index].blue.toDouble(),
+                    (RGBValue color) => colors[index] = color,
+              );
+            },
+          ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -86,6 +88,30 @@ class _CreateFadeState extends State<CreateFadePage> {
                     onPressed: () => Navigator.pop(context),
                     child: const Text(
                       "Cancel",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const VerticalDivider(width: 8.0),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        addSegment();
+                      });
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _scrollController.animateTo(
+                          _scrollController.position.maxScrollExtent, // Scroll to the bottom
+                          duration: Duration(milliseconds: 300), // Duration of the animation
+                          curve: Curves.easeOut, // Smooth easing curve
+                        );
+                      });
+                    },
+                    child: const Text(
+                      "+ Color",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -146,24 +172,31 @@ class _CreateFadeState extends State<CreateFadePage> {
     );
   }
 
+  void addSegment(){
+    var random = Random();
+    colors.add(RGBValue([random.nextInt(2) * 255, random.nextInt(2) * 255, random.nextInt(2) * 255]));
+    fadeSize = colors.length * 5;
+  }
+
+  Uint8List createFade(RGBValue start, RGBValue end, width){
+    var rgbList = Uint8List(width * 3);
+    int rgbOffset = 0;
+    double percent = 0.0;
+    for(int pixel = 0; pixel < width; pixel++){
+      rgbOffset = pixel * 3;
+      percent = (width - pixel) / width;
+      rgbList[rgbOffset] = ((start.red * percent) + (end.red * (1 - percent))).toInt();
+      rgbList[rgbOffset + 1] = ((start.green * percent) + (end.green * (1 - percent))).toInt();
+      rgbList[rgbOffset + 2] = ((start.blue * percent) + (end.blue * (1 - percent))).toInt();
+    }
+    return rgbList;
+  }
+
   Future<void> makeAndStorePattern(BuildContext context) async{
     var rgbList = Uint8List(fadeSize * 3);
-    var rgbOffset = 0;
-    var percent = 0.0;
-    for(int column = 0; column < fadeSize/2; column++){
-      percent = column / (fadeSize/2);
-      rgbOffset = column * 3;
-      rgbList[rgbOffset] = ((colorOne.red * percent) + (colorTwo.red * (1 - percent))).toInt();
-      rgbList[rgbOffset + 1] = ((colorOne.green * percent) + (colorTwo.green * (1 - percent))).toInt();
-      rgbList[rgbOffset + 2] = ((colorOne.blue * percent) + (colorTwo.blue * (1 - percent))).toInt();
-    }
-
-    var rgbHalfway = (fadeSize/2).toInt() * 3;
-    for(int column = (fadeSize/2).toInt(); column < fadeSize; column++){
-      rgbOffset = column * 3;
-      rgbList[rgbOffset] = rgbList[(rgbHalfway - (rgbOffset - rgbHalfway)) - 3];
-      rgbList[rgbOffset + 1] = rgbList[(rgbHalfway - (rgbOffset - rgbHalfway)) - 2];
-      rgbList[rgbOffset + 2] = rgbList[(rgbHalfway - (rgbOffset - rgbHalfway)) - 1];
+    int subwidth = (fadeSize/colors.length).toInt();
+    for(int i = 0; i < colors.length; i++){
+      rgbList.setAll(i * subwidth * 3, createFade(colors[i], i == (colors.length - 1) ? colors[0] : colors[i+1], subwidth));
     }
     var pattern = DBImage(
       id: null,

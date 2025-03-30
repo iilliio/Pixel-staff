@@ -9,16 +9,17 @@ class LabeledSlider extends StatefulWidget {
   String title;
   int min, max, step;
   int? initial;
+  Key? key;
   Function(int) onValueChanged;
 
-  LabeledSlider(this.title, this.min, this.max, this.step, this.onValueChanged, [this.initial]){
+  LabeledSlider(this.title, this.min, this.max, this.step, this.onValueChanged, [this.initial, this.key]){
     if (this.initial == null) {
       this.initial = this.min;
     }
   }
 
   @override
-  _LabeledSliderState createState() => _LabeledSliderState(title, min, max, step, onValueChanged, initial!);
+  _LabeledSliderState createState() => _LabeledSliderState(title, min, max, step, onValueChanged, initial!, key);
 }
 
 class _LabeledSliderState extends State<LabeledSlider> {
@@ -27,8 +28,9 @@ class _LabeledSliderState extends State<LabeledSlider> {
 
   int min, max, step, initial;
   late int value;
+  Key? key;
 
-  _LabeledSliderState(this.title, this.min, this.max, this.step, this.onValueChanged, this.initial){
+  _LabeledSliderState(this.title, this.min, this.max, this.step, this.onValueChanged, this.initial, this.key){
     value = initial;
   }
 
@@ -44,6 +46,7 @@ class _LabeledSliderState extends State<LabeledSlider> {
           ),
         ),
         subtitle: Slider(
+          key: key,
           value: value.toDouble(),
           max: max.toDouble(),
           min: min.toDouble(),

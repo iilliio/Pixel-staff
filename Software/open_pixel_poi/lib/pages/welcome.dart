@@ -248,6 +248,12 @@ class _WelcomeState extends State<WelcomePage> {
                     : () {
                         scan();
                       },
+                onLongPress: () => Navigator.push(
+                  _key.currentContext!,
+                  MaterialPageRoute(builder: (context) {
+                    return MyHomePage();
+                  }),
+                ),
                 child: isRefreshing
                     ? CircularProgressIndicator()
                     : const Text(
@@ -268,7 +274,7 @@ class _WelcomeState extends State<WelcomePage> {
                       ? null
                       : () {
                           connect(scanResults
-                              .where((scanResult) => checkedMacAddresses.contains(scanResult.device.id.id))
+                              .where((scanResult) => checkedMacAddresses.contains(scanResult.device.remoteId.str))
                               .map((e) => e.device)
                               .toList());
                         },
