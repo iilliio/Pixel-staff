@@ -25,7 +25,6 @@ class BLEUart {
   Future<bool> init() async {
     if (await device.connectionState.first == BluetoothConnectionState.connected) {
       await device.disconnect();
-      await Future.delayed(Duration(seconds: 2));
     }
 
     await device

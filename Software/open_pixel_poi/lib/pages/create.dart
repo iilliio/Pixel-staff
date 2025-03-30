@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:open_pixel_poi/pages/pattern_creators/create_check.dart';
 import 'package:open_pixel_poi/pages/pattern_creators/create_fade.dart';
+import 'package:open_pixel_poi/pages/pattern_creators/create_merge.dart';
 import 'package:open_pixel_poi/pages/pattern_creators/create_strobe.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +35,7 @@ class _CreateState extends State<CreatePage> {
           getCreatorButton("Check", () => CreateCheckPage()),
           getCreatorButton("Fade", () => CreateFadePage()),
           getCreatorButton("Strobe", () => CreateStrobePage()),
+          getCreatorButton("Layer", () => CreateMergePage()),
         ],
       ),
     );

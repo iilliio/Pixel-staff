@@ -138,14 +138,13 @@ class _WelcomeState extends State<WelcomePage> {
   }
 
   Widget getList(List<ScanResult> scanResults) {
-    scanResults.sort((a, b){
-      if(a.device.platformName.contains("Pixel Poi") && a.device.platformName.contains("Pixel Poi")){
-        return a.device.remoteId.str.compareTo(b.device.remoteId.str);
-      }else{
-        return b.device.platformName.contains("Pixel Poi") ? 1 : -1;
-      }
-
-    });
+    // scanResults.sort((a, b){
+    //   if(a.device.platformName.contains("Pixel Poi") && a.device.platformName.contains("Pixel Poi")){
+    //     return a.device.remoteId.str.compareTo(b.device.remoteId.str);
+    //   }else{
+    //     return b.device.platformName.contains("Pixel Poi") ? 1 : -1;
+    //   }
+    // });
     return ListView.builder(
       padding: const EdgeInsets.all(8),
       itemCount: scanResults.length,
@@ -326,7 +325,6 @@ class _WelcomeState extends State<WelcomePage> {
         });
         if (await hardware.uart.device.connectionState.first == BluetoothConnectionState.connected) {
           await hardware.uart.disconnect();
-          await Future.delayed(Duration(milliseconds: 2000));
         }
         await hardware.subscription.cancel();
         setState(() {

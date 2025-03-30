@@ -577,7 +577,7 @@
     (property "ki_keywords" "single buffer level shift")
     (path "/bdc4d81f-7f94-4fb4-abb8-6c4233de0250")
     (attr smd)
-    (fp_text reference "U6" (at 0 -2.4) (layer "F.SilkS")
+    (fp_text reference "U6" (at -3.148683 -0.239887) (layer "F.SilkS")
         (effects (font (size 1 1) (thickness 0.15)))
       (tstamp bdf7d7a6-7d62-4efe-a31e-2963d8b93ae7)
     )
