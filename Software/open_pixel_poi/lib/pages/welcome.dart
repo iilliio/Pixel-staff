@@ -243,12 +243,10 @@ class _WelcomeState extends State<WelcomePage> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: isRefreshing || isConnecting || isDisconnecting
-                    ? null
-                    : () {
-                        scan();
-                      },
-                onLongPress: () {
+                onPressed: isRefreshing || isConnecting || isDisconnecting ? null : () {
+                  scan();
+                },
+                onLongPress: isRefreshing || isConnecting || isDisconnecting ? null : () {
                   Provider.of<Model>(context, listen: false).connectedPoi = [];
                   Navigator.push(
                     _key.currentContext!,
