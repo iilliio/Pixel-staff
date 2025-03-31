@@ -3,6 +3,7 @@ import 'package:open_pixel_poi/pages/pattern_creators/create_check.dart';
 import 'package:open_pixel_poi/pages/pattern_creators/create_fade.dart';
 import 'package:open_pixel_poi/pages/pattern_creators/create_merge.dart';
 import 'package:open_pixel_poi/pages/pattern_creators/create_strobe.dart';
+import 'package:open_pixel_poi/pages/pattern_creators/create_text.dart';
 import 'package:provider/provider.dart';
 
 import '../model.dart';
@@ -35,6 +36,7 @@ class _CreateState extends State<CreatePage> {
           getCreatorButton("Check", () => CreateCheckPage()),
           getCreatorButton("Fade", () => CreateFadePage()),
           getCreatorButton("Strobe", () => CreateStrobePage()),
+          getCreatorButton("Text", () => CreateTextPage()),
           getCreatorButton("Layer", () => CreateMergePage()),
         ],
       ),
