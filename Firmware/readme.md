@@ -1,4 +1,4 @@
-#Open Pixel Poi Firmware
+# Open Pixel Poi Firmware
 This is the firmware, it is an arduino project designed to be built in arduino ide v1.8.19 on windows.
 It used the adafruit neo pixel library, which must be installed through the ide.
 
