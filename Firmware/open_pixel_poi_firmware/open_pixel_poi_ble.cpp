@@ -100,7 +100,7 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
     void setup(){
       debugf("Setup begin\n");
       // Create the BLE Device
-      BLEDevice::init("Pixel Poi ESP32C3");
+      BLEDevice::init("Open Pixel Poi");
 
       // Create the BLE Server
       server = BLEDevice::createServer();
