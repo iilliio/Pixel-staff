@@ -22,11 +22,6 @@ class PoiHardware {
   PoiHardware(this.uart) {
     subscription = uart.device.connectionState.listen((event) {
       state.add(event);
-      if(event == BluetoothConnectionState.connected){
-        // Increase MTU, takes 2 seconds to take effect
-        uart.device.requestMtu(512);
-        // await Future.delayed(Duration(milliseconds: 2000)); // For now hope we don't send any data for a bit after connecting
-      }
       isConncted = event == BluetoothConnectionState.connected;
     });
   }

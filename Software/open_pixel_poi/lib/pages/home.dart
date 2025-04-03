@@ -442,7 +442,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       for (var poi in Provider.of<Model>(context, listen: false).connectedPoi!.where((poi) => poi.isConncted)) {
                         // Calling connect seems to bring device to the front of a magic queue and operate faster, and properly
                         await poi.uart.device
-                            .connect(timeout: Duration(seconds: 5), autoConnect: true, mtu: null)
+                            .connect(timeout: Duration(seconds: 5), autoConnect: false)
                             .timeout(Duration(milliseconds: 5250));
                         await poi.uart.device.clearGattCache(); // Boosts speed too
                         await poi.sendPattern2(tuple.item2).timeout(const Duration(seconds: 5), onTimeout: () {return false;});

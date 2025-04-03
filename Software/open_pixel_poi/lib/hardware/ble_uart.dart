@@ -27,10 +27,16 @@ class BLEUart {
       await device.disconnect();
     }
 
-    await device
-        .connect(timeout: Duration(seconds: 5), autoConnect: true, mtu: null)
-        .timeout(Duration(milliseconds: 5250), onTimeout: () => throw Exception("Connection Timeout"));
-    await device.connectionState.where((val) => val == BluetoothConnectionState.connected).first;
+    try{
+      await device
+          .connect(timeout: Duration(seconds: 5), autoConnect: false)
+          .timeout(Duration(milliseconds: 5250), onTimeout: () => throw Exception("Connection Timeout"));
+    }catch(e){
+      // Retry once
+      await device
+          .connect(timeout: Duration(seconds: 5), autoConnect: false)
+          .timeout(Duration(milliseconds: 5250), onTimeout: () => throw Exception("Connection Timeout"));
+    }
 
     List<BluetoothService> services = await device.discoverServices();
     if (services == null) {
