@@ -12,7 +12,7 @@ Open Pixel Poi
   ·
   <a href="./Hardware/Assembly/README.md">Assembly</a>
   ·
-  <a href="">Android App</a>
+  <a href="./Software/README.md">Android App</a>
   ·
   <a href="https://discord.gg/hErUF8A4">Discord</a>
 </h4>
@@ -28,4 +28,4 @@ Designed to be simple, afforable, repairable, and customizable.
 
 #### License
 [Licensed  with GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)
-Suggested donation of 5$ per set of Poi built via [paypal](https://www.paypal.com/donate/?business=MTYSHEQVNBVNQ&amount=5&no_recurring=1&item_name=For+Creating+%26+Maintaing+Open+Pixel+Poi&currency_code=USD) or purchase PCB from store link.
+Suggested donation of 5$ per set of Poi built via [paypal](https://www.paypal.com/donate/?business=MTYSHEQVNBVNQ&amount=5&no_recurring=1&item_name=For+Creating+%26+Maintaing+Open+Pixel+Poi&currency_code=USD) or purchase PCBs from store link.
