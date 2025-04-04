@@ -324,62 +324,101 @@ class _MyHomePageState extends State<MyHomePage> {
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0),
-        child: ListTile(
-          title: const Text("Pattern Slot", style: TextStyle(color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold)),
-          subtitle: Column(
-            children: [
-              Row(
+        child: Column(
+          children: [
+            ListTile(
+              title: const Text("Pattern Bank", style: TextStyle(color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold)),
+              subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
                     child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_PATTERN_SLOT, false)),
+                        .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_BANK, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_PATTERN_SLOT, false)),
+                        .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_BANK, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_PATTERN_SLOT, false)),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    onPressed: () => Provider.of<Model>(context, listen: false)
-                        .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(3, CommCode.CC_SET_PATTERN_SLOT, false)),
-                  ),
-                  const VerticalDivider(width: 8.0),
-                  ElevatedButton(
-                    child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    onPressed: () => Provider.of<Model>(context, listen: false)
-                        .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_PATTERN_SLOT, false)),
+                        .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_BANK, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("∞", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendCommCode(CommCode.CC_SET_PATTERN_ALL, false)),
+                        .forEach((poi) => poi.sendCommCode(CommCode.CC_SET_BANK_ALL, false)),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            ListTile(
+              title: const Text("Pattern Slot", style: TextStyle(color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold)),
+              subtitle: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                      const VerticalDivider(width: 8.0),
+                      ElevatedButton(
+                        child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                      const VerticalDivider(width: 8.0),
+                      ElevatedButton(
+                        child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(3, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                      const VerticalDivider(width: 8.0),
+                      ElevatedButton(
+                        child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                      const VerticalDivider(width: 8.0),
+                      ElevatedButton(
+                        child: const Text("∞", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendCommCode(CommCode.CC_SET_PATTERN_ALL, false)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -563,7 +602,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void showNewestPattern(){
     setState(() {
-      tabIndex = 0;
+      // tabIndex = 0; // This doesn't properly select the tab
     });
     // This is probably the most gross thing ive ever done, and im sorry 😭 (also the animation doesn't work)
     WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -42,7 +42,7 @@ class OpenPixelPoiLED {
 
     void loop(){
       led_strip.clear();
-      if(config.displayState == DS_PATTERN || config.displayState == DS_PATTERN_ALL){
+      if(config.displayState == DS_PATTERN || config.displayState == DS_PATTERN_ALL  || config.displayState == DS_PATTERN_ALL_ALL){
         frameIndex = ((millis() - config.displayStateLastUpdated) / (1000/(config.animationSpeed*2))) % config.frameCount;
         if(lastFrameIndex == frameIndex){
           return;
@@ -63,20 +63,20 @@ class OpenPixelPoiLED {
           green = 0x00;
           blue = 0xff;
         }else if(config.displayState == DS_WAITING2){
+          // Pink for bank select & demo mode!
+          red = 255;
+          green = 0;
+          blue = 255;
+        }else if(config.displayState == DS_WAITING3){
           // White for brightness!
           red = 0x88;
           green = 0x88;
           blue = 0x88;
-        }else if(config.displayState == DS_WAITING3){
+        }else if(config.displayState == DS_WAITING4){
           // RED for speed!
           red = 0xFF;
           green = 0x00;
           blue = 0x00;
-        }else if(config.displayState == DS_WAITING4){
-          // Pink for demo mode!
-          red = 255;
-          green = 0;
-          blue = 255;
         }else if(config.displayState == DS_WAITING5){
           // Green -> RED fade for battery!
           red = 0xFF * ((millis() - config.displayStateLastUpdated)/500.0);
@@ -137,6 +137,18 @@ class OpenPixelPoiLED {
         for(int j=0; j<20; j++){
           led_strip.setPixelColor(j, led_strip.Color(red, 0x00, 0x00));
         }
+      }else if(config.displayState == DS_BANK){
+        if (millis() - config.displayStateLastUpdated < 1500){
+          for (int j=0; j <= (millis() - config.displayStateLastUpdated)/125; j+=4){
+            led_strip.setPixelColor(j, led_strip.Color(0xFF, 0x00, 0xFF));
+            led_strip.setPixelColor(j+1, led_strip.Color(0x00, 0x00, 0xFF));
+            led_strip.setPixelColor(j+2, led_strip.Color(0xFF, 0x00, 0xFF));
+          }
+        }else{
+          for (int j=0; j < 20; j++){
+            led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
+          }
+        }
       }else if(config.displayState == DS_BRIGHTNESS){
         // Override brightness without saving it. Button will save it upon release.
         if(millis() - config.displayStateLastUpdated < 500){
@@ -161,8 +173,8 @@ class OpenPixelPoiLED {
       }else if(config.displayState == DS_SPEED){
         red = 0xFF;
         for (int j=0; j < (millis() - config.displayStateLastUpdated)/250; j+=2){
-          led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
-          led_strip.setPixelColor(j+1, led_strip.Color(red, green, blue));
+          led_strip.setPixelColor(j, led_strip.Color(red, 0, 0));
+          led_strip.setPixelColor(j+1, led_strip.Color(red, 0, 0));
         }
       }
 

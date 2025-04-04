@@ -58,6 +58,9 @@ enum CommCode {
   CC_SET_PATTERN,       // 4
   CC_SET_PATTERN_SLOT,  // 5
   CC_SET_PATTERN_ALL,   // 6
+  CC_SET_BANK,          // 7
+  CC_SET_BANK_ALL,      // 8
+  CC_GET_FW_VERSION,    // 9
 };
 
 class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallbacks{
@@ -89,6 +92,11 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
     
     void bleSendSuccess(){
       uint8_t response[] = {0x45, 0x46, 0x00, 0x07, CC_SUCCESS, 0x46, 0x45};
+      writeToPixelPoi(response);
+    }
+
+    void bleSendFWVersion(){
+      uint8_t response[] = {0x45, 0x46, 0x00, 0x08, CC_GET_FW_VERSION, 0x01, 0x46, 0x45};
       writeToPixelPoi(response);
     }
     
@@ -184,7 +192,7 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
             
             bleSendSuccess();
           }else if(requestCode == CC_SET_PATTERN_SLOT){
-            config.setPatternSlot(bleStatus[2]%5, true);
+            config.setPatternSlot(bleStatus[2]%PATTERN_BANK_SIZE, true);
             config.displayState = DS_PATTERN;
             config.displayStateLastUpdated = millis();
             bleSendSuccess();
@@ -192,6 +200,17 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
             config.displayState = DS_PATTERN_ALL;
             config.displayStateLastUpdated = millis();
             bleSendSuccess();
+          }else if(requestCode == CC_SET_BANK){
+            config.setPatternBank(bleStatus[2]%PATTERN_BANK_COUNT, true);
+            config.displayState = DS_PATTERN;
+            config.displayStateLastUpdated = millis();
+            bleSendSuccess();
+          }else if(requestCode == CC_SET_BANK_ALL){
+            config.displayState = DS_PATTERN_ALL_ALL;
+            config.displayStateLastUpdated = millis();
+            bleSendSuccess();
+          }else if(requestCode == CC_GET_FW_VERSION){
+            bleSendFWVersion();
           }else{
             debugf("Recieved message with unknown code!\n");
             bleSendError();

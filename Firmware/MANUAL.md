@@ -5,7 +5,7 @@
 Open pixel poi have a single button menu which gives access to
 
 1. Power on/off
-1. 5 pattern slots
+1. 15 pattern slots (split into 3 pattern banks)
 1. 5 Brightness levels
 1. 10 speeds
 1. Auto patten cycle mode
@@ -34,22 +34,30 @@ blinking animation starts.
 
 ## Changing Patterns
 A single button press will show the blue dot animation, and then
-change to the next pattern. After the last pattern, the poi will
+change to the next pattern. After the 5th pattern, the poi will
 loop back to the first pattern.
 
+## Auto pattern cycling
+a double press which will show the magenta dot 
+animation and begin automatically cycling through all 5 patterns.
+
+## Changing pattern banks
+A single press, followed by a press and hold will show the pink
+dot pattern cycling animation, and then ramp up through the pattern
+bank slots. There are 3 slots, which hold 5 patterns each. Release
+the hold at the desired bank to select it. Keep holding past the
+3rd bank and release when the poi display full magenta to auto
+cycle all patterns in all banks
+
 ## Changing Brightness
-A single press, followed by a press and hold will show the white
+A double press, followed by a press and hold will show the white
 dot animation, and then ramp up through the brightness levels.
 Release the hold at the desired brightness level to select it.
 
 ## Changing Speed
-A double press, followed by a press and hold will show the red
+A tripple press, followed by a press and hold will show the red
 dot animation, and then ramp up through the speed levels.
 Release the hold at the desired speed level to select it.
-
-## Auto pattern cycling
-Pressing the button 4 times which will show the magenta dot 
-animation and begin automatically cycling through all 5 patterns.
 
 ## Battery level monitoring
 A single press and hold will show the battery level as a color.
