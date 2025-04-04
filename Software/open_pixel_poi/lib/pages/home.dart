@@ -7,6 +7,7 @@ import '../hardware/models/comm_code.dart';
 import '../model.dart';
 import '../widgets/connection_state_indicator.dart';
 import '../widgets/pattern_import_button.dart';
+import './create.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -18,6 +19,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final ValueNotifier<bool> loading = ValueNotifier<bool>(false);
   int tabIndex = 0;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget getButtons(BuildContext buildContext) {
     return Column(
       children: [
-        getPrimarySettings2(buildContext),
-        // SingleChildScrollView(child: getImagesList(buildContext)),
+        getPrimarySettings(buildContext),
         Expanded(
           child: getImagesList(buildContext),
         ),
@@ -89,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget getPrimarySettings2(BuildContext buildContext){
+  Widget getPrimarySettings(BuildContext buildContext){
     return DefaultTabController(
       initialIndex: 0,
       length: 4,
@@ -136,42 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget getPrimarySettings(BuildContext buildContext) {
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListTile(
-          title: const Text('Primary Settings',
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              )),
-          subtitle: Column(
-            children: [
-              getBrightnessButtons(buildContext),
-              const Divider(
-                height: 1,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-              getFrequencyButtons(buildContext),
-              const Divider(
-                height: 1,
-                thickness: 1,
-                indent: 0,
-                endIndent: 0,
-              ),
-              getPatternSots(buildContext),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget getBrightnessButtons(BuildContext buildContext){
     return Card(
       elevation: 5,
@@ -188,21 +153,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_BRIGHTNESS)),
+                        .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_BRIGHTNESS, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_BRIGHTNESS)),
+                        .forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_BRIGHTNESS, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(10, CommCode.CC_SET_BRIGHTNESS)),
+                        .forEach((poi) => poi.sendInt8(10, CommCode.CC_SET_BRIGHTNESS, false)),
                   ),
                 ],
               ),
@@ -213,21 +178,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(25, CommCode.CC_SET_BRIGHTNESS)),
+                        .forEach((poi) => poi.sendInt8(25, CommCode.CC_SET_BRIGHTNESS, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(50, CommCode.CC_SET_BRIGHTNESS)),
+                        .forEach((poi) => poi.sendInt8(50, CommCode.CC_SET_BRIGHTNESS, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("6", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(100, CommCode.CC_SET_BRIGHTNESS)),
+                        .forEach((poi) => poi.sendInt8(100, CommCode.CC_SET_BRIGHTNESS, false)),
                   ),
                 ],
               ),
@@ -254,21 +219,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Text("0", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_SPEED, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_SPEED, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_SPEED, false)),
                   ),
                 ],
               ),
@@ -279,21 +244,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Text("10", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(5, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(5, CommCode.CC_SET_SPEED, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("20", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(10, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(10, CommCode.CC_SET_SPEED, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("40", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(20, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(20, CommCode.CC_SET_SPEED, false)),
                   ),
                 ],
               ),
@@ -304,21 +269,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Text("100", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(50, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(50, CommCode.CC_SET_SPEED, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("150", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(75, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(75, CommCode.CC_SET_SPEED, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("200", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(100, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(100, CommCode.CC_SET_SPEED, false)),
                   ),
                 ],
               ),
@@ -329,21 +294,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: const Text("300", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(150, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(150, CommCode.CC_SET_SPEED, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("400", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(200, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(200, CommCode.CC_SET_SPEED, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("500", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(250, CommCode.CC_SET_SPEED)),
+                        .forEach((poi) => poi.sendInt8(250, CommCode.CC_SET_SPEED, false)),
                   ),
                 ],
               ),
@@ -359,62 +324,101 @@ class _MyHomePageState extends State<MyHomePage> {
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0),
-        child: ListTile(
-          title: const Text("Pattern Slot", style: TextStyle(color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold)),
-          subtitle: Column(
-            children: [
-              Row(
+        child: Column(
+          children: [
+            ListTile(
+              title: const Text("Pattern Bank", style: TextStyle(color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold)),
+              subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
                     child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_PATTERN_SLOT)),
+                        .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_BANK, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_PATTERN_SLOT)),
+                        .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_BANK, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_PATTERN_SLOT)),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ElevatedButton(
-                    child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    onPressed: () => Provider.of<Model>(context, listen: false)
-                        .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(3, CommCode.CC_SET_PATTERN_SLOT)),
-                  ),
-                  const VerticalDivider(width: 8.0),
-                  ElevatedButton(
-                    child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                    onPressed: () => Provider.of<Model>(context, listen: false)
-                        .connectedPoi!
-                        .forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_PATTERN_SLOT)),
+                        .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_BANK, false)),
                   ),
                   const VerticalDivider(width: 8.0),
                   ElevatedButton(
                     child: const Text("∞", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     onPressed: () => Provider.of<Model>(context, listen: false)
                         .connectedPoi!
-                        .forEach((poi) => poi.sendCommCode(CommCode.CC_SET_PATTERN_ALL)),
+                        .forEach((poi) => poi.sendCommCode(CommCode.CC_SET_BANK_ALL, false)),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            ListTile(
+              title: const Text("Pattern Slot", style: TextStyle(color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold)),
+              subtitle: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        child: const Text("1", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(0, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                      const VerticalDivider(width: 8.0),
+                      ElevatedButton(
+                        child: const Text("2", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(1, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                      const VerticalDivider(width: 8.0),
+                      ElevatedButton(
+                        child: const Text("3", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(2, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        child: const Text("4", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(3, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                      const VerticalDivider(width: 8.0),
+                      ElevatedButton(
+                        child: const Text("5", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendInt8(4, CommCode.CC_SET_PATTERN_SLOT, false)),
+                      ),
+                      const VerticalDivider(width: 8.0),
+                      ElevatedButton(
+                        child: const Text("∞", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        onPressed: () => Provider.of<Model>(context, listen: false)
+                            .connectedPoi!
+                            .forEach((poi) => poi.sendCommCode(CommCode.CC_SET_PATTERN_ALL, false)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -435,9 +439,28 @@ class _MyHomePageState extends State<MyHomePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            PatternImportButton(() {
-              setState(() {});
-            }),
+            Row(
+              children: [
+                IconButton(
+                onPressed: () async{
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return CreatePage();
+                    }),
+                  );
+                  showNewestPattern();
+                },
+                  icon: const Icon(
+                    Icons.create_outlined,
+                    color: Colors.blue,
+                  ),
+                ),
+                PatternImportButton(() {
+                  showNewestPattern();
+                }),
+              ],
+            )
           ],
         ),
         subtitle: FutureBuilder<List<Tuple2<Widget, DBImage>>>(
@@ -456,6 +479,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         loading.value = true;
                       });
                       for (var poi in Provider.of<Model>(context, listen: false).connectedPoi!.where((poi) => poi.isConncted)) {
+                        // Calling connect seems to bring device to the front of a magic queue and operate faster, and properly
+                        await poi.uart.device
+                            .connect(timeout: Duration(seconds: 5), autoConnect: false)
+                            .timeout(Duration(milliseconds: 5250));
+                        await poi.uart.device.clearGattCache(); // Boosts speed too
                         await poi.sendPattern2(tuple.item2).timeout(const Duration(seconds: 5), onTimeout: () {return false;});
                       }
                       setState(() {
@@ -561,15 +589,32 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 65.0),
                 child: ListView(
+                  controller: _scrollController,
                   children: children,
                 ),
               ),
             );
-
-            // return imagesList(buildContext, images);
           },
         ),
       ),
     );
+  }
+
+  void showNewestPattern(){
+    setState(() {
+      // tabIndex = 0; // This doesn't properly select the tab
+    });
+    // This is probably the most gross thing ive ever done, and im sorry 😭 (also the animation doesn't work)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent, // Scroll to the bottom
+            duration: Duration(milliseconds: 500), // Duration of the animation
+            curve: Curves.easeOut, // Smooth easing curve
+          );
+        });
+      });
+    });
   }
 }

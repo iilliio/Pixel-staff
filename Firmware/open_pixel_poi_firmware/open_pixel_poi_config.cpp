@@ -17,6 +17,7 @@
 enum DisplayState {
   DS_PATTERN,
   DS_PATTERN_ALL,
+  DS_PATTERN_ALL_ALL,
   DS_WAITING,
   DS_WAITING2,
   DS_WAITING3,
@@ -24,9 +25,25 @@ enum DisplayState {
   DS_WAITING5,
   DS_VOLTAGE,
   DS_VOLTAGE2,
+  DS_BANK,
   DS_BRIGHTNESS,
   DS_SPEED,
   DS_SHUTDOWN
+};
+
+#define BATTERY_LATCH 0.05
+#define BATTERY_VOLTAGE_LOW 3.45
+#define BATTERY_VOLTAGE_CRITICAL 3.33
+#define BATTERY_VOLTAGE_SHUTDOWN 3.25
+
+#define PATTERN_BANK_SIZE 5
+#define PATTERN_BANK_COUNT 3 
+
+enum BatteryState {
+  BAT_OK,
+  BAT_LOW,
+  BAT_CRITICAL,
+  BAT_SHUTDOWN,
 };
   
 class OpenPixelPoiConfig {
@@ -35,13 +52,15 @@ class OpenPixelPoiConfig {
     
   public:
     // Runtime State
-    float batteryVoltage = 3.7;
+    float batteryVoltage = BATTERY_VOLTAGE_LOW;
+    BatteryState batteryState = BAT_OK;
     DisplayState displayState = DS_PATTERN;
     long displayStateLastUpdated = 0;
     // Settings (come in from the app)
     uint8_t ledBrightness; 
     uint8_t animationSpeed;
     uint8_t patternSlot;
+    uint8_t patternBank;
     // Pattern
     uint8_t frameHeight; 
     uint16_t frameCount;
@@ -83,52 +102,35 @@ class OpenPixelPoiConfig {
       
       this->configLastUpdated = millis();
     }
+
+    void setPatternBank(uint8_t patternBank, bool save) {
+      this->patternBank = patternBank;
+      if(save){
+        preferences.putChar("patternBank", this->patternBank);
+      }
+      loadFrameHeight();
+      loadFrameCount();
+      fillDefaultPattern();
+      loadPattern();
+      
+      this->configLastUpdated = millis();
+    }
     
     void setFrameHeight(uint8_t frameHeight) {
       this->frameHeight = frameHeight;
-      char * key;
-      switch(this->patternSlot){
-        case 0:
-          key = "p0Height";
-          break;
-        case 1:
-          key = "p1Height";
-          break;
-        case 2:
-          key = "p2Height";
-          break;
-        case 3:
-          key = "p3Height";
-          break;
-        case 4:
-          key = "p4Height";
-          break;
-      }
-      preferences.putChar(key, this->frameHeight);
+      String key = "p";
+      key += this->patternSlot + (this->patternBank * PATTERN_BANK_SIZE);
+      key += "Height";
+      preferences.putChar(key.c_str(), this->frameHeight);
       this->configLastUpdated = millis();
     }
     
     void setFrameCount(uint16_t frameCount) {
       this->frameCount = frameCount;
-      char * key;
-      switch(this->patternSlot){
-        case 0:
-          key = "p0FCount";
-          break;
-        case 1:
-          key = "p1FCount";
-          break;
-        case 2:
-          key = "p2FCount";
-          break;
-        case 3:
-          key = "p3FCount";
-          break;
-        case 4:
-          key = "p4FCount";
-          break;
-      }
-      preferences.putUShort(key, this->frameCount);
+      String key = "p";
+      key += this->patternSlot + (this->patternBank * PATTERN_BANK_SIZE);
+      key += "FCount";
+      preferences.putUShort(key.c_str(), this->frameCount);
       this->configLastUpdated = millis();
     }
     
@@ -144,7 +146,7 @@ class OpenPixelPoiConfig {
       }
       debugf_noprefix("\n");
 
-      File file = SPIFFS.open(String("/pattern") + this->patternSlot + ".oppp", FILE_WRITE);
+      File file = SPIFFS.open(String("/pattern") + (this->patternSlot + (this->patternBank * PATTERN_BANK_SIZE)) + ".oppp", FILE_WRITE);
       if(!file || file.isDirectory()){
         debugf("− failed to open file for reading\n");
       }else{
@@ -175,7 +177,7 @@ class OpenPixelPoiConfig {
     }
 
     void loadPattern(){
-      File file = SPIFFS.open(String("/pattern") + this->patternSlot + ".oppp");
+      File file = SPIFFS.open(String("/pattern") + (this->patternSlot  + (this->patternBank * PATTERN_BANK_SIZE)) + ".oppp");
       if(!file || file.isDirectory()){
         debugf("− failed to open file for reading\n");
       }else{
@@ -186,48 +188,18 @@ class OpenPixelPoiConfig {
     }
 
     void loadFrameHeight(){
-      char * key;
-      switch(this->patternSlot){
-        case 0:
-          key = "p0Height";
-          break;
-        case 1:
-          key = "p1Height";
-          break;
-        case 2:
-          key = "p2Height";
-          break;
-        case 3:
-          key = "p3Height";
-          break;
-        case 4:
-          key = "p4Height";
-          break;
-      }
-      this->frameHeight = preferences.getChar(key, 20);
+      String key = "p";
+      key += (this->patternSlot  + (this->patternBank * PATTERN_BANK_SIZE));
+      key += "Height";
+      this->frameHeight = preferences.getChar(key.c_str(), 20);
     }
 
     void loadFrameCount(){
-      char * key;
-      switch(this->patternSlot){
-        case 0:
-          key = "p0FCount";
-          break;
-        case 1:
-          key = "p1FCount";
-          break;
-        case 2:
-          key = "p2FCount";
-          break;
-        case 3:
-          key = "p3FCount";
-          break;
-        case 4:
-          key = "p4FCount";
-          break;
-      }
+      String key = "p";
+      key += (this->patternSlot  + (this->patternBank * PATTERN_BANK_SIZE));
+      key += "FCount";
       debugf("key = %s\n", key);
-      this->frameCount = preferences.getUShort(key, 2);
+      this->frameCount = preferences.getUShort(key.c_str(), 2);
     }
       
     
@@ -250,6 +222,9 @@ class OpenPixelPoiConfig {
 
       this->patternSlot = preferences.getChar("patternSlot", 0x00);
       debugf("- pattern slot = %d\n", this->patternSlot);
+
+      this->patternBank = preferences.getChar("patternBank", 0x00);
+      debugf("- pattern bank = %d\n", this->patternBank);
 
       loadFrameHeight();
       loadFrameCount();
@@ -275,10 +250,26 @@ class OpenPixelPoiConfig {
     }
 
     void loop(){
-      if(this->displayState == DS_PATTERN_ALL && millis() - this->displayStateLastUpdated >  10000){
-        this->setPatternSlot((this->patternSlot + 1) %5, false);
+      // Pattern Cycling
+      if((this->displayState == DS_PATTERN_ALL || this->displayState == DS_PATTERN_ALL_ALL) && millis() - this->displayStateLastUpdated >  10000){
+        this->setPatternSlot((this->patternSlot + 1) % PATTERN_BANK_SIZE, false);
+        if(this->patternSlot == 0 && this->displayState == DS_PATTERN_ALL_ALL){
+          this->setPatternBank((this->patternBank + 1) % PATTERN_BANK_COUNT, false);
+        }
         this->displayStateLastUpdated = millis();
       }
+
+      // Battery latching state
+      if(batteryVoltage <= BATTERY_VOLTAGE_SHUTDOWN || batteryState == BAT_SHUTDOWN){
+        batteryState = BAT_SHUTDOWN;
+      }else if(batteryVoltage <= BATTERY_VOLTAGE_CRITICAL || (batteryState == BAT_CRITICAL && batteryVoltage <= BATTERY_VOLTAGE_CRITICAL + BATTERY_LATCH)){
+        batteryState = BAT_CRITICAL;
+      }else if(batteryVoltage <= BATTERY_VOLTAGE_LOW || (batteryState == BAT_LOW && batteryVoltage <= BATTERY_VOLTAGE_LOW + BATTERY_LATCH)){
+        batteryState = BAT_LOW;
+      }else {
+        batteryState = BAT_OK;
+      }
+      
     }
 };
 

@@ -8,7 +8,6 @@ import 'model.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      Provider(create: (_) => FlutterBluePlus.instance),
       Provider(create: (_) => Model()),
     ],
     child: const OpenPixelPoiApp(),

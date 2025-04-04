@@ -31,19 +31,19 @@ class _WelcomeState extends State<WelcomePage> {
         title: const Text("Open Pixel Poi"),
       ),
       body: StreamBuilder<Object>(
-          stream: Provider.of<FlutterBluePlus>(context).isScanning,
+          stream: FlutterBluePlus.isScanning,
           builder: (context, snapshot) {
             bool isScanning = false;
             if (snapshot.data != null && snapshot.data == true) {
               isScanning = true;
             }
             return StreamBuilder<List<ScanResult>>(
-                stream: Provider.of<FlutterBluePlus>(context).scanResults,
+                stream: FlutterBluePlus.scanResults,
                 builder: (context, snapshot) {
                   List<ScanResult>? scanResults = snapshot.data;
                   if (scanResults != null) {
                     scanResults =
-                        scanResults.where((result) => result.advertisementData.connectable && result.device.name.isNotEmpty).toList();
+                        scanResults.where((result) => result.advertisementData.connectable && result.device.platformName.isNotEmpty).toList();
                   } else {
                     scanResults = List.empty();
                   }
@@ -85,7 +85,7 @@ class _WelcomeState extends State<WelcomePage> {
           mainAxisSize: MainAxisSize.min,
           children: const [
             Text(
-              "Welcome to the LED Remixer!",
+              "Welcome to your poi!",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 24,
@@ -96,7 +96,7 @@ class _WelcomeState extends State<WelcomePage> {
               height: 30,
             ),
             Text(
-              "Press scan blow to search for your LED Remixer, this may launch a permission request.",
+              "Press scan below to search for your poi, this may launch a permission request.",
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -126,7 +126,7 @@ class _WelcomeState extends State<WelcomePage> {
               height: 30,
             ),
             Text(
-              "Please make sure bluetooth is enabled, and your LED Remixer is powered on.",
+              "Please make sure bluetooth and location are enabled, and your poi is powered on.",
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -138,7 +138,13 @@ class _WelcomeState extends State<WelcomePage> {
   }
 
   Widget getList(List<ScanResult> scanResults) {
-    scanResults.sort((a, b){ return b.device.name.contains("Pixel Poi") ? 1 : -1;});
+    // scanResults.sort((a, b){
+    //   if(a.device.platformName.contains("Pixel Poi") && a.device.platformName.contains("Pixel Poi")){
+    //     return a.device.remoteId.str.compareTo(b.device.remoteId.str);
+    //   }else{
+    //     return b.device.platformName.contains("Pixel Poi") ? 1 : -1;
+    //   }
+    // });
     return ListView.builder(
       padding: const EdgeInsets.all(8),
       itemCount: scanResults.length,
@@ -147,26 +153,26 @@ class _WelcomeState extends State<WelcomePage> {
         return Card(
           child: ListTile(
             leading: Checkbox(
-              value: checkedMacAddresses.contains(scanResults[index].device.id.id),
+              value: checkedMacAddresses.contains(scanResults[index].device.remoteId.str),
               onChanged: (checked) {
                 setState(() {
-                  if (checkedMacAddresses.contains(scanResults[index].device.id.id)) {
-                    checkedMacAddresses.remove(scanResults[index].device.id.id);
+                  if (checkedMacAddresses.contains(scanResults[index].device.remoteId.str)) {
+                    checkedMacAddresses.remove(scanResults[index].device.remoteId.str);
                   } else {
-                    checkedMacAddresses.add(scanResults[index].device.id.id);
+                    checkedMacAddresses.add(scanResults[index].device.remoteId.str);
                   }
                 });
               },
             ),
-            title: Text('Name: ${scanResults[index].device.name}'),
-            subtitle: Text('Address: ${scanResults[index].device.id.id}'),
+            title: Text('Name: ${scanResults[index].device.platformName}'),
+            subtitle: Text('Address: ${scanResults[index].device.remoteId.str}'),
             trailing: Icon(Icons.bluetooth),
             onTap: () {
               setState(() {
-                if (checkedMacAddresses.contains(scanResults[index].device.id.id)) {
-                  checkedMacAddresses.remove(scanResults[index].device.id.id);
+                if (checkedMacAddresses.contains(scanResults[index].device.remoteId.str)) {
+                  checkedMacAddresses.remove(scanResults[index].device.remoteId.str);
                 } else {
-                  checkedMacAddresses.add(scanResults[index].device.id.id);
+                  checkedMacAddresses.add(scanResults[index].device.remoteId.str);
                 }
               });
             },
@@ -237,11 +243,18 @@ class _WelcomeState extends State<WelcomePage> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: isRefreshing || isConnecting || isDisconnecting
-                    ? null
-                    : () {
-                        scan();
-                      },
+                onPressed: isRefreshing || isConnecting || isDisconnecting ? null : () {
+                  scan();
+                },
+                onLongPress: isRefreshing || isConnecting || isDisconnecting ? null : () {
+                  Provider.of<Model>(context, listen: false).connectedPoi = [];
+                  Navigator.push(
+                    _key.currentContext!,
+                    MaterialPageRoute(builder: (context) {
+                      return MyHomePage();
+                    }),
+                  );
+                },
                 child: isRefreshing
                     ? CircularProgressIndicator()
                     : const Text(
@@ -262,7 +275,7 @@ class _WelcomeState extends State<WelcomePage> {
                       ? null
                       : () {
                           connect(scanResults
-                              .where((scanResult) => checkedMacAddresses.contains(scanResult.device.id.id))
+                              .where((scanResult) => checkedMacAddresses.contains(scanResult.device.remoteId.str))
                               .map((e) => e.device)
                               .toList());
                         },
@@ -292,7 +305,7 @@ class _WelcomeState extends State<WelcomePage> {
         setState(() {
           isDisconnecting = true;
         });
-        if (await hardware.uart.device.state.first == BluetoothDeviceState.connected) {
+        if (await hardware.uart.device.connectionState.first == BluetoothConnectionState.connected) {
           await hardware.uart.disconnect();
           await Future.delayed(Duration(milliseconds: 2000));
         }
@@ -304,7 +317,7 @@ class _WelcomeState extends State<WelcomePage> {
     }
     // Scan
     hasScanned = true;
-    Provider.of<FlutterBluePlus>(_key.currentContext!, listen: false).startScan(timeout: Duration(seconds: 5));
+    FlutterBluePlus.startScan(withKeywords: ["Pixel Poi"], timeout: Duration(seconds: 5), androidUsesFineLocation: false);
   }
 
   void connect(List<BluetoothDevice> devices) async {
@@ -317,9 +330,8 @@ class _WelcomeState extends State<WelcomePage> {
         setState(() {
           isDisconnecting = true;
         });
-        if (await hardware.uart.device.state.first == BluetoothDeviceState.connected) {
+        if (await hardware.uart.device.connectionState.first == BluetoothConnectionState.connected) {
           await hardware.uart.disconnect();
-          await Future.delayed(Duration(milliseconds: 2000));
         }
         await hardware.subscription.cancel();
         setState(() {
@@ -338,6 +350,7 @@ class _WelcomeState extends State<WelcomePage> {
         print("BLEUart Initialized");
         Provider.of<Model>(_key.currentContext!, listen: false).connectedPoi!.add(PoiHardware(bleUart));
       }, onError: (error) {
+        print("error = $error");
         const snackBar = SnackBar(content: Text('Unable to connect, please make sure selected device is a Open Pixel Poi.'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       });

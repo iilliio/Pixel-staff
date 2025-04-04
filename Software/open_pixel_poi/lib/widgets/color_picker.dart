@@ -5,24 +5,24 @@ import 'package:provider/provider.dart';
 import '../hardware/models/rgb_value.dart';
 import '../model.dart';
 
-class ColorSetter extends StatefulWidget {
+class ColorPicker extends StatefulWidget {
   String title;
   double red, green, blue;
   Function(RGBValue) onValueChanged;
 
-  ColorSetter(this.title, this.red, this.green, this.blue, this.onValueChanged);
+  ColorPicker(this.title, this.red, this.green, this.blue, this.onValueChanged);
 
   @override
-  _ColorSetterState createState() => _ColorSetterState(title, red, green, blue, onValueChanged);
+  _ColorPickerState createState() => _ColorPickerState(title, red, green, blue, onValueChanged);
 }
 
-class _ColorSetterState extends State<ColorSetter> {
+class _ColorPickerState extends State<ColorPicker> {
   String title;
   Function(RGBValue) onValueChanged;
 
   double red, green, blue;
 
-  _ColorSetterState(this.title, this.red, this.green, this.blue, this.onValueChanged);
+  _ColorPickerState(this.title, this.red, this.green, this.blue, this.onValueChanged);
 
   @override
   Widget build(BuildContext context) {

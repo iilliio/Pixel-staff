@@ -1,9 +1,12 @@
 enum CommCode {
-  CC_SUCCESS,
-  CC_ERROR,
-  CC_SET_BRIGHTNESS,
-  CC_SET_SPEED,
-  CC_SET_PATTERN,
-  CC_SET_PATTERN_SLOT,
-  CC_SET_PATTERN_ALL
+  CC_SUCCESS,           // 0
+  CC_ERROR,             // 1
+  CC_SET_BRIGHTNESS,    // 2
+  CC_SET_SPEED,         // 3
+  CC_SET_PATTERN,       // 4
+  CC_SET_PATTERN_SLOT,  // 5
+  CC_SET_PATTERN_ALL,   // 6
+  CC_SET_BANK,          // 7
+  CC_SET_BANK_ALL,      // 8
+  CC_GET_FW_VERSION,    // 9
 }

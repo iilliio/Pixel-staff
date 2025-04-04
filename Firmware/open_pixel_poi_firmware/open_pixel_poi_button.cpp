@@ -55,7 +55,7 @@ public:
     pinMode(A0, INPUT);
 
     //Button Input
-    pinMode(A1,INPUT_PULLUP);
+    pinMode(3,INPUT_PULLUP);
 
     // Regulator Output
     pinMode(D7, OUTPUT);
@@ -65,7 +65,7 @@ public:
   }
 
   void loop() {
-    filteredButtonInput = (filteredButtonInput * 0.92) + (analogRead(A1) * .08);
+    filteredButtonInput = (filteredButtonInput * 0.92) + (analogRead(3) * .08);
     if(filteredButtonInput < 100){
       if(buttonState == BS_INITIAL){ // Single Click
         downTime = millis();
@@ -109,18 +109,18 @@ public:
         shutDownAt = millis();
       }else if(buttonState == BS_CLICK2_DOWN && millis() - downTime >= 500){ // Click2 Hold
         buttonState = BS_CLICK2_HOLD;
-        // Trigger voltage display
-        config.displayState = DS_BRIGHTNESS;
+        // Trigger bank display
+        config.displayState = DS_BANK;
         config.displayStateLastUpdated = millis();
       }else if(buttonState == BS_CLICK3_DOWN && millis() - downTime >= 500){ // Click3 Hold
         buttonState = BS_CLICK3_HOLD;
         // Trigger voltage display
-        config.displayState = DS_SPEED;
+        config.displayState = DS_BRIGHTNESS;
         config.displayStateLastUpdated = millis();
       }else if(buttonState == BS_CLICK4_DOWN && millis() - downTime >= 500){ // Click4 Hold
         buttonState = BS_CLICK4_HOLD;
-        // Do Nothing (display pattern)
-        config.displayState = DS_PATTERN;
+        // Trigger speed display
+        config.displayState = DS_SPEED;
         config.displayStateLastUpdated = millis();
       }else if(buttonState == BS_CLICK5_DOWN && millis() - downTime >= 500){ // Click5 Hold
         buttonState = BS_CLICK5_HOLD;
@@ -145,6 +145,24 @@ public:
         config.displayStateLastUpdated = millis();
       }else if(buttonState == BS_CLICK2_HOLD){
         if(millis() - downTime < 1000){
+          config.setPatternBank(0, true);
+          config.displayState = DS_PATTERN;
+          config.displayStateLastUpdated = millis();
+        }else if(millis() - downTime < 1500){
+          config.setPatternBank(1, true);
+          config.displayState = DS_PATTERN;
+          config.displayStateLastUpdated = millis();
+        }else if(millis() - downTime < 2000){
+          config.setPatternBank(2, true);
+          config.displayState = DS_PATTERN;
+          config.displayStateLastUpdated = millis();
+        }else{
+          config.displayState = DS_PATTERN_ALL_ALL;
+          config.displayStateLastUpdated = millis();
+        }
+        buttonState = BS_INITIAL;
+      }else if(buttonState == BS_CLICK3_HOLD){
+        if(millis() - downTime < 1000){
           config.setLedBrightness(1);
         }else if(millis() - downTime < 1500){
           config.setLedBrightness(4);
@@ -158,7 +176,7 @@ public:
         buttonState = BS_INITIAL;
         config.displayState = DS_PATTERN;
         config.displayStateLastUpdated = millis();
-      }else if(buttonState == BS_CLICK3_HOLD){
+      }else if(buttonState == BS_CLICK4_HOLD){
         if(millis() - downTime < 1000){
           config.setAnimationSpeed(0);
         }else if(millis() - downTime < 1500){
@@ -185,8 +203,6 @@ public:
         buttonState = BS_INITIAL;
         config.displayState = DS_PATTERN;
         config.displayStateLastUpdated = millis();
-      }else if(buttonState == BS_CLICK4_HOLD){
-        buttonState = BS_INITIAL;
       }else if(buttonState == BS_CLICK5_HOLD){
         buttonState = BS_INITIAL;
       }
@@ -194,14 +210,14 @@ public:
 
     // Single press detected after timeout, increment pattern
     if(buttonState == BS_CLICK_UP && millis() - downTime >= 500){
-      config.setPatternSlot((config.patternSlot + 1) %5, true);
+      config.setPatternSlot((config.patternSlot + 1) % PATTERN_BANK_SIZE, true);
       config.displayState = DS_PATTERN;
       config.displayStateLastUpdated = millis();
       buttonState = BS_INITIAL;
     }
-    // Double press detected after timeout, do nothing
+    // Double press detected after timeout, loop patterns
     if(buttonState == BS_CLICK2_UP && millis() - downTime >= 500){
-      config.displayState = DS_PATTERN;
+      config.displayState = DS_PATTERN_ALL;
       config.displayStateLastUpdated = millis();
       buttonState = BS_INITIAL;
     }
@@ -211,9 +227,9 @@ public:
       config.displayStateLastUpdated = millis();
       buttonState = BS_INITIAL;
     }
-    // Quad press detected after timeout, loop pattenrs
+    // Quad press detected after timeout, do nothing
     if(buttonState == BS_CLICK4_UP && millis() - downTime >= 500){
-      config.displayState = DS_PATTERN_ALL;
+      config.displayState = DS_PATTERN;
       config.displayStateLastUpdated = millis();
       buttonState = BS_INITIAL;
     }
@@ -224,8 +240,15 @@ public:
       buttonState = BS_INITIAL;
     }
 
+    // Read battery voltage
     config.batteryVoltage = (config.batteryVoltage * 0.999) + ((analogReadMilliVolts(A0)/500.0) * .001);
-//    debugf("  - batt Voltage = %f and %f\n", config.batteryVoltage);
+
+    // Super low voltage, emergency shutdown (uses data from previous read, this is ok). 
+    if (config.batteryState == BAT_SHUTDOWN && config.displayState != DS_SHUTDOWN){
+      config.displayState = DS_SHUTDOWN;
+      config.displayStateLastUpdated = millis();
+      shutDownAt = millis();
+    }
 
     // do a shutdown if flaged
     if(shutDownAt != 0 && millis() - shutDownAt > 2000){

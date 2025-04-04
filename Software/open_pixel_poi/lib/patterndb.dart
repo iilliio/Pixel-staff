@@ -29,7 +29,7 @@ class PatternDB {
     List<DBImage> images = await getDBImages();
     if (images.isEmpty) {
       print("DB Empty, inserting included images");
-      for (int i = 1; i <= 8; i++) {
+      for (int i = 1; i <= 10; i++) {
         ByteData fileBytes = await rootBundle.load("patterns/pattern$i.bmp");
         Uint8List bytesList = fileBytes.buffer.asUint8List(fileBytes.offsetInBytes, fileBytes.lengthInBytes);
         img.Image image = img.decodeBmp(bytesList)!;
