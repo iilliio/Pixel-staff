@@ -53,7 +53,7 @@ class OpenPixelPoiLED {
           red = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 0];
           green = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 1];
           blue = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 2];
-          led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
+          led_strip.setPixelColor(19-j, led_strip.Color(red, green, blue)); // Invert display, this makes a veritical image right side up at the top of a poi's arc, when it is upside down.
         }
       }else if(config.displayState == DS_WAITING || config.displayState == DS_WAITING2 || config.displayState == DS_WAITING3 || config.displayState == DS_WAITING4 || config.displayState == DS_WAITING5){
         // 500ms or till interupted
