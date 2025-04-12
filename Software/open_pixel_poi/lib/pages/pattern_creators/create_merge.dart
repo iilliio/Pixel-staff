@@ -374,15 +374,30 @@ class _CreateMergeState extends State<CreateMergePage> {
 
   Future<void> makeAndStorePattern(BuildContext context) async{
     var model = Provider.of<Model>(context, listen: false);
-    var tiledImages = await model.patternDB.getRepeatingImgImages([topImage!.item2, bottomImage!.item2]);
 
-    var rgbList = Uint8List((400*20)*3);
-    for(var column = 0; column < 400; column++){
+    var topWidth = topImage!.item2.count;
+    var bottomWidth = bottomImage!.item2.count;
+
+    // Find least common multiple
+    int x = topWidth, y = bottomWidth;
+    while (y != 0) {
+      int temp = y;
+      y = x % y;
+      x = temp;
+    }
+    int gcd = x;
+    int lcm = (topWidth * bottomWidth) ~/ gcd;
+
+    int desiredWidth = min(400, lcm);
+    var images = await model.patternDB.getImgImages([topImage!.item2, bottomImage!.item2]);
+    var rgbList = Uint8List((desiredWidth*20)*3);
+
+    for(var column = 0; column < desiredWidth; column++){
       for(var row = 0; row < 20; row++){
         var columnOffset = column * 20 * 3;
         var rowOffset = row * 3;
-        var top = tiledImages[0].getPixel(column, row);
-        var bottom = tiledImages[1].getPixel(column, row);
+        var top = images[0].getPixel(column % topWidth, row % topImage!.item2.height);
+        var bottom = images[1].getPixel(column % bottomWidth, row % bottomImage!.item2.height);
         if (blendMode == "Lighten") {
           rgbList[columnOffset + rowOffset + 0] = (top.r > bottom.r ? top.r : bottom.r).toInt();
           rgbList[columnOffset + rowOffset + 1] = (top.g > bottom.g ? top.g : bottom.g).toInt();
@@ -424,7 +439,7 @@ class _CreateMergeState extends State<CreateMergePage> {
     var pattern = DBImage(
       id: null,
       height: 20,
-      count: 400,
+      count: desiredWidth,
       bytes: rgbList,
     );
     await model.patternDB.insertImage(pattern);

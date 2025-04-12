@@ -494,7 +494,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
                         title: const Text("Edit/Delete Pattern"),
-                        content: const Text('Pretty self explanatory really -_-'),
+                        content: Text('Image Stats:\nwidth=${tuple.item2.count}\nheight=${tuple.item2.height}'),
                         actionsPadding: const EdgeInsets.all(0.0),
                         actions: <Widget>[
                           TextButton(
@@ -539,9 +539,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            height: 80,
-                            child: tuple.item1,
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: SizedBox(
+                              height: 80,
+                              child: tuple.item1,
+                            ),
                           ),
                           const SizedBox(
                             width: 100,

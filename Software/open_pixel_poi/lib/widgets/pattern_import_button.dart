@@ -30,46 +30,52 @@ class PatternImportButton extends StatelessWidget {
     var model = Provider.of<Model>(context, listen: false);
 
     final ImagePicker picker = ImagePicker();
-    final XFile? imageFile = await picker.pickImage(source: ImageSource.gallery);
-    if(imageFile == null){
-      return;
-    }
-
-    img.Image? image = null;
-    if(imageFile.name.endsWith('bmp') || imageFile.name.endsWith('BMP')){
-      image = img.decodeBmp(await imageFile.readAsBytes())!;
-    }
-    if(imageFile.name.endsWith('png') || imageFile.name.endsWith('PNG')){
-      image = img.decodePng(await imageFile.readAsBytes())!;
-    }
-    if(imageFile.name.endsWith('jpg') || imageFile.name.endsWith('JPG') || imageFile.name.endsWith('jpeg') || imageFile.name.endsWith('JPEG')){
-      image = img.decodeJpg(await imageFile.readAsBytes())!;
-    }
-    if(image == null){
-      return;
-    }
-
-    if(image.width > 400 || image.height > 20){
-      throw Exception("Imported image is too large");
-    }
-    List<int> imageBytes = List.empty(growable: true);
-    for (var w = 0; w < image.width; w++) {
-      for (var h = 0; h < image.height; h++) {
-        var pixel = image.getPixel(w, h);
-        imageBytes.add(pixel.r.toInt());
-        imageBytes.add(pixel.g.toInt());
-        imageBytes.add(pixel.b.toInt());
+    final List<XFile> images = await picker.pickMultiImage();
+    final List<DBImage> patterns = [];
+    for (var imageFile in images){
+      if(imageFile == null){
+        throw Exception("Invalid file.");
       }
+
+      img.Image? image = null;
+      if(imageFile.name.endsWith('bmp') || imageFile.name.endsWith('BMP')){
+        image = img.decodeBmp(await imageFile.readAsBytes())!;
+      }
+      if(imageFile.name.endsWith('png') || imageFile.name.endsWith('PNG')){
+        image = img.decodePng(await imageFile.readAsBytes())!;
+      }
+      if(imageFile.name.endsWith('jpg') || imageFile.name.endsWith('JPG') || imageFile.name.endsWith('jpeg') || imageFile.name.endsWith('JPEG')){
+        image = img.decodeJpg(await imageFile.readAsBytes())!;
+      }
+      if(image == null){
+        throw Exception("Unacceptable image format.");
+      }
+
+      if(image.width > 400 || image.height > 20){
+        throw Exception("Imported image is too large.");
+      }
+      List<int> imageBytes = List.empty(growable: true);
+      for (var w = 0; w < image.width; w++) {
+        for (var h = 0; h < image.height; h++) {
+          var pixel = image.getPixel(w, h);
+          imageBytes.add(pixel.r.toInt());
+          imageBytes.add(pixel.g.toInt());
+          imageBytes.add(pixel.b.toInt());
+        }
+      }
+
+      patterns.add(DBImage(
+        id: null,
+        height: image.height,
+        count: image.width,
+        bytes: Uint8List.fromList(imageBytes),
+      ));
     }
 
-    var pattern = DBImage(
-      id: null,
-      height: image.height,
-      count: image.width,
-      bytes: Uint8List.fromList(imageBytes),
-    );
+    for(var pattern in patterns){
+      await model.patternDB.insertImage(pattern);
+    }
 
-    await model.patternDB.insertImage(pattern);
     onImageImported();
   }
 

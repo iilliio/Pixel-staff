@@ -157,7 +157,11 @@ class PatternDB {
   Future<List<img.Image>> getRepeatingImgImages(List<DBImage> dbImages) async {
     List<img.Image> imgimages = List.empty(growable: true);
     for (var dbImage in dbImages) {
-      final imgimage = img.Image(width: 400, height: 20);
+      int desiredWidth = 0;
+      while(desiredWidth < 100){
+        desiredWidth += dbImage.count;
+      }
+      final imgimage = img.Image(width: desiredWidth, height: 20);
       // Iterate over its pixels
       for (var pixel in imgimage) {
         pixel.r = dbImage.bytes[(((pixel.y % dbImage.height) * 3) + 0) + ((pixel.x % dbImage.count) * (dbImage.height) * 3)];
