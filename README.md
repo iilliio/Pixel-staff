@@ -14,9 +14,10 @@ Open Pixel Poi
   ·
   <a href="./Software/README.md">Android App</a>
   ·
+  <a href="https://mitchlol.github.io/#openpixelpoi">Firmware Tool</a>
+  ·
   <a href="https://discord.gg/hErUF8A4">Discord</a>
 </h4>
-
 
 Open Pixel Poi  is an open source, 3D printable, LED pixel Poi, based around ESP32, WS2812B, and FFF/FDM manufacturing.
 Designed to be simple, afforable, repairable, and customizable.

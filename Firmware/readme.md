@@ -1,8 +1,8 @@
 # Open Pixel Poi Firmware
 
 ##### Links
-For usage instructiuons see the [manual](./MANUAL.md)
-For noob firmware flasher [Open Pixel Poi - Firmware Flasher](https://mitchlol.github.io/#openpixelpoi)
+- [User Manual](./MANUAL.md)
+- [Firmware Flashy Thing](https://mitchlol.github.io/#openpixelpoi)
 
 ##### Firmware info
 This is the firmware, it is an arduino project designed to be built in arduino ide v1.8.19 on windows.
