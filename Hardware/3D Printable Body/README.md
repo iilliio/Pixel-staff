@@ -1,10 +1,21 @@
-# Open Pixel Poi Body
+# Open Pixel Poi - 3D Printed Body
 
-In this folder resides the [3mf](OpenPixelPoiAllParts.3mf) which contains all the parts of a single poi body. You may need to split the object to seperate out the parts.
+## Main Body
+Print all the main body parts in **PLA** or any other rigid material. Slicer profiles such as layer height an infill are not important, just make sure you can do the overhangs. The individual body files have been pre-oriented so that no supports/brims/rafts/etc are required, see the section on orientation below to confirm your orientation. You need 1 of each part per poi, or 2 of each for a pair.
+###### Main body parts are:
+1. [Open Pixel Poi - Body - Top](<Open Pixel Poi - Body - Top.3mf>)
+1. [Open Pixel Poi - Body - Bottom](<Open Pixel Poi - Body - Bottom.3mf>)
+1. [Open Pixel Poi - Body - Button](<Open Pixel Poi - Body - Button.3mf>)
 
-I've been printing all the **main body parts in PLA** without any care for the slicer profile. I don't think it makes much difference, just make sure the overhangs are ok. More refelective filament colors may boost overall light transmission.
+## Outer Shell
+The outer shell must be printed in **Clear / Transparent TPU**. Ive included 2 shell variants. For the original hex shell, I like how it looks with 10% gyroid infill. The round shell should be mostly unaffected by infill, as it has thin walls and internal cavities to control diffusion. Both files are preoriented and do not require any supports/brims/rafts/etc, see the section on orientation below to confirm your orientation. You need 1 shell per poi, so that means 2 shells for a pair. If you're undecided which shell you want, go with the round one.
+###### main body parts are:
+1. **Option 1:** [Open Pixel Poi - Shell - Hex](<Open Pixel Poi - Shell - Hex.3mf>)
+1. **Option 2:** [Open Pixel Poi - Shell - Round Diffused](<Open Pixel Poi - Shell - Round Diffused.3mf>)
 
-The **outer shell should be printed in clear TPU**. Ive been using 10% gyroid infill and it has decent diffusion, tho I suspect this can be improoved upon. I did try 100% infill and the diffusion was far worse so I dont reccomend that. The shell was also pretty stiff and would probably hurt more on impacts. I may design a mold for making this part out of silicone at a later date.
-
-The parts all print without supports when oriented like this. Take special note of orientation the angled half of the body, so the led groove is an overhang rather than requiring supports
+## Orientation
+The parts all print without supports when oriented like this. Take special note of orientation the bottom half of the body, the led groove is an overhang rather than requiring supports.
 ![orientation](print_orientation.png)
+
+## All in one file
+Alternatively [Open Pixel Poi - All Parts In One File](<Open Pixel Poi - All Parts In One File.3mf>) contains all the parts of a single poi body. You will need to split the object to seperate out the parts, and orient them on your own.
