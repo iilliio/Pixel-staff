@@ -9,4 +9,4 @@ This is a flutter app, it is designed to run on android. No other systems have b
 </div>
 
 ## Android Releases
-[Open Pixel Poi v1.0.0](./open_pixel_poi_v1.0.0.apk)
+[Open Pixel Poi v1.0.0](https://github.com/Mitchlol/Open-Pixel-Poi/raw/refs/heads/main/Software/open_pixel_poi_v1.0.0.apk)
