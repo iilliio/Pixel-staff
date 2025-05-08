@@ -161,32 +161,30 @@ class _CreateTextState extends State<CreateTextPage> {
   }
 
   Future<void> makeAndStorePattern(BuildContext context) async{
-
+    var model = Provider.of<Model>(context, listen: false);
     int width = (text.length * 18) + 60;
     final fontZipFile = Uint8List.sublistView(await rootBundle.load("fonts/max.zip"));
     final font = img.BitmapFont.fromZip(fontZipFile);
-    final image = img.Image(width: width, height: 20);
+    final image = img.Image(width: width, height: model.maxPatternHeight);
     img.fill(image, color: img.ColorRgb8(backgroundColor.red, backgroundColor.green, backgroundColor.blue));
     img.drawString(image, text, font: font, x: 0, y: 0, color: img.ColorRgb8(textColor.red, textColor.green, textColor.blue));
 
-    var rgbList = Uint8List((width*20)*3);
+    var rgbList = Uint8List((width*model.maxPatternHeight)*3);
     for(var column = 0; column < width; column++) {
-      for (var row = 0; row < 20; row++) {
-        var columnOffset = column * 20 * 3;
+      for (var row = 0; row < model.maxPatternHeight; row++) {
+        var columnOffset = column * model.maxPatternHeight * 3;
         var rowOffset = row * 3;
         var pixel = image.getPixel(column, row);
 
-        rgbList[columnOffset + rowOffset + 0] = (pixel.r).toInt();
-        rgbList[columnOffset + rowOffset + 1] = (pixel.g).toInt();
-        rgbList[columnOffset + rowOffset + 2] = (pixel.b).toInt();
+        rgbList[columnOffset + rowOffset + 0] = pixel.r.toInt();
+        rgbList[columnOffset + rowOffset + 1] = pixel.g.toInt();
+        rgbList[columnOffset + rowOffset + 2] = pixel.b.toInt();
       }
     }
 
-
-    var model = Provider.of<Model>(context, listen: false);
     var pattern = DBImage(
       id: null,
-      height: 20,
+      height: model.maxPatternHeight,
       count: width,
       bytes: rgbList,
     );

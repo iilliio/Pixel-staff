@@ -161,7 +161,7 @@ class PatternDB {
       while(desiredWidth < 100){
         desiredWidth += dbImage.count;
       }
-      final imgimage = img.Image(width: desiredWidth, height: 20);
+      final imgimage = img.Image(width: desiredWidth, height: dbImage.height);
       // Iterate over its pixels
       for (var pixel in imgimage) {
         pixel.r = dbImage.bytes[(((pixel.y % dbImage.height) * 3) + 0) + ((pixel.x % dbImage.count) * (dbImage.height) * 3)];

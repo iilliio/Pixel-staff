@@ -61,6 +61,7 @@ enum CommCode {
   CC_SET_BANK,          // 7
   CC_SET_BANK_ALL,      // 8
   CC_GET_FW_VERSION,    // 9
+  CC_NUMBER_OF_LEDS     // 10 
 };
 
 class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallbacks{

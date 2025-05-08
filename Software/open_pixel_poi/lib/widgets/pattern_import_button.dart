@@ -51,8 +51,13 @@ class PatternImportButton extends StatelessWidget {
         throw Exception("Unacceptable image format.");
       }
 
-      if(image.width > 400 || image.height > 20){
-        throw Exception("Imported image is too large.");
+      if(image.width > 400 || image.height > model.maxPatternHeight){
+        if(image.height > model.maxPatternHeight) {
+          image = img.copyCrop(image, x: 0, y: 0, width: image.width, height: model.maxPatternHeight);
+        }
+        if(image.width > 400) {
+          throw Exception("Imported image is too wide (max 400 pixels).");
+        }
       }
       List<int> imageBytes = List.empty(growable: true);
       for (var w = 0; w < image.width; w++) {

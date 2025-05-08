@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
-
+import 'dart:io' show Platform;
 import '../database/dbimage.dart';
 import '../hardware/models/comm_code.dart';
 import '../model.dart';
 import '../widgets/connection_state_indicator.dart';
 import '../widgets/pattern_import_button.dart';
 import './create.dart';
+import 'package:image/image.dart' as img;
+import 'package:open_pixel_poi/hardware/poi_hardware_state.dart';
+import 'package:open_pixel_poi/patterndb.dart';
+import '../hardware/poi_hardware.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -29,7 +33,73 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           ...Provider.of<Model>(context)
               .connectedPoi!
-              .map((e) => ConnectionStateIndicator(Provider.of<Model>(context).connectedPoi!.indexOf(e)))
+              .map((e) => ConnectionStateIndicator(Provider.of<Model>(context).connectedPoi!.indexOf(e))),
+          IconButton(
+            icon: const Icon(Icons.height, color: Colors.blue, size: 28),
+            tooltip: 'Configure Pattern Height',
+            onPressed: () => showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                final TextEditingController controller = TextEditingController(
+                  text: Provider.of<Model>(context).maxPatternHeight.toString()
+                );
+                return StatefulBuilder(
+                  builder: (context, setState) => AlertDialog(
+                    title: const Text("Configure Pattern Height"),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: controller,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            labelText: 'Max Height',
+                          ),
+                          onChanged: (value) {
+                            final int? newHeight = int.tryParse(value);
+                            if (newHeight != null && newHeight > 0) {
+                              Provider.of<Model>(context, listen: false).setMaxPatternHeight(newHeight);
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Current Height: ${Provider.of<Model>(context).maxPatternHeight}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          final model = Provider.of<Model>(context, listen: false);
+                          final int? newHeight = int.tryParse(controller.text);
+                          if (newHeight != null && newHeight > 0) {
+                            model.setMaxPatternHeight(newHeight);
+                            for (var poi in model.connectedPoi!.where((poi) => poi.isConncted)) {
+                              await poi.uart.device
+                                  .connect(timeout: Duration(seconds: 5), autoConnect: false)
+                                  .timeout(Duration(milliseconds: 5250));
+                              if (Platform.isAndroid) {
+                                await poi.uart.device.clearGattCache();
+                              }
+                              await poi.sendInt8(newHeight, CommCode.CC_NUMBER_OF_LEDS, false);
+                            }
+                          }
+                          Navigator.pop(context);
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
       body: Stack(
@@ -483,7 +553,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         await poi.uart.device
                             .connect(timeout: Duration(seconds: 5), autoConnect: false)
                             .timeout(Duration(milliseconds: 5250));
-                        await poi.uart.device.clearGattCache(); // Boosts speed too
+                        if (Platform.isAndroid) {
+                          await poi.uart.device.clearGattCache(); // Boosts speed too
+                        }
                         await poi.sendPattern2(tuple.item2).timeout(const Duration(seconds: 5), onTimeout: () {return false;});
                       }
                       setState(() {

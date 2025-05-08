@@ -5,7 +5,7 @@
 #include <SPIFFS.h>
 #include <Preferences.h>
 
-//#define DEBUG  // Comment this line out to remove printf statements in released version
+#define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
 #define debugf(...) Serial.print("  <<config>> ");Serial.printf(__VA_ARGS__);
 #define debugf_noprefix(...) Serial.printf(__VA_ARGS__);
@@ -39,6 +39,13 @@ enum DisplayState {
 #define PATTERN_BANK_SIZE 5
 #define PATTERN_BANK_COUNT 3 
 
+// Default number of LEDs if not configured
+#define DEFAULT_NUMBER_OF_LEDS 80
+// Maximum number of frames to store
+#define MAX_FRAMES 400
+// Calculate pattern buffer size: 3 bytes (RGB) * number of LEDs * max frames
+#define PATTERN_BUFFER_SIZE (3 * DEFAULT_NUMBER_OF_LEDS * MAX_FRAMES)
+
 enum BatteryState {
   BAT_OK,
   BAT_LOW,
@@ -61,10 +68,11 @@ class OpenPixelPoiConfig {
     uint8_t animationSpeed;
     uint8_t patternSlot;
     uint8_t patternBank;
+    uint8_t numberOfLeds = DEFAULT_NUMBER_OF_LEDS;
     // Pattern
     uint8_t frameHeight; 
     uint16_t frameCount;
-    uint8_t *pattern = (uint8_t *) malloc(24000*sizeof(uint8_t));
+    uint8_t *pattern = (uint8_t *) malloc(PATTERN_BUFFER_SIZE);
     uint16_t patternLength;
 
     // Variables
@@ -191,7 +199,7 @@ class OpenPixelPoiConfig {
       String key = "p";
       key += (this->patternSlot  + (this->patternBank * PATTERN_BANK_SIZE));
       key += "Height";
-      this->frameHeight = preferences.getChar(key.c_str(), 20);
+      this->frameHeight = preferences.getChar(key.c_str(), this->numberOfLeds);
     }
 
     void loadFrameCount(){
@@ -200,6 +208,13 @@ class OpenPixelPoiConfig {
       key += "FCount";
       debugf("key = %s\n", key);
       this->frameCount = preferences.getUShort(key.c_str(), 2);
+    }
+
+    void setNumberOfLeds(uint8_t numberOfLeds) {
+      debugf("Save Number of LEDs = %d\n", numberOfLeds);
+      this->numberOfLeds = numberOfLeds;
+      preferences.putChar("numberOfLeds", this->numberOfLeds);
+      this->configLastUpdated = millis();
     }
       
     
@@ -219,6 +234,9 @@ class OpenPixelPoiConfig {
 
       this->animationSpeed = preferences.getChar("animationSpeed", 0x0A);
       debugf("- animation speed = %d frames per sec\n", this->animationSpeed * 2);
+
+      this->numberOfLeds = preferences.getChar("numberOfLeds", DEFAULT_NUMBER_OF_LEDS);
+      debugf("- number of LEDs = %d\n", this->numberOfLeds);
 
       this->patternSlot = preferences.getChar("patternSlot", 0x00);
       debugf("- pattern slot = %d\n", this->patternSlot);

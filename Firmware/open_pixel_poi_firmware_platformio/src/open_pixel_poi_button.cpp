@@ -6,7 +6,7 @@
 #include <driver/gpio.h>
 #include "esp_sleep.h"
 
-//#define DEBUG  // Comment this line out to remove printf statements in released version
+#define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
 #define debugf(...) Serial.print("<<button>> ");Serial.printf(__VA_ARGS__);
 #define debugf_noprefix(...) Serial.printf(__VA_ARGS__);

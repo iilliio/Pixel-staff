@@ -147,10 +147,11 @@ class _CreateCheckState extends State<CreateCheckPage> {
   }
 
   Future<void> makeAndStorePattern(BuildContext context) async{
-    var rgbList = Uint8List(((gridSize * 2) * (gridSize * 2)) * 3);
+    var model = Provider.of<Model>(context, listen: false);
+    var rgbList = Uint8List(((gridSize * 2) * model.maxPatternHeight) * 3);
     for(int column = 0; column < gridSize * 2; column++){
-      for(int row = 0; row < gridSize * 2; row++){
-        var pixelOffset = (column * (gridSize * 2)) + row;
+      for(int row = 0; row < model.maxPatternHeight; row++){
+        var pixelOffset = (column * model.maxPatternHeight) + row;
         var rgbOffset = pixelOffset * 3;
         if((column < gridSize && row < gridSize) || (column >= gridSize && row >= gridSize)){
           rgbList[rgbOffset] = colorOne.red;
@@ -166,12 +167,11 @@ class _CreateCheckState extends State<CreateCheckPage> {
 
     var pattern = DBImage(
       id: null,
-      height: gridSize * 2,
+      height: model.maxPatternHeight,
       count: gridSize * 2,
       bytes: rgbList,
     );
 
-    var model = Provider.of<Model>(context, listen: false);
     await model.patternDB.insertImage(pattern);
   }
 }

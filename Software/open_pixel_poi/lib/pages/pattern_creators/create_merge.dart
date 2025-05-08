@@ -390,11 +390,11 @@ class _CreateMergeState extends State<CreateMergePage> {
 
     int desiredWidth = min(400, lcm);
     var images = await model.patternDB.getImgImages([topImage!.item2, bottomImage!.item2]);
-    var rgbList = Uint8List((desiredWidth*20)*3);
+    var rgbList = Uint8List((desiredWidth*model.maxPatternHeight)*3);
 
     for(var column = 0; column < desiredWidth; column++){
-      for(var row = 0; row < 20; row++){
-        var columnOffset = column * 20 * 3;
+      for(var row = 0; row < model.maxPatternHeight; row++){
+        var columnOffset = column * model.maxPatternHeight * 3;
         var rowOffset = row * 3;
         var top = images[0].getPixel(column % topWidth, row % topImage!.item2.height);
         var bottom = images[1].getPixel(column % bottomWidth, row % bottomImage!.item2.height);
@@ -438,7 +438,7 @@ class _CreateMergeState extends State<CreateMergePage> {
     }
     var pattern = DBImage(
       id: null,
-      height: 20,
+      height: model.maxPatternHeight,
       count: desiredWidth,
       bytes: rgbList,
     );

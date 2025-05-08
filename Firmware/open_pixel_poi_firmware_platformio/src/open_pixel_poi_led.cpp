@@ -6,7 +6,7 @@
 // LED
 #include <Adafruit_NeoPixel.h>
 
-//#define DEBUG  // Comment this line out to remove printf statements in released version
+#define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
 #define debugf(...) Serial.print("  <<led>> ");Serial.printf(__VA_ARGS__);
 #define debugf_noprefix(...) Serial.printf(__VA_ARGS__);
@@ -24,7 +24,7 @@ class OpenPixelPoiLED {
     long lastFrameIndex = 0;
 
     // Declare our NeoPixel strip object:
-    Adafruit_NeoPixel led_strip{20, D8, NEO_GRB + NEO_KHZ800};
+    Adafruit_NeoPixel led_strip{config.numberOfLeds, D8, NEO_GRB + NEO_KHZ800};
     
   public:
     OpenPixelPoiLED(OpenPixelPoiConfig& _config): config(_config) {}    
@@ -49,11 +49,11 @@ class OpenPixelPoiLED {
         }else{
           lastFrameIndex = frameIndex;
         }
-        for (int j=0; j<20; j++){
+        for (int j=0; j<config.numberOfLeds; j++){
           red = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 0];
           green = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 1];
           blue = config.pattern[frameIndex*config.frameHeight*3 + j%config.frameHeight*3 + 2];
-          led_strip.setPixelColor(19-j, led_strip.Color(red, green, blue)); // Invert display, this makes a veritical image right side up at the top of a poi's arc, when it is upside down.
+          led_strip.setPixelColor(config.numberOfLeds-1-j, led_strip.Color(red, green, blue)); // Invert display, this makes a veritical image right side up at the top of a poi's arc, when it is upside down.
         }
       }else if(config.displayState == DS_WAITING || config.displayState == DS_WAITING2 || config.displayState == DS_WAITING3 || config.displayState == DS_WAITING4 || config.displayState == DS_WAITING5){
         // 500ms or till interupted
@@ -83,8 +83,8 @@ class OpenPixelPoiLED {
           green = 0xFF - red;
           blue = 0x00;
         }
-        for(int j=0; j<20; j++){
-          if(j == (millis() - config.displayStateLastUpdated)/50 || 20 - j == (millis() - config.displayStateLastUpdated)/50){
+        for(int j=0; j<config.numberOfLeds; j++){
+          if(j == (millis() - config.displayStateLastUpdated)/50 || config.numberOfLeds- j == (millis() - config.displayStateLastUpdated)/50){
             led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
           }else{
             led_strip.setPixelColor(j, led_strip.Color(0x00, 0x00, 0x00));
@@ -100,7 +100,7 @@ class OpenPixelPoiLED {
         } 
         red = 0xff - green;
         blue = 0x00;
-        for (int j=0; j<20; j++){
+        for (int j=0; j<config.numberOfLeds; j++){
           led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
         }
       }else if(config.displayState == DS_VOLTAGE2){
@@ -134,7 +134,7 @@ class OpenPixelPoiLED {
         // 2000ms
         // Crappy but simple shutdown animation for now
         red = /*strobe*/((millis() - config.displayStateLastUpdated) % 200 > 100) * /*color*/0xFF * /*fade out*/((2000-(millis() - config.displayStateLastUpdated))/2000.0);
-        for(int j=0; j<20; j++){
+        for(int j=0; j<config.numberOfLeds; j++){
           led_strip.setPixelColor(j, led_strip.Color(red, 0x00, 0x00));
         }
       }else if(config.displayState == DS_BANK){
@@ -145,7 +145,7 @@ class OpenPixelPoiLED {
             led_strip.setPixelColor(j+2, led_strip.Color(0xFF, 0x00, 0xFF));
           }
         }else{
-          for (int j=0; j < 20; j++){
+          for (int j=0; j < config.numberOfLeds; j++){
             led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
           }
         }
@@ -165,7 +165,7 @@ class OpenPixelPoiLED {
         red = 0xFF;
         green = 0xFF;
         blue = 0xFF;
-        for (int j=0; j< 20; j++){
+        for (int j=0; j< config.numberOfLeds; j++){
           if (j % 4 == 1 || j % 4 == 2){
             led_strip.setPixelColor(j, led_strip.Color(red, green, blue));
           }
@@ -191,7 +191,7 @@ class OpenPixelPoiLED {
       if(config.batteryState == BAT_CRITICAL && (config.displayState == DS_PATTERN || config.displayState == DS_PATTERN_ALL)){
         led_strip.clear();
         led_strip.setPixelColor(0, led_strip.Color(255, 0x00, 0x00));
-        led_strip.setPixelColor(19, led_strip.Color(255, 0x00, 0x00));
+        led_strip.setPixelColor(config.numberOfLeds-1, led_strip.Color(255, 0x00, 0x00));
       }
       led_strip.show();
     }

@@ -9,7 +9,7 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
-//#define DEBUG  // Comment this line out to remove printf statements in released version
+#define DEBUG  // Comment this line out to remove printf statements in released version
 #ifdef DEBUG
 #define debugf(...) Serial.print("  <<ble>> ");Serial.printf(__VA_ARGS__);
 #define debugf_noprefix(...) Serial.printf(__VA_ARGS__);
@@ -61,6 +61,7 @@ enum CommCode {
   CC_SET_BANK,          // 7
   CC_SET_BANK_ALL,      // 8
   CC_GET_FW_VERSION,    // 9
+  CC_NUMBER_OF_LEDS,    // 10
 };
 
 class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallbacks{
@@ -212,6 +213,9 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
             bleSendSuccess();
           }else if(requestCode == CC_GET_FW_VERSION){
             bleSendFWVersion();
+          }else if(requestCode == CC_NUMBER_OF_LEDS){
+            config.setNumberOfLeds(bleStatus[2]);
+            bleSendSuccess();
           }else{
             debugf("Recieved message with unknown code!\n");
             bleSendError();
@@ -227,10 +231,10 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
             config.setFrameHeight(bleStatus[2]);
             config.setFrameCount(bleStatus[3] << 8 | bleStatus[4]);
             config.patternLength = config.frameHeight*config.frameCount*3;// Need exception handling for buffer overruns!!!
-            if(config.patternLength > 24000){
+            if(config.patternLength > PATTERN_BUFFER_SIZE){
 //              config.setPatternSlot(config.patternSlot);
               // set error pattern
-              config.setFrameHeight(20);
+              config.setFrameHeight(DEFAULT_NUMBER_OF_LEDS);
               config.setFrameCount(2);
               config.patternLength = 120;
               config.fillDefaultPattern();
