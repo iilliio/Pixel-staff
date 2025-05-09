@@ -9,7 +9,7 @@ class Model extends ChangeNotifier {
   PoiHardwareState hardwareState = PoiHardwareState();
   PatternDB patternDB = PatternDB();
 
-  int _maxPatternHeight = 20;
+  int _maxPatternHeight = 80;
 
   int get maxPatternHeight => _maxPatternHeight;
 
