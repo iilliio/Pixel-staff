@@ -40,10 +40,15 @@ class OpenPixelPoiButton {
 private:
   OpenPixelPoiConfig& config;
 
-  int filteredButtonInput = 1000;
   int buttonState = 0;
   long downTime = 0;
   bool regulatorEnabled = true;
+  
+  // Button debouncing variables
+  bool lastButtonState = HIGH;
+  bool buttonStateStable = HIGH;
+  unsigned long lastDebounceTime = 0;
+  unsigned long debounceDelay = 50; // 50ms debounce delay
 
   long shutDownAt = 0;
 
@@ -55,7 +60,7 @@ public:
     pinMode(A0, INPUT);
 
     //Button Input
-    pinMode(3,INPUT_PULLUP);
+    pinMode(3, INPUT_PULLUP);
 
     // Regulator Output
     pinMode(D7, OUTPUT);
@@ -65,8 +70,26 @@ public:
   }
 
   void loop() {
-    filteredButtonInput = (filteredButtonInput * 0.92) + (analogRead(3) * .08);
-    if(filteredButtonInput < 100){
+    // Read the button state (LOW when pressed due to pullup)
+    bool currentButtonReading = digitalRead(3);
+    
+    // Check if button state has changed (for debouncing)
+    if (currentButtonReading != lastButtonState) {
+      lastDebounceTime = millis();
+    }
+    
+    // If the button state has been stable for the debounce delay
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+      // If the button state has actually changed
+      if (currentButtonReading != buttonStateStable) {
+        buttonStateStable = currentButtonReading;
+      }
+    }
+    
+    lastButtonState = currentButtonReading;
+    
+    // Button pressed = LOW (due to INPUT_PULLUP)
+    if(buttonStateStable == LOW){
       if(buttonState == BS_INITIAL){ // Single Click
         downTime = millis();
         buttonState = BS_CLICK_DOWN;
@@ -128,7 +151,7 @@ public:
         config.displayState = DS_PATTERN;
         config.displayStateLastUpdated = millis();
       }
-    }else{
+    }else{  // Button released = HIGH (due to INPUT_PULLUP)
       if(buttonState == BS_CLICK_DOWN){
         buttonState = BS_CLICK_UP;
       }else if(buttonState == BS_CLICK2_DOWN){
@@ -253,6 +276,7 @@ public:
     // do a shutdown if flaged
     if(shutDownAt != 0 && millis() - shutDownAt > 2000){
       // Regulator Shutdown
+
       digitalWrite(D7, LOW);
       delay(500);
       
