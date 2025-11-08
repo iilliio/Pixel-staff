@@ -40,7 +40,7 @@ enum DisplayState {
 #define PATTERN_BANK_COUNT 3 
 
 // Default number of LEDs if not configured
-#define DEFAULT_NUMBER_OF_LEDS 80
+#define DEFAULT_NUMBER_OF_LEDS 60
 // Maximum number of frames to store
 #define MAX_FRAMES 400
 // Calculate pattern buffer size: 3 bytes (RGB) * number of LEDs * max frames

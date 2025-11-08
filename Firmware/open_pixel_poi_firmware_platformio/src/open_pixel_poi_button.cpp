@@ -264,8 +264,7 @@ public:
     }
 
     // Read battery voltage
-    config.batteryVoltage = (config.batteryVoltage * 0.999) + ((analogReadMilliVolts(A0)/500.0) * .001);
-
+    config.batteryVoltage = (config.batteryVoltage * 0.995) + ((analogReadMilliVolts(A0)/500.0 + 0.2) * .005);
     // Super low voltage, emergency shutdown (uses data from previous read, this is ok). 
     if (config.batteryState == BAT_SHUTDOWN && config.displayState != DS_SHUTDOWN){
       config.displayState = DS_SHUTDOWN;
