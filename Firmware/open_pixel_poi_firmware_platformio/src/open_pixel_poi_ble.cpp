@@ -190,7 +190,7 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
             for (int i=0; i<config.patternLength; i++){
               config.pattern[i]=bleStatus[i+5];
             }
-            config.savePattern();
+            config.requestSavePattern();
             
             bleSendSuccess();
           }else if(requestCode == CC_SET_PATTERN_SLOT){
@@ -214,7 +214,8 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
           }else if(requestCode == CC_GET_FW_VERSION){
             bleSendFWVersion();
           }else if(requestCode == CC_NUMBER_OF_LEDS){
-            config.setNumberOfLeds(bleStatus[2]);
+            //config.setNumberOfLeds(bleStatus[2]);
+            debugf("Number of LEDs = %d\n", config.numberOfLeds);
             bleSendSuccess();
           }else{
             debugf("Recieved message with unknown code!\n");
@@ -238,7 +239,7 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
               config.setFrameCount(2);
               config.patternLength = 120;
               config.fillDefaultPattern();
-              config.savePattern();
+              config.requestSavePattern();
               flagMultipartPattern = false;
               return;
             }
@@ -256,7 +257,7 @@ class OpenPixelPoiBLE : public BLEServerCallbacks, public BLECharacteristicCallb
               multipartPatternOffset++;
             }
             
-            config.savePattern();
+            config.requestSavePattern();
           }else if(flagMultipartPattern){
             debugf("Middle of multipart message! Offset = %d\n", multipartPatternOffset);
             for (int i= 0; i < bleLength; i++){

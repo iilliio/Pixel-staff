@@ -28,5 +28,11 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This app uses Bluetooth to connect to and control Pixel Poi devices.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app uses Bluetooth to connect to and control Pixel Poi devices.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app uses the microphone to visualize audio as Fourier art.</string>
 </dict>
 </plist>

@@ -1,8 +1,10 @@
 import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:image/image.dart' as img;
 
@@ -27,24 +29,49 @@ class PatternImportButton extends StatelessWidget {
   }
 
   void importPattern(BuildContext context) async {
-    var model = Provider.of<Model>(context, listen: false);
+    try {
+      var model = Provider.of<Model>(context, listen: false);
 
-    final ImagePicker picker = ImagePicker();
-    final List<XFile> images = await picker.pickMultiImage();
+      List<File> imageFiles = [];
+      
+      // Use file_picker for better macOS support
+      if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+        print("Opening file picker for macOS...");
+        FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['jpg', 'jpeg', 'png', 'bmp'],
+          allowMultiple: true,
+        );
+        
+        if (result != null) {
+          print("Files selected: ${result.files.length}");
+          imageFiles = result.paths.map((path) => File(path!)).toList();
+        } else {
+          print("No files selected");
+          return;
+        }
+      } else {
+        // Use image_picker for mobile platforms
+        final ImagePicker picker = ImagePicker();
+        final List<XFile> images = await picker.pickMultiImage();
+        imageFiles = images.map((xfile) => File(xfile.path)).toList();
+      }
+
     final List<DBImage> patterns = [];
-    for (var imageFile in images){
+    for (var imageFile in imageFiles){
       if(imageFile == null){
         throw Exception("Invalid file.");
       }
 
       img.Image? image = null;
-      if(imageFile.name.endsWith('bmp') || imageFile.name.endsWith('BMP')){
+      String fileName = imageFile.path.toLowerCase();
+      if(fileName.endsWith('.bmp')){
         image = img.decodeBmp(await imageFile.readAsBytes())!;
       }
-      if(imageFile.name.endsWith('png') || imageFile.name.endsWith('PNG')){
+      if(fileName.endsWith('.png')){
         image = img.decodePng(await imageFile.readAsBytes())!;
       }
-      if(imageFile.name.endsWith('jpg') || imageFile.name.endsWith('JPG') || imageFile.name.endsWith('jpeg') || imageFile.name.endsWith('JPEG')){
+      if(fileName.endsWith('.jpg') || fileName.endsWith('.jpeg')){
         image = img.decodeJpg(await imageFile.readAsBytes())!;
       }
       if(image == null){
@@ -77,11 +104,17 @@ class PatternImportButton extends StatelessWidget {
       ));
     }
 
-    for(var pattern in patterns){
-      await model.patternDB.insertImage(pattern);
-    }
+      for(var pattern in patterns){
+        await model.patternDB.insertImage(pattern);
+      }
 
-    onImageImported();
+      onImageImported();
+    } catch (e) {
+      print("Error importing pattern: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error importing image: $e')),
+      );
+    }
   }
 
   // Future<void> getLostData() async {

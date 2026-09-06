@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "kicad": {
+      "command": "/Library/Frameworks/Python.framework/Versions/3.13/bin/uvx",
+      "args": [
+        "--python", "3.13",
+        "--from", "kicad-mcp-pro",
+        "kicad-mcp-pro",
+        "--transport", "stdio",
+        "--mode", "write",
+        "--project-dir", "/Users/iliao/Projects/Pixel-staff/Hardware/Electronics/kicad"
+      ],
+      "env": {}
+    }
+  }
+}

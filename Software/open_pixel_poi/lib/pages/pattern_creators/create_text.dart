@@ -13,7 +13,6 @@ import '../../model.dart';
 import '../../widgets/color_picker.dart';
 import '../../widgets/connection_state_indicator.dart';
 
-
 class CreateTextPage extends StatefulWidget {
   const CreateTextPage({super.key});
 
@@ -29,19 +28,25 @@ class _CreateTextState extends State<CreateTextPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(flagFirst){
+    if (flagFirst) {
       flagFirst = false;
       var random = Random();
-      textColor = RGBValue([random.nextInt(256), random.nextInt(256), random.nextInt(256)]);
-      backgroundColor = RGBValue([0,0,0]);
+      textColor = RGBValue([
+        random.nextInt(256),
+        random.nextInt(256),
+        random.nextInt(256),
+      ]);
+      backgroundColor = RGBValue([0, 0, 0]);
     }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Solid Color Pattern Creator"),
         actions: [
-          ...Provider.of<Model>(context)
-              .connectedPoi!
-              .map((e) => ConnectionStateIndicator(Provider.of<Model>(context).connectedPoi!.indexOf(e)))
+          ...Provider.of<Model>(context).connectedPoi!.map(
+            (e) => ConnectionStateIndicator(
+              Provider.of<Model>(context).connectedPoi!.indexOf(e),
+            ),
+          ),
         ],
       ),
       body: saving ? getSaving() : getForm(),
@@ -53,20 +58,20 @@ class _CreateTextState extends State<CreateTextPage> {
       children: [
         ListTile(
           title: Text(
-          "Text:",
-            style: TextStyle(
-              fontSize: 24,
-              color: Colors.blue,
-            ),
+            "Text:",
+            style: TextStyle(fontSize: 24, color: Colors.blue),
           ),
           subtitle: TextField(
-            decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Your text'),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Your text',
+            ),
             onChanged: (newValue) => text = newValue,
             textCapitalization: TextCapitalization.characters,
             inputFormatters: [
-              FilteringTextInputFormatter(RegExp("[0-9A-Z ]"), allow: true)
+              FilteringTextInputFormatter(RegExp("[0-9A-Z ]"), allow: true),
             ],
-            maxLength: 18,
+            maxLength: 16,
           ),
         ),
         ColorPicker(
@@ -74,8 +79,8 @@ class _CreateTextState extends State<CreateTextPage> {
           textColor.red.toDouble(),
           textColor.green.toDouble(),
           textColor.blue.toDouble(),
-              (RGBValue color) {
-                textColor = color;
+          (RGBValue color) {
+            textColor = color;
           },
         ),
         ColorPicker(
@@ -83,8 +88,8 @@ class _CreateTextState extends State<CreateTextPage> {
           backgroundColor.red.toDouble(),
           backgroundColor.green.toDouble(),
           backgroundColor.blue.toDouble(),
-              (RGBValue color) {
-                backgroundColor = color;
+          (RGBValue color) {
+            backgroundColor = color;
           },
         ),
         Padding(
@@ -120,7 +125,8 @@ class _CreateTextState extends State<CreateTextPage> {
                     onPressed: () async {
                       saving = true;
                       await makeAndStorePattern(context);
-                      if(context.mounted) { // Do we actually want this check?
+                      if (context.mounted) {
+                        // Do we actually want this check?
                         Navigator.pop(context, true);
                       }
                       saving = false;
@@ -130,7 +136,7 @@ class _CreateTextState extends State<CreateTextPage> {
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -145,14 +151,9 @@ class _CreateTextState extends State<CreateTextPage> {
             Text(
               "Saving...",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
             CircularProgressIndicator(),
           ],
         ),
@@ -160,17 +161,33 @@ class _CreateTextState extends State<CreateTextPage> {
     );
   }
 
-  Future<void> makeAndStorePattern(BuildContext context) async{
+  Future<void> makeAndStorePattern(BuildContext context) async {
     var model = Provider.of<Model>(context, listen: false);
     int width = (text.length * 18) + 60;
-    final fontZipFile = Uint8List.sublistView(await rootBundle.load("fonts/max.zip"));
+    final fontZipFile = Uint8List.sublistView(
+      await rootBundle.load("fonts/max.zip"),
+    );
     final font = img.BitmapFont.fromZip(fontZipFile);
     final image = img.Image(width: width, height: model.maxPatternHeight);
-    img.fill(image, color: img.ColorRgb8(backgroundColor.red, backgroundColor.green, backgroundColor.blue));
-    img.drawString(image, text, font: font, x: 0, y: 0, color: img.ColorRgb8(textColor.red, textColor.green, textColor.blue));
+    img.fill(
+      image,
+      color: img.ColorRgb8(
+        backgroundColor.red,
+        backgroundColor.green,
+        backgroundColor.blue,
+      ),
+    );
+    img.drawString(
+      image,
+      text,
+      font: font,
+      x: 0,
+      y: 0,
+      color: img.ColorRgb8(textColor.red, textColor.green, textColor.blue),
+    );
 
-    var rgbList = Uint8List((width*model.maxPatternHeight)*3);
-    for(var column = 0; column < width; column++) {
+    var rgbList = Uint8List((width * model.maxPatternHeight) * 3);
+    for (var column = 0; column < width; column++) {
       for (var row = 0; row < model.maxPatternHeight; row++) {
         var columnOffset = column * model.maxPatternHeight * 3;
         var rowOffset = row * 3;

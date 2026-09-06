@@ -8,7 +8,7 @@ import 'model.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      Provider(create: (_) => Model()),
+      ChangeNotifierProvider(create: (_) => Model()),
     ],
     child: const OpenPixelPoiApp(),
   ));

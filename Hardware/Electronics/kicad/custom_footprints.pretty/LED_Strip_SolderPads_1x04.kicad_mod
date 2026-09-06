@@ -1,0 +1,190 @@
+(footprint "LED_Strip_SolderPads_1x04"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "Direct-solder pads for LED strip wires. 4 hand-solder pads, 2.0 x 3.0mm on 3.5mm pitch, with silkscreen pin labels. Pin 1 = GND, 2 = +5V, 3 = Data1, 4 = Data2.")
+	(tags "solder pad wire led strip direct solder hand")
+	(attr smd)
+	(property "Reference" "J**"
+		(at 1.4 2.6 0)
+		(layer "F.SilkS")
+		(uuid "11110000-0001-4000-8000-000000000001")
+		(effects
+			(font
+				(size 0.9 0.9)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "LED"
+		(at 0 3.4 0)
+		(layer "F.Fab")
+		(uuid "11110000-0001-4000-8000-000000000002")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.12)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "11110000-0001-4000-8000-000000000003")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "11110000-0001-4000-8000-000000000004")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" smd roundrect
+		(at -5.25 0)
+		(size 2 3)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.15)
+		(uuid "11110000-0002-4000-8000-000000000001")
+	)
+	(pad "2" smd roundrect
+		(at -1.75 0)
+		(size 2 3)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.15)
+		(uuid "11110000-0002-4000-8000-000000000002")
+	)
+	(pad "3" smd roundrect
+		(at 1.75 0)
+		(size 2 3)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.15)
+		(uuid "11110000-0002-4000-8000-000000000003")
+	)
+	(pad "4" smd roundrect
+		(at 5.25 0)
+		(size 2 3)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(roundrect_rratio 0.15)
+		(uuid "11110000-0002-4000-8000-000000000004")
+	)
+	(fp_text user "GND"
+		(at -5.25 -2.45 0)
+		(layer "F.SilkS")
+		(uuid "11110000-0007-4000-8000-000000000001")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.13)
+			)
+		)
+	)
+	(fp_text user "5V"
+		(at -1.75 -2.45 0)
+		(layer "F.SilkS")
+		(uuid "11110000-0007-4000-8000-000000000002")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.13)
+			)
+		)
+	)
+	(fp_text user "D1"
+		(at 1.75 -2.45 0)
+		(layer "F.SilkS")
+		(uuid "11110000-0007-4000-8000-000000000003")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.13)
+			)
+		)
+	)
+	(fp_text user "D2"
+		(at 5.25 -2.45 0)
+		(layer "F.SilkS")
+		(uuid "11110000-0007-4000-8000-000000000004")
+		(effects
+			(font
+				(size 0.8 0.8)
+				(thickness 0.13)
+			)
+		)
+	)
+	(fp_line
+		(start -6.3 1.85)
+		(end 6.3 1.85)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "11110000-0004-4000-8000-000000000001")
+	)
+	(fp_line
+		(start -6.3 1.85)
+		(end -6.3 -1.6)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "11110000-0004-4000-8000-000000000002")
+	)
+	(fp_line
+		(start 6.3 1.85)
+		(end 6.3 -1.6)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "11110000-0004-4000-8000-000000000003")
+	)
+	(fp_circle
+		(center -5.25 2.6)
+		(end -5 2.6)
+		(stroke
+			(width 0.3)
+			(type solid)
+		)
+		(fill solid)
+		(layer "F.SilkS")
+		(uuid "11110000-0004-4000-8000-000000000004")
+	)
+	(fp_rect
+		(start -6.25 -1.5)
+		(end 6.25 1.5)
+		(stroke
+			(width 0.1)
+			(type default)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "11110000-0005-4000-8000-000000000001")
+	)
+	(fp_rect
+		(start -6.55 -1.75)
+		(end 6.55 2.1)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "11110000-0006-4000-8000-000000000001")
+	)
+)

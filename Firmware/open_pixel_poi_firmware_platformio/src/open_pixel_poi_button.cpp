@@ -49,7 +49,7 @@ private:
   bool buttonStateStable = HIGH;
   unsigned long lastDebounceTime = 0;
   unsigned long debounceDelay = 50; // 50ms debounce delay
-
+  #define WAKE_PIN GPIO_NUM_2
   long shutDownAt = 0;
 
 public:
@@ -60,7 +60,7 @@ public:
     pinMode(A0, INPUT);
 
     //Button Input
-    pinMode(3, INPUT_PULLUP);
+    pinMode(A1, INPUT_PULLUP);
 
     // Regulator Output
     pinMode(D7, OUTPUT);
@@ -71,10 +71,11 @@ public:
 
   void loop() {
     // Read the button state (LOW when pressed due to pullup)
-    bool currentButtonReading = digitalRead(3);
-    
+    bool currentButtonReading = digitalRead(A1);
+    //debugf("Current button reading: %d\n", currentButtonReading);
     // Check if button state has changed (for debouncing)
     if (currentButtonReading != lastButtonState) {
+      debugf("Button state changed: %d -> %d\n", lastButtonState, currentButtonReading);
       lastDebounceTime = millis();
     }
     
@@ -277,7 +278,7 @@ public:
       // Regulator Shutdown
 
       digitalWrite(D7, LOW);
-      delay(500);
+      delay(2000);
       
       //hold disable, isolate and power domain config functions may be unnecessary
       //gpio_deep_sleep_hold_dis();
@@ -285,8 +286,19 @@ public:
       //esp_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_ON);
 
       // ESP32 Shutdown sequence
-      gpio_set_direction(gpio_num_t(3), GPIO_MODE_INPUT);
-      esp_deep_sleep_enable_gpio_wakeup(0b001000, ESP_GPIO_WAKEUP_GPIO_LOW);
+      // gpio_set_pull_mode(gpio_num_t(A1), GPIO_PULLUP_ONLY);
+      // gpio_set_direction(gpio_num_t(A1), GPIO_MODE_INPUT);
+      // esp_sleep_enable_ext1_wakeup(1ULL << digitalPinToBitMask(A1), ESP_EXT1_WAKEUP_ALL_LOW);
+      // esp_deep_sleep_start();
+      gpio_deep_sleep_hold_dis();              // just in case
+      rtc_gpio_init(WAKE_PIN);
+      rtc_gpio_set_direction(WAKE_PIN, RTC_GPIO_MODE_INPUT_ONLY);
+      rtc_gpio_pullup_en(WAKE_PIN);          // or pullup depending on your circuit
+      rtc_gpio_pulldown_dis(WAKE_PIN);
+  
+      // Wake on LOW level on A1
+      esp_sleep_enable_ext0_wakeup(WAKE_PIN, 0);   // 0 = LOW, 1 = HIGH
+  
       esp_deep_sleep_start();
     }
 

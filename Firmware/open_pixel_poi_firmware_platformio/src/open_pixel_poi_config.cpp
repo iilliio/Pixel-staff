@@ -40,11 +40,12 @@ enum DisplayState {
 #define PATTERN_BANK_COUNT 3 
 
 // Default number of LEDs if not configured
-#define DEFAULT_NUMBER_OF_LEDS 60
+#define DEFAULT_NUMBER_OF_LEDS 51
+#define DEFAULT_NUMBER_OF_LEDS2 48
 // Maximum number of frames to store
 #define MAX_FRAMES 400
 // Calculate pattern buffer size: 3 bytes (RGB) * number of LEDs * max frames
-#define PATTERN_BUFFER_SIZE (3 * DEFAULT_NUMBER_OF_LEDS * MAX_FRAMES)
+#define PATTERN_BUFFER_SIZE (3 * (DEFAULT_NUMBER_OF_LEDS + DEFAULT_NUMBER_OF_LEDS2) * MAX_FRAMES)
 
 enum BatteryState {
   BAT_OK,
@@ -58,6 +59,8 @@ class OpenPixelPoiConfig {
     Preferences preferences;
     
   public:
+    // Defer heavy SPIFFS writes out of BLE callback context
+    volatile bool savePatternPending = false;
     // Runtime State
     float batteryVoltage = BATTERY_VOLTAGE_LOW;
     BatteryState batteryState = BAT_OK;
@@ -69,6 +72,7 @@ class OpenPixelPoiConfig {
     uint8_t patternSlot;
     uint8_t patternBank;
     uint8_t numberOfLeds = DEFAULT_NUMBER_OF_LEDS;
+    uint8_t numberOfLeds2 = DEFAULT_NUMBER_OF_LEDS2;
     // Pattern
     uint8_t frameHeight; 
     uint16_t frameCount;
@@ -142,15 +146,22 @@ class OpenPixelPoiConfig {
       this->configLastUpdated = millis();
     }
     
+    void requestSavePattern() {
+      savePatternPending = true;
+    }
+    
     void savePattern() {
       debugf("Save Pattern\n");
-      debugf("- length = %d", this->patternLength);
-      for (int i=0; i<this->patternLength; i+=3) {
-        if (i%this->frameHeight*3 == 0) {
+      debugf("- length = %d\n", this->patternLength);
+      // Trim verbose dump to avoid large stack/IO usage
+      int previewBytes = min<int>(this->patternLength, 60);
+      debugf("  preview (first %d bytes): ", previewBytes);
+      for (int i = 0; i < previewBytes; i += 3) {
+        if (i % (this->frameHeight * 3) == 0) {
           debugf_noprefix("\n");
-          debugf("  ");
+          debugf("    ");
         }
-        debugf_noprefix("0x%02X%02X%02X ", this->pattern[i], this->pattern[i+1], this->pattern[i+2]);
+        debugf_noprefix("0x%02X%02X%02X ", this->pattern[i], this->pattern[i + 1], this->pattern[i + 2]);
       }
       debugf_noprefix("\n");
 
@@ -256,7 +267,7 @@ class OpenPixelPoiConfig {
 
       debugf("- pattern\n");
       for (int i = 0; i < this->frameHeight * this->frameCount; i+=3 ) {
-        if (i%this->frameHeight*3 == 0) {
+        if (i % (this->frameHeight * 3) == 0) {
           debugf_noprefix("\n");
           debugf("    ");
         }
@@ -268,6 +279,10 @@ class OpenPixelPoiConfig {
     }
 
     void loop(){
+      if (savePatternPending) {
+        savePatternPending = false;
+        savePattern();
+      }
       // Pattern Cycling
       if((this->displayState == DS_PATTERN_ALL || this->displayState == DS_PATTERN_ALL_ALL) && millis() - this->displayStateLastUpdated >  10000){
         this->setPatternSlot((this->patternSlot + 1) % PATTERN_BANK_SIZE, false);

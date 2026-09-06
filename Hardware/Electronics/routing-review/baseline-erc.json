@@ -1,0 +1,1927 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-09-06T21:56:11+0300",
+    "kicad_version": "9.0.2",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/55a1363e-3506-4b1f-a7a5-0f5495c7c793",
+            "violations": [
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R1 [R_Small]",
+                            "pos": {
+                                "x": 0.4699,
+                                "y": 0.3429
+                            },
+                            "uuid": "225e45f0-c366-4163-9ff6-d72b352fec26"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R2 [R_Small]",
+                            "pos": {
+                                "x": 0.5207,
+                                "y": 0.3683
+                            },
+                            "uuid": "3bf2a907-df37-4594-a621-876f7b3db520"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR04 [GND]",
+                            "pos": {
+                                "x": 0.5969,
+                                "y": 0.3429
+                            },
+                            "uuid": "b29fb6ca-ff0d-4cf9-b39d-b79592107ecc"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR01 [GND]",
+                            "pos": {
+                                "x": 0.2032,
+                                "y": 0.6731
+                            },
+                            "uuid": "f3c2be31-e4b4-409d-98b0-37c854e644e0"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J6 Pin A8 [SBU1, Bidirectional, Line]",
+                            "pos": {
+                                "x": 0.4318,
+                                "y": 0.5715
+                            },
+                            "uuid": "7acadfdc-2ad9-4137-a3ca-35730b9add49"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR05 [GND]",
+                            "pos": {
+                                "x": 0.4826,
+                                "y": 0.5461
+                            },
+                            "uuid": "bc3e4dcd-10a5-4ef1-921f-521b50edcdf5"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol J6 Pin B8 [SBU2, Bidirectional, Line]",
+                            "pos": {
+                                "x": 0.4318,
+                                "y": 0.5969
+                            },
+                            "uuid": "5c04fbee-7d44-49cc-8308-1438275edafe"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Symbol '+5VD' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR06 [+5VD]",
+                            "pos": {
+                                "x": 0.6985,
+                                "y": 0.2794
+                            },
+                            "uuid": "1866d1a1-3c55-4f3f-928e-8a7d7da4ff65"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'USBLC6-2P6' doesn't match copy in library 'Power_Protection'",
+                    "items": [
+                        {
+                            "description": "Symbol U1 [USBLC6-2P6]",
+                            "pos": {
+                                "x": 0.5842,
+                                "y": 0.5461
+                            },
+                            "uuid": "bf43b705-489b-4f17-8e7f-156646a7895f"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+5VD' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR07 [+5VD]",
+                            "pos": {
+                                "x": 0.6985,
+                                "y": 0.5461
+                            },
+                            "uuid": "170e7061-ad0e-48df-8871-18154fa59303"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+BATT' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR029 [+BATT]",
+                            "pos": {
+                                "x": 0.1651,
+                                "y": 0.9017
+                            },
+                            "uuid": "c4787f66-85d4-475a-80ec-4491e4004eec"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+3.3V' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR030 [+3.3V]",
+                            "pos": {
+                                "x": 0.5334,
+                                "y": 0.9017
+                            },
+                            "uuid": "a72ecbdf-69a9-424a-b408-8a27c558f778"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR031 [GND]",
+                            "pos": {
+                                "x": 0.3429,
+                                "y": 1.0287
+                            },
+                            "uuid": "ad471284-273d-4c2e-8826-9e20b49ad681"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R5 [R_Small]",
+                            "pos": {
+                                "x": 0.6604,
+                                "y": 0.9144
+                            },
+                            "uuid": "60d91e2a-9058-4ae7-9334-371e00df76fa"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'LED' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol D1 [LED]",
+                            "pos": {
+                                "x": 0.6604,
+                                "y": 0.9779
+                            },
+                            "uuid": "0b5f8879-cff4-464d-bca7-c40ebd594a48"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR022 [GND]",
+                            "pos": {
+                                "x": 0.6604,
+                                "y": 1.016
+                            },
+                            "uuid": "84aa8dad-5e2b-4b98-86e4-3fc3edc44d05"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR02 [GND]",
+                            "pos": {
+                                "x": 0.1651,
+                                "y": 1.2319
+                            },
+                            "uuid": "f76a950b-9a85-4f90-9881-723768af5204"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R3 [R_Small]",
+                            "pos": {
+                                "x": 0.3175,
+                                "y": 1.2319
+                            },
+                            "uuid": "a1480b7f-afdb-4700-9576-d772e05ae8c5"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+BATT' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR016 [+BATT]",
+                            "pos": {
+                                "x": 0.9271,
+                                "y": 0.889
+                            },
+                            "uuid": "3480f322-eba6-4c98-822b-00a347f031c6"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+3.3V' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR049 [+3.3V]",
+                            "pos": {
+                                "x": 0.381,
+                                "y": 1.2319
+                            },
+                            "uuid": "a5bfdd69-6d0f-4a41-b0b4-186aee28d23a"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R9 [R_Small]",
+                            "pos": {
+                                "x": 0.9271,
+                                "y": 0.9144
+                            },
+                            "uuid": "95766f2d-9843-4107-be3e-618df46d11cb"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR013 [GND]",
+                            "pos": {
+                                "x": 0.4826,
+                                "y": 1.2319
+                            },
+                            "uuid": "89bfb874-af01-4899-88a7-3aca28e4c57b"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR048 [GND]",
+                            "pos": {
+                                "x": 0.1651,
+                                "y": 1.3208
+                            },
+                            "uuid": "39fc205c-a18e-43ac-8534-b6e36960aac8"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R10 [R_Small]",
+                            "pos": {
+                                "x": 0.9271,
+                                "y": 0.9906
+                            },
+                            "uuid": "0f39fca3-55bb-4f9b-83b3-fdf33fda74e1"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR017 [GND]",
+                            "pos": {
+                                "x": 0.9271,
+                                "y": 1.016
+                            },
+                            "uuid": "3b9b811c-e4dd-4933-a522-090b23827f70"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U6 Pin 5 [VCC, Power input, Line]",
+                            "pos": {
+                                "x": 0.6858,
+                                "y": 1.2192
+                            },
+                            "uuid": "512a3105-4719-4b65-9466-a17cc6243b43"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                },
+                {
+                    "description": "Symbol '+5V' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR012 [+5V]",
+                            "pos": {
+                                "x": 0.8001,
+                                "y": 1.1811
+                            },
+                            "uuid": "d9488c20-6fb6-4b34-8bb0-f1ea5e468b0f"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR050 [GND]",
+                            "pos": {
+                                "x": 0.1651,
+                                "y": 1.4478
+                            },
+                            "uuid": "88ae0386-f931-42c1-a480-fb7a9ca7c740"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Unconnected wire endpoint",
+                    "items": [
+                        {
+                            "description": "Horizontal Wire, length 0.0127 mm",
+                            "pos": {
+                                "x": 0.7493,
+                                "y": 1.27
+                            },
+                            "uuid": "6d7fbf00-9c5c-431d-a799-6896b8e442f8"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "unconnected_wire_endpoint"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R14 [R_Small]",
+                            "pos": {
+                                "x": 1.2446,
+                                "y": 0.8763
+                            },
+                            "uuid": "9bb70523-fc5c-4fb6-b723-f17322ae326c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR011 [GND]",
+                            "pos": {
+                                "x": 0.8001,
+                                "y": 1.3208
+                            },
+                            "uuid": "8cb72ce9-a832-470d-87c3-41fef7a51bd6"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR033 [GND]",
+                            "pos": {
+                                "x": 1.2827,
+                                "y": 0.889
+                            },
+                            "uuid": "05814969-5778-47c9-b130-a61ebdc76e23"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+BATT' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR015 [+BATT]",
+                            "pos": {
+                                "x": 0.508,
+                                "y": 1.4859
+                            },
+                            "uuid": "167488ce-8a5c-4c2e-946f-fe8ee100ce24"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Unconnected wire endpoint",
+                    "items": [
+                        {
+                            "description": "Horizontal Wire, length 0.0127 mm",
+                            "pos": {
+                                "x": 0.508,
+                                "y": 1.4859
+                            },
+                            "uuid": "5aaf381f-b374-4e16-88d5-c05d98afcfc3"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "unconnected_wire_endpoint"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R6 [R_Small]",
+                            "pos": {
+                                "x": 0.3048,
+                                "y": 1.5494
+                            },
+                            "uuid": "6b35f93d-7506-4815-98fd-9d99b0433a7a"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R12 [R_Small]",
+                            "pos": {
+                                "x": 1.3208,
+                                "y": 0.8763
+                            },
+                            "uuid": "ded5e461-69fe-478d-a18f-420bfdb454d9"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+3.3V' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR028 [+3.3V]",
+                            "pos": {
+                                "x": 0.3556,
+                                "y": 1.5494
+                            },
+                            "uuid": "f902a6f6-44c5-4963-b66f-dacb0c324745"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+BATT' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR018 [+BATT]",
+                            "pos": {
+                                "x": 1.2192,
+                                "y": 1.0287
+                            },
+                            "uuid": "5d23935b-3d2f-41f4-be99-eb820e28425a"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR024 [GND]",
+                            "pos": {
+                                "x": 0.7112,
+                                "y": 1.4605
+                            },
+                            "uuid": "bf8dfead-404b-409d-bde4-451a7478b98f"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR019 [GND]",
+                            "pos": {
+                                "x": 1.2192,
+                                "y": 1.0795
+                            },
+                            "uuid": "05c6622d-617a-4a66-b96b-fd9861eddf18"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R11 [R_Small]",
+                            "pos": {
+                                "x": 1.3208,
+                                "y": 0.9906
+                            },
+                            "uuid": "87606d62-d89f-4aa8-90cd-c936b652c8e0"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '-BATT' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR023 [-BATT]",
+                            "pos": {
+                                "x": 0.7747,
+                                "y": 1.4605
+                            },
+                            "uuid": "612e4523-f6ef-4027-969a-263a5658d924"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Unconnected wire endpoint",
+                    "items": [
+                        {
+                            "description": "Horizontal Wire, length 0.0127 mm",
+                            "pos": {
+                                "x": 0.7747,
+                                "y": 1.4605
+                            },
+                            "uuid": "a88e85b7-7428-461c-b8b9-fc5d3044f1db"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "unconnected_wire_endpoint"
+                },
+                {
+                    "description": "Symbol '+5VD' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR08 [+5VD]",
+                            "pos": {
+                                "x": 0.4699,
+                                "y": 1.6002
+                            },
+                            "uuid": "53eda7ee-1e3c-420b-bb1e-fe3754b854bd"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Pins of type Unspecified and Passive are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U5 Pin 1 [FB, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.3589,
+                                "y": 0.9779
+                            },
+                            "uuid": "6261302d-de10-461b-9830-108df9d632c6"
+                        },
+                        {
+                            "description": "Symbol R12 Pin 2 [Passive, Line]",
+                            "pos": {
+                                "x": 1.3462,
+                                "y": 0.8763
+                            },
+                            "uuid": "635071e7-44cc-4c2e-b42a-69b0e856a472"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Unspecified and Passive are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U5 Pin 2 [EN, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.3589,
+                                "y": 1.0033
+                            },
+                            "uuid": "4598be78-604c-49ad-924c-7dfbbee0f6ca"
+                        },
+                        {
+                            "description": "Symbol R11 Pin 2 [Passive, Line]",
+                            "pos": {
+                                "x": 1.3208,
+                                "y": 0.9652
+                            },
+                            "uuid": "fb1ab5bb-7736-45ab-9cc8-edd756d8303c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R13 [R_Small]",
+                            "pos": {
+                                "x": 1.4605,
+                                "y": 0.8763
+                            },
+                            "uuid": "5023d285-2516-4906-b463-3fbe943b0c36"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Pins of type Unspecified and Passive are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U5 Pin 3 [VIN, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.3589,
+                                "y": 1.0287
+                            },
+                            "uuid": "655cfbfe-10bd-4e50-b602-cdb31b808576"
+                        },
+                        {
+                            "description": "Symbol R11 Pin 1 [Passive, Line]",
+                            "pos": {
+                                "x": 1.3208,
+                                "y": 1.016
+                            },
+                            "uuid": "f387667c-c7d6-4138-abbb-5dddfd1e51a4"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U2 Pin 4 [V_{DD}, Power input, Line]",
+                            "pos": {
+                                "x": 0.6604,
+                                "y": 1.6129
+                            },
+                            "uuid": "6782df7d-562a-43db-b743-1a95dba972a4"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR025 [GND]",
+                            "pos": {
+                                "x": 0.4699,
+                                "y": 1.6891
+                            },
+                            "uuid": "0a9b7149-1d32-4434-bb3d-4e66f357de2a"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Both -BATT and GND are attached to the same items; -BATT will be used in the netlist",
+                    "items": [
+                        {
+                            "description": "Global Label '-BATT'",
+                            "pos": {
+                                "x": 0.3556,
+                                "y": 2.0066
+                            },
+                            "uuid": "d5366263-e843-45a4-b1bd-9f90f9a1abc1"
+                        },
+                        {
+                            "description": "Symbol #PWR025 Hidden pin 1 [GND, Power input, Line]",
+                            "pos": {
+                                "x": 0.4699,
+                                "y": 1.6891
+                            },
+                            "uuid": "240a5ed4-b04b-4164-8bda-bf1113fc1c3e"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "multiple_net_names"
+                },
+                {
+                    "description": "Pins of type Unspecified and Unspecified are connected",
+                    "items": [
+                        {
+                            "description": "Symbol L1 Pin 1 [1, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.397,
+                                "y": 1.1303
+                            },
+                            "uuid": "95a47fce-97e1-4dd3-a100-0d0e6c66adfa"
+                        },
+                        {
+                            "description": "Symbol U5 Pin 3 [VIN, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.3589,
+                                "y": 1.0287
+                            },
+                            "uuid": "655cfbfe-10bd-4e50-b602-cdb31b808576"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R8 [R_Small]",
+                            "pos": {
+                                "x": 0.8001,
+                                "y": 1.6383
+                            },
+                            "uuid": "b41673ee-b6b5-414a-9275-01b569a2f771"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'XEL4030-102MEC' doesn't match copy in library 'easyeda2kicad'",
+                    "items": [
+                        {
+                            "description": "Symbol L1 [XEL4030-102MEC]",
+                            "pos": {
+                                "x": 1.4478,
+                                "y": 1.1303
+                            },
+                            "uuid": "1b974579-3b56-4cb0-b788-f9f1b5f53645"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Pins of type Unspecified and Passive are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U5 Pin 6 [VOUT, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.5621,
+                                "y": 0.9779
+                            },
+                            "uuid": "625dae95-674a-4eb3-959e-a20f5747a973"
+                        },
+                        {
+                            "description": "Symbol C7 Pin 2 [Passive, Line]",
+                            "pos": {
+                                "x": 1.6256,
+                                "y": 0.9779
+                            },
+                            "uuid": "60a36473-f481-4727-8ee1-5a359ea360a2"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Symbol 'R_Small' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol R7 [R_Small]",
+                            "pos": {
+                                "x": 0.5969,
+                                "y": 1.7653
+                            },
+                            "uuid": "2ebf6fd5-2dc5-46ef-8b79-2b3b9ac2dd2d"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR020 [GND]",
+                            "pos": {
+                                "x": 1.5621,
+                                "y": 1.0287
+                            },
+                            "uuid": "cbc53687-0165-4c58-9e50-27a0139133e0"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Pins of type Unspecified and Power input are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U5 Pin 4 [GND, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.5621,
+                                "y": 1.0287
+                            },
+                            "uuid": "9e12c3ef-266b-4294-89bb-901fefbd8133"
+                        },
+                        {
+                            "description": "Symbol #PWR020 Hidden pin 1 [GND, Power input, Line]",
+                            "pos": {
+                                "x": 1.5621,
+                                "y": 1.0287
+                            },
+                            "uuid": "ca3642f1-dde5-40dd-a8f8-a2edbd830ebb"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Unspecified and Unspecified are connected",
+                    "items": [
+                        {
+                            "description": "Symbol L1 Pin 2 [2, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.4986,
+                                "y": 1.1303
+                            },
+                            "uuid": "4941a3f5-9486-44be-84e9-ea7e8e0441ca"
+                        },
+                        {
+                            "description": "Symbol U5 Pin 5 [SW, Unspecified, Line]",
+                            "pos": {
+                                "x": 1.5621,
+                                "y": 1.0033
+                            },
+                            "uuid": "b1dd6d11-78b5-42b3-a717-a46e4ac65d8e"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Symbol 'LED' doesn't match copy in library 'Device'",
+                    "items": [
+                        {
+                            "description": "Symbol D2 [LED]",
+                            "pos": {
+                                "x": 0.8001,
+                                "y": 1.7018
+                            },
+                            "uuid": "0967f626-db6d-4c7c-9757-499cd9466b17"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+BATT' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR027 [+BATT]",
+                            "pos": {
+                                "x": 0.9398,
+                                "y": 1.6764
+                            },
+                            "uuid": "f9a74e45-31b3-44a5-afe5-9cb22bd2e45c"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR026 [GND]",
+                            "pos": {
+                                "x": 0.8763,
+                                "y": 1.7272
+                            },
+                            "uuid": "7b22218b-dd28-488e-871f-a40f438b5a24"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+5V' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR032 [+5V]",
+                            "pos": {
+                                "x": 1.7018,
+                                "y": 0.9398
+                            },
+                            "uuid": "67888802-5ca5-40dc-b95d-715860e4f748"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Symbol '+3.3V' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR09 [+3.3V]",
+                            "pos": {
+                                "x": 2.1082,
+                                "y": 0.2413
+                            },
+                            "uuid": "92b09631-23ab-4575-94d3-5ee19b25a67a"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 1 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.2667
+                            },
+                            "uuid": "dc0b3c0c-4816-4169-ace1-9593944de17f"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 2 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.2921
+                            },
+                            "uuid": "e80ad589-d6e7-4f57-8918-e5f225fbb84b"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 2 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.2921
+                            },
+                            "uuid": "e80ad589-d6e7-4f57-8918-e5f225fbb84b"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 11 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5207
+                            },
+                            "uuid": "3c2bec80-f138-4639-b7a7-bf761b8f9d3f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Bidirectional and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 12 [IO0, Bidirectional, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5461
+                            },
+                            "uuid": "84c93ad1-8140-44d6-a756-5290aaae62f6"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 11 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5207
+                            },
+                            "uuid": "3c2bec80-f138-4639-b7a7-bf761b8f9d3f"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 14 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5969
+                            },
+                            "uuid": "db39c474-f18b-484b-b5e0-cd7401069693"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 11 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5207
+                            },
+                            "uuid": "3c2bec80-f138-4639-b7a7-bf761b8f9d3f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Bidirectional and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 16 [IO10, Bidirectional, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.6477
+                            },
+                            "uuid": "a425a022-6db9-4c96-b76e-844ce5084944"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 14 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5969
+                            },
+                            "uuid": "db39c474-f18b-484b-b5e0-cd7401069693"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Bidirectional and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 18 [IO4, Bidirectional, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.6985
+                            },
+                            "uuid": "cd7a8b45-01c5-4719-9c61-37d6beaa2531"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 14 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5969
+                            },
+                            "uuid": "db39c474-f18b-484b-b5e0-cd7401069693"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Bidirectional and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 19 [IO5, Bidirectional, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.7239
+                            },
+                            "uuid": "f812646b-d533-4c47-a51b-4ac2f7561302"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 14 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5969
+                            },
+                            "uuid": "db39c474-f18b-484b-b5e0-cd7401069693"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Bidirectional and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 20 [IO6, Bidirectional, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.7493
+                            },
+                            "uuid": "0ee27b59-79b5-46e5-83a6-9756662391c4"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 14 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5969
+                            },
+                            "uuid": "db39c474-f18b-484b-b5e0-cd7401069693"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Bidirectional and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 21 [IO7, Bidirectional, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.7747
+                            },
+                            "uuid": "cd2e8610-dc92-41fd-91e2-4640815f1b01"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 14 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.5969
+                            },
+                            "uuid": "db39c474-f18b-484b-b5e0-cd7401069693"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR03 [GND]",
+                            "pos": {
+                                "x": 2.1463,
+                                "y": 1.1049
+                            },
+                            "uuid": "7086a08d-a580-42f5-b4b7-1df55bc2509f"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 61 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.2667
+                            },
+                            "uuid": "76f503fb-8089-4c50-ae56-10f236217f7a"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 1 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.1844,
+                                "y": 0.2667
+                            },
+                            "uuid": "dc0b3c0c-4816-4169-ace1-9593944de17f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 60 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.2921
+                            },
+                            "uuid": "fea2c751-e99a-4a34-834f-e014af2e0674"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 61 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.2667
+                            },
+                            "uuid": "76f503fb-8089-4c50-ae56-10f236217f7a"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 59 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.3175
+                            },
+                            "uuid": "11b97513-86e4-433b-b410-b73ce24aeea2"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 60 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.2921
+                            },
+                            "uuid": "fea2c751-e99a-4a34-834f-e014af2e0674"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 58 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.3429
+                            },
+                            "uuid": "cb8226af-5592-4fa0-8acc-07fde450b1e0"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 59 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.3175
+                            },
+                            "uuid": "11b97513-86e4-433b-b410-b73ce24aeea2"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Global label not connected anywhere else in the schematic",
+                    "items": [
+                        {
+                            "description": "Global Label 'LED Data 2'",
+                            "pos": {
+                                "x": 1.6764,
+                                "y": 2.0066
+                            },
+                            "uuid": "ea2de49f-49ad-42ad-9b46-71cd388aaff5"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "global_label_dangling"
+                },
+                {
+                    "description": "Input pin not driven by any Output pins",
+                    "items": [
+                        {
+                            "description": "Symbol U7 Pin 2 [A, Input, Line]",
+                            "pos": {
+                                "x": 1.6764,
+                                "y": 2.0066
+                            },
+                            "uuid": "6f3fa7ba-8c9a-46dd-b87b-c0195df1d5b6"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_driven"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 57 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.3683
+                            },
+                            "uuid": "788e01e8-c829-4152-bf57-c3be8e015e5a"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 58 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.3429
+                            },
+                            "uuid": "cb8226af-5592-4fa0-8acc-07fde450b1e0"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 56 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.3937
+                            },
+                            "uuid": "4d3b4456-7b31-4b90-b47c-eca59292f190"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 57 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.3683
+                            },
+                            "uuid": "788e01e8-c829-4152-bf57-c3be8e015e5a"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 55 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.4191
+                            },
+                            "uuid": "4e946eaf-100f-4f75-a9d6-4b28825e130e"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 56 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.3937
+                            },
+                            "uuid": "4d3b4456-7b31-4b90-b47c-eca59292f190"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 54 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.4445
+                            },
+                            "uuid": "d1d11b96-350b-458e-85f2-19c390b66f81"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 55 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.4191
+                            },
+                            "uuid": "4e946eaf-100f-4f75-a9d6-4b28825e130e"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 53 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.4699
+                            },
+                            "uuid": "64f6523d-7e64-4ab2-b63d-f284128702bc"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 54 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.4445
+                            },
+                            "uuid": "d1d11b96-350b-458e-85f2-19c390b66f81"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 52 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.4953
+                            },
+                            "uuid": "2924fcb6-c7b4-41e6-8c90-eb4befb7ac68"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 53 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.4699
+                            },
+                            "uuid": "64f6523d-7e64-4ab2-b63d-f284128702bc"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 51 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.5207
+                            },
+                            "uuid": "a345d3a0-a3f2-4c86-b521-420a64bea01c"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 52 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.4953
+                            },
+                            "uuid": "2924fcb6-c7b4-41e6-8c90-eb4befb7ac68"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 50 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.5461
+                            },
+                            "uuid": "a91d0d59-9fbe-47e2-b74c-e478f709dbf4"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 51 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.5207
+                            },
+                            "uuid": "a345d3a0-a3f2-4c86-b521-420a64bea01c"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 49 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.5715
+                            },
+                            "uuid": "ece2daf7-33ee-4a82-9df3-3e1b806b8b66"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 50 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.5461
+                            },
+                            "uuid": "a91d0d59-9fbe-47e2-b74c-e478f709dbf4"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 48 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.5969
+                            },
+                            "uuid": "75037b02-2753-4b80-8b36-7af7f4f67950"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 49 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.5715
+                            },
+                            "uuid": "ece2daf7-33ee-4a82-9df3-3e1b806b8b66"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 47 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.6223
+                            },
+                            "uuid": "81054a30-0fc7-478c-9644-9e5b138bc351"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 48 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.5969
+                            },
+                            "uuid": "75037b02-2753-4b80-8b36-7af7f4f67950"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 46 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.6477
+                            },
+                            "uuid": "f046b7a0-891d-4196-b996-222433c739f2"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 47 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.6223
+                            },
+                            "uuid": "81054a30-0fc7-478c-9644-9e5b138bc351"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 45 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.6731
+                            },
+                            "uuid": "bc374f90-4db1-464d-ae19-4623ab17d847"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 46 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.6477
+                            },
+                            "uuid": "f046b7a0-891d-4196-b996-222433c739f2"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 44 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.6985
+                            },
+                            "uuid": "84d32966-f11d-4c94-87db-03387d192228"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 45 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.6731
+                            },
+                            "uuid": "bc374f90-4db1-464d-ae19-4623ab17d847"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 43 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.7239
+                            },
+                            "uuid": "b3a26a23-8a96-445e-bce0-4ed2f6db1344"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 44 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.6985
+                            },
+                            "uuid": "84d32966-f11d-4c94-87db-03387d192228"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 42 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.7493
+                            },
+                            "uuid": "f077729d-34b7-4ce2-98bc-f7dca2424006"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 43 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.7239
+                            },
+                            "uuid": "b3a26a23-8a96-445e-bce0-4ed2f6db1344"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 41 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.7747
+                            },
+                            "uuid": "20922d8d-f34f-4fce-8acb-61b9d6e17560"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 42 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.7493
+                            },
+                            "uuid": "f077729d-34b7-4ce2-98bc-f7dca2424006"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 40 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.8001
+                            },
+                            "uuid": "7948e2e2-64b1-497b-a4b5-61a899670bb0"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 41 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.7747
+                            },
+                            "uuid": "20922d8d-f34f-4fce-8acb-61b9d6e17560"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 39 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.8255
+                            },
+                            "uuid": "9899083d-6e97-4c63-9f71-cd265e37f719"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 40 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.8001
+                            },
+                            "uuid": "7948e2e2-64b1-497b-a4b5-61a899670bb0"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 38 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.8509
+                            },
+                            "uuid": "1aebad0c-3f85-4352-9cd5-39456f5be0cb"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 39 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.8255
+                            },
+                            "uuid": "9899083d-6e97-4c63-9f71-cd265e37f719"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 37 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.8763
+                            },
+                            "uuid": "02db7f62-60ba-4619-a67d-8617e405eb50"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 38 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.8509
+                            },
+                            "uuid": "1aebad0c-3f85-4352-9cd5-39456f5be0cb"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Power output and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 36 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.9017
+                            },
+                            "uuid": "e5135d34-da0a-42aa-809f-4e510b135a10"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 37 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.8763
+                            },
+                            "uuid": "02db7f62-60ba-4619-a67d-8617e405eb50"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Pins of type Bidirectional and Power output are connected",
+                    "items": [
+                        {
+                            "description": "Symbol U3 Pin 31 [TXD0, Bidirectional, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 1.0287
+                            },
+                            "uuid": "85d90535-3b91-47da-ba35-66299ce74b39"
+                        },
+                        {
+                            "description": "Symbol U3 Pin 36 [GND, Power output, Line]",
+                            "pos": {
+                                "x": 2.5908,
+                                "y": 0.9017
+                            },
+                            "uuid": "e5135d34-da0a-42aa-809f-4e510b135a10"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "pin_to_pin"
+                },
+                {
+                    "description": "Symbol 'GND' doesn't match copy in library 'power'",
+                    "items": [
+                        {
+                            "description": "Symbol #PWR010 [GND]",
+                            "pos": {
+                                "x": 2.6289,
+                                "y": 1.1049
+                            },
+                            "uuid": "4f913a89-d4cd-47f5-afe5-b8d58ffc9069"
+                        }
+                    ],
+                    "severity": "warning",
+                    "type": "lib_symbol_mismatch"
+                }
+            ]
+        }
+    ],
+    "source": "kicad.kicad_sch"
+}

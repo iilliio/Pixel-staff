@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:open_pixel_poi/hardware/poi_hardware.dart';
 import 'package:open_pixel_poi/pages/home.dart';
+import 'package:open_pixel_poi/pages/fourier_art.dart';
 import 'package:provider/provider.dart';
 
 import '../hardware/ble_uart.dart';
@@ -29,27 +30,47 @@ class _WelcomeState extends State<WelcomePage> {
       appBar: AppBar(
         key: _key,
         title: const Text("Open Pixel Poi"),
+        actions: [
+          IconButton(
+            tooltip: 'Fourier Art',
+            icon: const Icon(Icons.auto_graph),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const FourierArtPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<Object>(
-          stream: FlutterBluePlus.isScanning,
-          builder: (context, snapshot) {
-            bool isScanning = false;
-            if (snapshot.data != null && snapshot.data == true) {
-              isScanning = true;
-            }
-            return StreamBuilder<List<ScanResult>>(
-                stream: FlutterBluePlus.scanResults,
-                builder: (context, snapshot) {
-                  List<ScanResult>? scanResults = snapshot.data;
-                  if (scanResults != null) {
-                    scanResults =
-                        scanResults.where((result) => result.advertisementData.connectable && result.device.platformName.isNotEmpty).toList();
-                  } else {
-                    scanResults = List.empty();
-                  }
-                  return getBody(isScanning, scanResults);
-                });
-          }),
+        stream: FlutterBluePlus.isScanning,
+        builder: (context, snapshot) {
+          bool isScanning = false;
+          if (snapshot.data != null && snapshot.data == true) {
+            isScanning = true;
+          }
+          return StreamBuilder<List<ScanResult>>(
+            stream: FlutterBluePlus.scanResults,
+            builder: (context, snapshot) {
+              List<ScanResult>? scanResults = snapshot.data;
+              if (scanResults != null) {
+                scanResults =
+                    scanResults
+                        .where(
+                          (result) =>
+                              result.advertisementData.connectable &&
+                              result.device.platformName.isNotEmpty,
+                        )
+                        .toList();
+              } else {
+                scanResults = List.empty();
+              }
+              return getBody(isScanning, scanResults);
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -68,7 +89,7 @@ class _WelcomeState extends State<WelcomePage> {
       return getConnecting();
     } else if (isDisconnecting) {
       return getDisconnecting();
-    } else if (!isScanning && (scanResults == null || hasScanned == false)) {
+    } else if (!isScanning && hasScanned == false) {
       return getWelcome();
     } else if (!isScanning && scanResults.isEmpty) {
       return getEmpty();
@@ -87,19 +108,12 @@ class _WelcomeState extends State<WelcomePage> {
             Text(
               "Welcome to your poi!",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
             Text(
               "Press scan below to search for your poi, this may launch a permission request.",
-              style: TextStyle(
-                fontSize: 18,
-              ),
+              style: TextStyle(fontSize: 18),
             ),
           ],
         ),
@@ -117,19 +131,12 @@ class _WelcomeState extends State<WelcomePage> {
             Text(
               "No bluetooth devices found!",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
             Text(
               "Please make sure bluetooth and location are enabled, and your poi is powered on.",
-              style: TextStyle(
-                fontSize: 18,
-              ),
+              style: TextStyle(fontSize: 18),
             ),
           ],
         ),
@@ -153,26 +160,44 @@ class _WelcomeState extends State<WelcomePage> {
         return Card(
           child: ListTile(
             leading: Checkbox(
-              value: checkedMacAddresses.contains(scanResults[index].device.remoteId.str),
+              value: checkedMacAddresses.contains(
+                scanResults[index].device.remoteId.str,
+              ),
+              checkColor: Colors.grey,
+              fillColor: MaterialStatePropertyAll<Color>(Colors.grey),
               onChanged: (checked) {
                 setState(() {
-                  if (checkedMacAddresses.contains(scanResults[index].device.remoteId.str)) {
-                    checkedMacAddresses.remove(scanResults[index].device.remoteId.str);
+                  if (checkedMacAddresses.contains(
+                    scanResults[index].device.remoteId.str,
+                  )) {
+                    checkedMacAddresses.remove(
+                      scanResults[index].device.remoteId.str,
+                    );
                   } else {
-                    checkedMacAddresses.add(scanResults[index].device.remoteId.str);
+                    checkedMacAddresses.add(
+                      scanResults[index].device.remoteId.str,
+                    );
                   }
                 });
               },
             ),
             title: Text('Name: ${scanResults[index].device.platformName}'),
-            subtitle: Text('Address: ${scanResults[index].device.remoteId.str}'),
+            subtitle: Text(
+              'Address: ${scanResults[index].device.remoteId.str}',
+            ),
             trailing: Icon(Icons.bluetooth),
             onTap: () {
               setState(() {
-                if (checkedMacAddresses.contains(scanResults[index].device.remoteId.str)) {
-                  checkedMacAddresses.remove(scanResults[index].device.remoteId.str);
+                if (checkedMacAddresses.contains(
+                  scanResults[index].device.remoteId.str,
+                )) {
+                  checkedMacAddresses.remove(
+                    scanResults[index].device.remoteId.str,
+                  );
                 } else {
-                  checkedMacAddresses.add(scanResults[index].device.remoteId.str);
+                  checkedMacAddresses.add(
+                    scanResults[index].device.remoteId.str,
+                  );
                 }
               });
             },
@@ -192,14 +217,9 @@ class _WelcomeState extends State<WelcomePage> {
             Text(
               "Connecting...",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
             CircularProgressIndicator(),
           ],
         ),
@@ -217,14 +237,9 @@ class _WelcomeState extends State<WelcomePage> {
             Text(
               "Disconnecting...",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: 30),
             CircularProgressIndicator(),
           ],
         ),
@@ -243,51 +258,70 @@ class _WelcomeState extends State<WelcomePage> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: isRefreshing || isConnecting || isDisconnecting ? null : () {
-                  scan();
-                },
-                onLongPress: isRefreshing || isConnecting || isDisconnecting ? null : () {
-                  Provider.of<Model>(context, listen: false).connectedPoi = [];
-                  Navigator.push(
-                    _key.currentContext!,
-                    MaterialPageRoute(builder: (context) {
-                      return MyHomePage();
-                    }),
-                  );
-                },
-                child: isRefreshing
-                    ? CircularProgressIndicator()
-                    : const Text(
-                        "Scan",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-              ),
-            ),
-            if(checkedMacAddresses.isNotEmpty)
-              const VerticalDivider(width: 8.0),
-            if (checkedMacAddresses.isNotEmpty)
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: isConnecting || isDisconnecting
-                      ? null
-                      : () {
-                          connect(scanResults
-                              .where((scanResult) => checkedMacAddresses.contains(scanResult.device.remoteId.str))
-                              .map((e) => e.device)
-                              .toList());
+                onPressed:
+                    isRefreshing || isConnecting || isDisconnecting
+                        ? null
+                        : () {
+                          scan();
                         },
-                  child: isConnecting || isDisconnecting
-                      ? CircularProgressIndicator()
-                      : const Text(
-                          "Connect",
+                onLongPress:
+                    isRefreshing || isConnecting || isDisconnecting
+                        ? null
+                        : () {
+                          Provider.of<Model>(context, listen: false)
+                              .connectedPoi = [];
+                          Navigator.push(
+                            _key.currentContext!,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return MyHomePage();
+                              },
+                            ),
+                          );
+                        },
+                child:
+                    isRefreshing
+                        ? CircularProgressIndicator()
+                        : const Text(
+                          "Scan",
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+              ),
+            ),
+            if (checkedMacAddresses.isNotEmpty)
+              const VerticalDivider(width: 8.0),
+            if (checkedMacAddresses.isNotEmpty)
+              Expanded(
+                child: ElevatedButton(
+                  onPressed:
+                      isConnecting || isDisconnecting
+                          ? null
+                          : () {
+                            connect(
+                              scanResults
+                                  .where(
+                                    (scanResult) =>
+                                        checkedMacAddresses.contains(
+                                          scanResult.device.remoteId.str,
+                                        ),
+                                  )
+                                  .map((e) => e.device)
+                                  .toList(),
+                            );
+                          },
+                  child:
+                      isConnecting || isDisconnecting
+                          ? CircularProgressIndicator()
+                          : const Text(
+                            "Connect",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                 ),
               ),
           ],
@@ -305,7 +339,8 @@ class _WelcomeState extends State<WelcomePage> {
         setState(() {
           isDisconnecting = true;
         });
-        if (await hardware.uart.device.connectionState.first == BluetoothConnectionState.connected) {
+        if (await hardware.uart.device.connectionState.first ==
+            BluetoothConnectionState.connected) {
           await hardware.uart.disconnect();
           await Future.delayed(Duration(milliseconds: 2000));
         }
@@ -317,7 +352,11 @@ class _WelcomeState extends State<WelcomePage> {
     }
     // Scan
     hasScanned = true;
-    FlutterBluePlus.startScan(withKeywords: ["Pixel Poi"], timeout: Duration(seconds: 5), androidUsesFineLocation: false);
+    FlutterBluePlus.startScan(
+      withKeywords: ["Pixel Poi"],
+      timeout: Duration(seconds: 5),
+      androidUsesFineLocation: false,
+    );
   }
 
   void connect(List<BluetoothDevice> devices) async {
@@ -330,7 +369,8 @@ class _WelcomeState extends State<WelcomePage> {
         setState(() {
           isDisconnecting = true;
         });
-        if (await hardware.uart.device.connectionState.first == BluetoothConnectionState.connected) {
+        if (await hardware.uart.device.connectionState.first ==
+            BluetoothConnectionState.connected) {
           await hardware.uart.disconnect();
         }
         await hardware.subscription.cancel();
@@ -343,24 +383,42 @@ class _WelcomeState extends State<WelcomePage> {
     setState(() {
       isConnecting = true;
     });
-    Provider.of<Model>(_key.currentContext!, listen: false).connectedPoi = List.empty(growable: true);
+    Provider.of<Model>(
+      _key.currentContext!,
+      listen: false,
+    ).connectedPoi = List.empty(growable: true);
     for (var device in devices) {
       BLEUart bleUart = BLEUart(device);
-      await bleUart.isIntialized.then((value) {
-        print("BLEUart Initialized");
-        Provider.of<Model>(_key.currentContext!, listen: false).connectedPoi!.add(PoiHardware(bleUart));
-      }, onError: (error) {
-        print("error = $error");
-        const snackBar = SnackBar(content: Text('Unable to connect, please make sure selected device is a Open Pixel Poi.'));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      });
+      await bleUart.isIntialized.then(
+        (value) {
+          print("BLEUart Initialized");
+          Provider.of<Model>(
+            _key.currentContext!,
+            listen: false,
+          ).connectedPoi!.add(PoiHardware(bleUart));
+        },
+        onError: (error) {
+          print("error = $error");
+          const snackBar = SnackBar(
+            content: Text(
+              'Unable to connect, please make sure selected device is a Open Pixel Poi.',
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+      );
     }
-    if (Provider.of<Model>(_key.currentContext!, listen: false).connectedPoi!.isNotEmpty) {
+    if (Provider.of<Model>(
+      _key.currentContext!,
+      listen: false,
+    ).connectedPoi!.isNotEmpty) {
       Navigator.push(
         _key.currentContext!,
-        MaterialPageRoute(builder: (context) {
-          return MyHomePage();
-        }),
+        MaterialPageRoute(
+          builder: (context) {
+            return MyHomePage();
+          },
+        ),
       );
       await Future.delayed(const Duration(seconds: 1), () {
         setState(() {
