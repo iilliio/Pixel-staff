@@ -27,7 +27,8 @@ class PatternDB {
   Future<void> getDB() async {
     if (kIsWeb) {
       databaseFactory = databaseFactoryFfiWeb;
-    } else if (!Platform.isAndroid) {
+    } else if (!Platform.isAndroid && !Platform.isIOS) {
+      // Android and iOS use the native sqflite plugin, FFI can't load sqlite on iOS
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
     }
