@@ -290,6 +290,12 @@ public:
       // gpio_set_direction(gpio_num_t(A1), GPIO_MODE_INPUT);
       // esp_sleep_enable_ext1_wakeup(1ULL << digitalPinToBitMask(A1), ESP_EXT1_WAKEUP_ALL_LOW);
       // esp_deep_sleep_start();
+#if CONFIG_IDF_TARGET_ESP32C3
+      // C3 has no ext0 wakeup; wake on LOW level on the button pin (A1 = GPIO3)
+      gpio_set_direction(gpio_num_t(A1), GPIO_MODE_INPUT);
+      gpio_pullup_en(gpio_num_t(A1));
+      esp_deep_sleep_enable_gpio_wakeup(1ULL << A1, ESP_GPIO_WAKEUP_GPIO_LOW);
+#else
       gpio_deep_sleep_hold_dis();              // just in case
       rtc_gpio_init(WAKE_PIN);
       rtc_gpio_set_direction(WAKE_PIN, RTC_GPIO_MODE_INPUT_ONLY);
@@ -298,7 +304,8 @@ public:
   
       // Wake on LOW level on A1
       esp_sleep_enable_ext0_wakeup(WAKE_PIN, 0);   // 0 = LOW, 1 = HIGH
-  
+#endif
+
       esp_deep_sleep_start();
     }
 
