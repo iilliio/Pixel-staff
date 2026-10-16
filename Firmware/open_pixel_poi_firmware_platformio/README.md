@@ -12,6 +12,7 @@ All the library dependencies and board config is contained in the platformio.ini
 | `kit_2_2_1_20px` | PCB V2.2.1 with 20 NeoPixels |
 | `kit_3_0_0_25px` | PCB V3.0.0 with 25 NeoPixels |
 | `kit_3_0_0_55px` | PCB V3.0.0 with 55 DotStars |
+| `kit_pixel_staff_v6` | Pixel Staff side PCB v6 (XIAO ESP32C3) with 51 NeoPixels on LED1 |
 
 Each environment sets `OPP_KIT`, which picks the matching defaults in [config.h](./src/config.h). From the command line, `pio run -e kit_3_0_0_25px` builds a single environment.
 

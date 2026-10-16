@@ -31,6 +31,7 @@
 #define KIT_2_2_1_20PX 2
 #define KIT_3_0_0_25PX 3
 #define KIT_3_0_0_55PX 4
+#define KIT_PIXEL_STAFF_V6 5
 
 #ifndef OPP_KIT
 #define OPP_KIT KIT_BLANK_CANVAS
@@ -54,6 +55,14 @@
 #define DEFAULT_LED_TYPE 2 // 0 = no output, 1 = Neo Pixel, 2 = Dot Star
 #define DEFAULT_LED_COUNT 55
 #define SPEED_OPTIONS (uint16_t[]){ 1, 3, 30, 500, 1500, 2000}
+#elif OPP_KIT == KIT_PIXEL_STAFF_V6
+// Pixel Staff side PCB v6 (XIAO ESP32C3 + TPS61023 boost), 51 NeoPixels on LED1
+// Same pinout as v2.2.1: LED data D8, button D1, boost enable D7, battery sense A0
+#define DEFAULT_HARDWARE_VERSION 1 // 0 = no output, 1 = v2.2.1, 2 = v3.0.0
+#define DEFAULT_LED_TYPE 1 // 0 = no output, 1 = Neo Pixel, 2 = Dot Star
+#define DEFAULT_LED_COUNT 51
+#define DEFAULT_BRIGHTNESS 25 // Brightness 1 is too dim to see the button feedback on this strip
+#define SPEED_OPTIONS (uint16_t[]){ 1, 3, 30, 100, 400, 600}
 #elif OPP_KIT == KIT_BLANK_CANVAS
 // Blank Canvas config
 #define DEFAULT_HARDWARE_VERSION 0 // 0 = no output, 1 = v2.2.1, 2 = v3.0.0
@@ -62,6 +71,10 @@
 #define SPEED_OPTIONS (uint16_t[]){ 1, 3, 30, 100, 400, 600}
 #else
 #error "OPP_KIT is not one of the KIT_ values in config.h"
+#endif
+
+#ifndef DEFAULT_BRIGHTNESS
+#define DEFAULT_BRIGHTNESS BRIGHTNESS_OPTIONS[0]
 #endif
 
 #endif // _CONFIG_H

@@ -251,7 +251,7 @@ class OpenPixelPoiConfig {
         debugf("− failed to open file for reading\n");
         fillDefaultPattern();
       }else{
-        debugf(" - this much available: %d\n", file.available());
+        debugf(" - this much available: %d\n", patternFile.available());
         // Filling the whole pattern with data is way too slow
         // just fill one pixel so we don't have a completely black pattern if something goes weird
         pattern[0] = 0xFF;
@@ -335,7 +335,7 @@ class OpenPixelPoiConfig {
       this->deviceName = preferences.getString("deviceName", DEFAULT_DEVICE_NAME);
 
       // Load Display settings
-      this->ledBrightness = preferences.getChar("brightness", BRIGHTNESS_OPTIONS[0]);
+      this->ledBrightness = preferences.getChar("brightness", DEFAULT_BRIGHTNESS);
       debugf("- brightness = %d\n", this->ledBrightness);
 
       this->ledBrightnessOptions[0] = preferences.getChar("brightnessOp0", BRIGHTNESS_OPTIONS[0]);
